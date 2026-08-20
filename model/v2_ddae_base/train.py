@@ -9,9 +9,9 @@ sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
                  LATENT_DIM, LR, LR_MIN, N_NEIGHBORS, NOISE_MODE, NOISE_P, OUT,
                  SEED, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
-from dataset import Patches, corrupt, make_split
+from dataset import Patches, corrupt
 from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
-from common.dataset import PATCHES
+from common.dataset import PATCHES, make_split
 
 
 def evaluate(model, data, idx):

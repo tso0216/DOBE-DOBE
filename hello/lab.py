@@ -13,21 +13,11 @@ sys.path.insert(0, ROOT)
 from common.dataset import (CAT_COLORS, CAT_ZH, CELL, GRID, N_CAT,  # noqa: E402
                             PATCHES, HALF_WIDTH, result)
 
-MODEL_VERSION = "v2_ddae_fsce_euc"
+MODEL_VERSION = "v2_ddae_fsce"
 MODELS = {
-    "v0": dict(latent_dim=2, log1p=True),
-    "v0_poisson_nll": dict(latent_dim=2, log1p=False),
-    "v0_l16": dict(latent_dim=16, log1p=True),
-    "v0_l32_poisson_nll": dict(latent_dim=32, log1p=False),
-    "v0_l32_nb": dict(latent_dim=32, log1p=False),
-    # v1 的輸入/輸出介面不同（counts×mask、回傳 log_lam），要接再另外處理
     "v2_ae": dict(latent_dim=2, v2=True),
-    "v2_l16_ae": dict(latent_dim=16, v2=True),
     "v2_vae": dict(latent_dim=2, v2=True, vae=True),
-    "v2_perceiver": dict(latent_dim=2, v2=True, perceiver=True),
-    "v2_ddae": dict(latent_dim=2, v2=True),
-    "v2_ddae_fsce_euc": dict(latent_dim=2, v2=True),
-    "v2_ddae_tanh_fsce": dict(latent_dim=2, v2=True),
+    "v2_ddae_fsce": dict(latent_dim=2, v2=True),
 }
 cfg = MODELS[MODEL_VERSION]
 PATCH_IDX = None     # None = 從 robust 距離最小（最典型）的 patch 起手；或填 patch 編號

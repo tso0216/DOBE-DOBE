@@ -8,9 +8,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import (BATCH, CKPT, EPOCHS, LAMBDA_KL, LATENT_DIM, LR, OUT, SEED,
                  VERSION, WEIGHT_DECAY, device, open_log)
-from dataset import Patches, make_split
+from dataset import Patches
 from model import AE, kl_divergence, poisson_deviance, poisson_nll
-from common.dataset import PATCHES
+from common.dataset import PATCHES, make_split
 
 
 def evaluate(model, data, idx):

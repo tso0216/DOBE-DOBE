@@ -9,9 +9,6 @@ from model import AE, poisson_deviance
 
 
 def load_model(ckpt=CKPT, device="cpu"):
-    """ckpt：checkpoint 檔案路徑。device：載入到哪個裝置。
-    回傳已載入權重、eval() 模式的 AE。
-    """
     model = AE(LATENT_DIM).to(device)
     model.load_state_dict(torch.load(ckpt, map_location=device))
     model.eval()

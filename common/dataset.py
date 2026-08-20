@@ -1,4 +1,6 @@
 import os
+import numpy as np
+import torch
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -56,7 +58,35 @@ PATCH_PARAMS = {
 
 
 def result(version, name):
-    """某個模型版本的輸出：model/<version>/result/<name>。"""
     d = os.path.join(ROOT, "model", version, "result")
     os.makedirs(d, exist_ok=True)
     return os.path.join(d, name)
+
+
+
+def make_split(lat, lon, mode="random", seed=0, val_frac=0.15, test_frac=0.2,
+               cell=0.02):
+    n = len(lat)
+    rng = np.random.default_rng(seed)
+
+    if mode == "random":
+        member = [np.array([i]) for i in range(n)]
+    elif mode == "spatial":
+        key = (np.floor(np.asarray(lat) / cell).astype(np.int64) * 1_000_000 +
+               np.floor(np.asarray(lon) / cell).astype(np.int64))
+        member = [np.flatnonzero(key == b) for b in np.unique(key)]
+
+    n_test, n_val = int(round(n * test_frac)), int(round(n * val_frac))
+    bucket, filled = [[], [], []], [0, 0]   # filled：test、val 目前裝了幾個 patch
+    for u in rng.permutation(len(member)):
+        idx = member[u]
+        which = 2 if filled[0] < n_test else (1 if filled[1] < n_val else 0)
+        bucket[which].append(idx)
+        if which >= 1:
+            filled[2 - which] += len(idx)
+
+    def cat(xs):
+        a = np.concatenate(xs) if xs else np.empty(0, dtype=np.int64)
+        return torch.from_numpy(np.sort(a.astype(np.int64)))
+
+    return cat(bucket[0]), cat(bucket[1]), cat(bucket[2])

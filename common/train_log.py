@@ -1,4 +1,4 @@
-from common.dataset import PATCH_PARAMS, result
+from common.dataset import result
 
 
 def open_log(version, hparams):
@@ -10,7 +10,6 @@ def open_log(version, hparams):
             f.write(f"  {k} = {v}\n")
         f.write("\n")
 
-    _section("dataset", PATCH_PARAMS)
     _section("hparams", hparams)
     f.flush()
 

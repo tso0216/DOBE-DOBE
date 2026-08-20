@@ -1,87 +1,77 @@
-[dataset]
-  csv = /Users/yentso/developer/StartOver/data/tky_clean.csv
-  cat_col = category
-  categories = ['Dining and Drinking', 'Retail', 'Nightlife Spot', 'Community and Government', 'Travel and Transportation', 'Business and Professional Services', 'Landmarks and Outdoors', 'Arts and Entertainment', 'Health and Medicine', 'Sports and Recreation']
-  half_width = 50.0
-  cell = 15
-  center_step = 100
-  min_poi = 10
-  crs = EPSG:6677
-
 [hparams]
   EPOCHS = 300
   LR = 0.01
   LR_MIN = 1e-05
   SEED = 0
-  NOISE_P = 0.3
+  NOISE_P = 0.118
   NOISE_MODE = thinning
-  LAMBDA_FSCE = 0.01
-  WARMUP_EPOCHS = 200
+  LAMBDA_FSCE = 1
+  WARMUP_EPOCHS = 24
 
-split：train 987 / val 123 / test 123
+split：train 801 / val 185 / test 247
 
-epoch    1 | lr 1.00e-02 | train_nll 0.03590 | train_fsce 3.51252 | val_dev 1.94223
-epoch    5 | lr 9.99e-03 | train_nll -0.78800 | train_fsce 1.39891 | val_dev 1.68484
-epoch   10 | lr 9.97e-03 | train_nll -0.93288 | train_fsce 0.91390 | val_dev 1.42953
-epoch   15 | lr 9.94e-03 | train_nll -0.95908 | train_fsce 1.04185 | val_dev 1.38937
-epoch   20 | lr 9.89e-03 | train_nll -0.97098 | train_fsce 0.93982 | val_dev 1.34358
-epoch   25 | lr 9.83e-03 | train_nll -0.97356 | train_fsce 0.94198 | val_dev 1.31027
-epoch   30 | lr 9.76e-03 | train_nll -0.99524 | train_fsce 0.87564 | val_dev 1.26748
-epoch   35 | lr 9.67e-03 | train_nll -0.98847 | train_fsce 0.86968 | val_dev 1.27302
-epoch   40 | lr 9.57e-03 | train_nll -0.97533 | train_fsce 0.86321 | val_dev 1.41738
-epoch   45 | lr 9.46e-03 | train_nll -1.03250 | train_fsce 0.69576 | val_dev 1.18463
-epoch   50 | lr 9.33e-03 | train_nll -1.07101 | train_fsce 0.60815 | val_dev 1.15331
-epoch   55 | lr 9.19e-03 | train_nll -1.13473 | train_fsce 0.57642 | val_dev 1.24750
-epoch   60 | lr 9.05e-03 | train_nll -1.14253 | train_fsce 0.58510 | val_dev 1.04350
-epoch   65 | lr 8.89e-03 | train_nll -1.20162 | train_fsce 0.69226 | val_dev 0.90767
-epoch   70 | lr 8.72e-03 | train_nll -1.21614 | train_fsce 0.72338 | val_dev 0.89060
-epoch   75 | lr 8.54e-03 | train_nll -1.23783 | train_fsce 0.69152 | val_dev 0.87112
-epoch   80 | lr 8.35e-03 | train_nll -1.23728 | train_fsce 0.68261 | val_dev 0.84703
-epoch   85 | lr 8.15e-03 | train_nll -1.24109 | train_fsce 0.70734 | val_dev 0.84344
-epoch   90 | lr 7.94e-03 | train_nll -1.25062 | train_fsce 0.67856 | val_dev 0.83275
-epoch   95 | lr 7.73e-03 | train_nll -1.25237 | train_fsce 0.64450 | val_dev 0.85638
-epoch  100 | lr 7.50e-03 | train_nll -1.25747 | train_fsce 0.61778 | val_dev 0.81998
-epoch  105 | lr 7.27e-03 | train_nll -1.26308 | train_fsce 0.59839 | val_dev 0.80017
-epoch  110 | lr 7.04e-03 | train_nll -1.25076 | train_fsce 0.58928 | val_dev 0.79268
-epoch  115 | lr 6.80e-03 | train_nll -1.25850 | train_fsce 0.59740 | val_dev 0.80072
-epoch  120 | lr 6.55e-03 | train_nll -1.26649 | train_fsce 0.59689 | val_dev 0.78579
-epoch  125 | lr 6.30e-03 | train_nll -1.26641 | train_fsce 0.57244 | val_dev 0.83001
-epoch  130 | lr 6.04e-03 | train_nll -1.27054 | train_fsce 0.57733 | val_dev 0.79806
-epoch  135 | lr 5.79e-03 | train_nll -1.26307 | train_fsce 0.56538 | val_dev 0.78464
-epoch  140 | lr 5.53e-03 | train_nll -1.27636 | train_fsce 0.56285 | val_dev 0.78544
-epoch  145 | lr 5.27e-03 | train_nll -1.26768 | train_fsce 0.57197 | val_dev 0.78772
-epoch  150 | lr 5.01e-03 | train_nll -1.27416 | train_fsce 0.59584 | val_dev 0.76535
-epoch  155 | lr 4.74e-03 | train_nll -1.28338 | train_fsce 0.54508 | val_dev 0.75155
-epoch  160 | lr 4.48e-03 | train_nll -1.27855 | train_fsce 0.56625 | val_dev 0.75174
-epoch  165 | lr 4.22e-03 | train_nll -1.28567 | train_fsce 0.59303 | val_dev 0.75005
-epoch  170 | lr 3.97e-03 | train_nll -1.28656 | train_fsce 0.56782 | val_dev 0.75187
-epoch  175 | lr 3.71e-03 | train_nll -1.28331 | train_fsce 0.54785 | val_dev 0.73189
-epoch  180 | lr 3.46e-03 | train_nll -1.29007 | train_fsce 0.53666 | val_dev 0.73635
-epoch  185 | lr 3.21e-03 | train_nll -1.29463 | train_fsce 0.52142 | val_dev 0.73109
-epoch  190 | lr 2.97e-03 | train_nll -1.29030 | train_fsce 0.57112 | val_dev 0.75066
-epoch  195 | lr 2.74e-03 | train_nll -1.28313 | train_fsce 0.52457 | val_dev 0.75215
-epoch  200 | lr 2.51e-03 | train_nll -1.29567 | train_fsce 0.54401 | val_dev 0.72283
-epoch  205 | lr 2.28e-03 | train_nll -1.29886 | train_fsce 0.52982 | val_dev 0.73057
-epoch  210 | lr 2.07e-03 | train_nll -1.29738 | train_fsce 0.53718 | val_dev 0.72458
-epoch  215 | lr 1.86e-03 | train_nll -1.29672 | train_fsce 0.51781 | val_dev 0.73852
-epoch  220 | lr 1.66e-03 | train_nll -1.30212 | train_fsce 0.53006 | val_dev 0.71970
-epoch  225 | lr 1.47e-03 | train_nll -1.29773 | train_fsce 0.51473 | val_dev 0.72526
-epoch  230 | lr 1.29e-03 | train_nll -1.29959 | train_fsce 0.54125 | val_dev 0.72391
-epoch  235 | lr 1.12e-03 | train_nll -1.30362 | train_fsce 0.51899 | val_dev 0.72776
-epoch  240 | lr 9.64e-04 | train_nll -1.31129 | train_fsce 0.54123 | val_dev 0.72610
-epoch  245 | lr 8.16e-04 | train_nll -1.30599 | train_fsce 0.50246 | val_dev 0.72452
-epoch  250 | lr 6.79e-04 | train_nll -1.30172 | train_fsce 0.52411 | val_dev 0.72131
-epoch  255 | lr 5.54e-04 | train_nll -1.30371 | train_fsce 0.51145 | val_dev 0.72145
-epoch  260 | lr 4.42e-04 | train_nll -1.30294 | train_fsce 0.51265 | val_dev 0.71743
-epoch  265 | lr 3.42e-04 | train_nll -1.30322 | train_fsce 0.52708 | val_dev 0.72052
-epoch  270 | lr 2.54e-04 | train_nll -1.31055 | train_fsce 0.50683 | val_dev 0.71875
-epoch  275 | lr 1.80e-04 | train_nll -1.31142 | train_fsce 0.50551 | val_dev 0.71603
-epoch  280 | lr 1.19e-04 | train_nll -1.30649 | train_fsce 0.53203 | val_dev 0.71696
-epoch  285 | lr 7.15e-05 | train_nll -1.30981 | train_fsce 0.50241 | val_dev 0.71727
-epoch  290 | lr 3.74e-05 | train_nll -1.31028 | train_fsce 0.50097 | val_dev 0.71687
-epoch  295 | lr 1.68e-05 | train_nll -1.30633 | train_fsce 0.53578 | val_dev 0.71652
-epoch  300 | lr 1.00e-05 | train_nll -1.30437 | train_fsce 0.52068 | val_dev 0.71639
+epoch    1 train_nll -0.18961 | train_fsce 2.24590 | val_dev 1.68774
+epoch    5 train_nll -0.99572 | train_fsce 0.47350 | val_dev 1.41302
+epoch   10 train_nll -1.09926 | train_fsce 0.40152 | val_dev 1.19409
+epoch   15 train_nll -1.17298 | train_fsce 0.40622 | val_dev 1.03872
+epoch   20 train_nll -1.22657 | train_fsce 0.39060 | val_dev 0.99796
+epoch   25 train_nll -1.21409 | train_fsce 0.38648 | val_dev 1.01788
+epoch   30 train_nll -1.23489 | train_fsce 0.38814 | val_dev 0.95973
+epoch   35 train_nll -1.22186 | train_fsce 0.38950 | val_dev 0.95837
+epoch   40 train_nll -1.24602 | train_fsce 0.38450 | val_dev 0.91788
+epoch   45 train_nll -1.23002 | train_fsce 0.39070 | val_dev 0.96767
+epoch   50 train_nll -1.24661 | train_fsce 0.37551 | val_dev 0.96357
+epoch   55 train_nll -1.26520 | train_fsce 0.38234 | val_dev 0.96085
+epoch   60 train_nll -1.26341 | train_fsce 0.38216 | val_dev 0.92854
+epoch   65 train_nll -1.26562 | train_fsce 0.38077 | val_dev 0.90336
+epoch   70 train_nll -1.26863 | train_fsce 0.37132 | val_dev 0.94384
+epoch   75 train_nll -1.26128 | train_fsce 0.38333 | val_dev 0.91973
+epoch   80 train_nll -1.27401 | train_fsce 0.39451 | val_dev 0.90424
+epoch   85 train_nll -1.27307 | train_fsce 0.38386 | val_dev 0.91073
+epoch   90 train_nll -1.26685 | train_fsce 0.38470 | val_dev 0.92206
+epoch   95 train_nll -1.27626 | train_fsce 0.38516 | val_dev 0.91778
+epoch  100 train_nll -1.28358 | train_fsce 0.37060 | val_dev 0.88249
+epoch  105 train_nll -1.27654 | train_fsce 0.39111 | val_dev 0.90505
+epoch  110 train_nll -1.29129 | train_fsce 0.38750 | val_dev 0.88592
+epoch  115 train_nll -1.28093 | train_fsce 0.37132 | val_dev 0.92355
+epoch  120 train_nll -1.28337 | train_fsce 0.39066 | val_dev 0.90398
+epoch  125 train_nll -1.27236 | train_fsce 0.38263 | val_dev 0.93574
+epoch  130 train_nll -1.27634 | train_fsce 0.38065 | val_dev 0.93220
+epoch  135 train_nll -1.28354 | train_fsce 0.38364 | val_dev 0.92152
+epoch  140 train_nll -1.28563 | train_fsce 0.39364 | val_dev 0.92484
+epoch  145 train_nll -1.28858 | train_fsce 0.37945 | val_dev 0.90746
+epoch  150 train_nll -1.26147 | train_fsce 0.38659 | val_dev 0.93621
+epoch  155 train_nll -1.29292 | train_fsce 0.38865 | val_dev 0.88586
+epoch  160 train_nll -1.30283 | train_fsce 0.37974 | val_dev 0.88274
+epoch  165 train_nll -1.28843 | train_fsce 0.38801 | val_dev 0.90172
+epoch  170 train_nll -1.29063 | train_fsce 0.37440 | val_dev 0.88872
+epoch  175 train_nll -1.30583 | train_fsce 0.38779 | val_dev 0.89445
+epoch  180 train_nll -1.30320 | train_fsce 0.38897 | val_dev 0.88673
+epoch  185 train_nll -1.29737 | train_fsce 0.38257 | val_dev 0.88661
+epoch  190 train_nll -1.31014 | train_fsce 0.36574 | val_dev 0.87402
+epoch  195 train_nll -1.30736 | train_fsce 0.37072 | val_dev 0.87950
+epoch  200 train_nll -1.31303 | train_fsce 0.38592 | val_dev 0.86898
+epoch  205 train_nll -1.31901 | train_fsce 0.37803 | val_dev 0.87217
+epoch  210 train_nll -1.30360 | train_fsce 0.37899 | val_dev 0.88665
+epoch  215 train_nll -1.30716 | train_fsce 0.37534 | val_dev 0.87442
+epoch  220 train_nll -1.31591 | train_fsce 0.39870 | val_dev 0.85352
+epoch  225 train_nll -1.31884 | train_fsce 0.38707 | val_dev 0.86500
+epoch  230 train_nll -1.30365 | train_fsce 0.40088 | val_dev 0.86230
+epoch  235 train_nll -1.32426 | train_fsce 0.39170 | val_dev 0.84857
+epoch  240 train_nll -1.32259 | train_fsce 0.37738 | val_dev 0.85093
+epoch  245 train_nll -1.32446 | train_fsce 0.38454 | val_dev 0.84323
+epoch  250 train_nll -1.32324 | train_fsce 0.37283 | val_dev 0.85145
+epoch  255 train_nll -1.32702 | train_fsce 0.38468 | val_dev 0.85727
+epoch  260 train_nll -1.32790 | train_fsce 0.37789 | val_dev 0.85537
+epoch  265 train_nll -1.32656 | train_fsce 0.37561 | val_dev 0.85615
+epoch  270 train_nll -1.32791 | train_fsce 0.38046 | val_dev 0.85375
+epoch  275 train_nll -1.33129 | train_fsce 0.38068 | val_dev 0.85165
+epoch  280 train_nll -1.33016 | train_fsce 0.38459 | val_dev 0.85284
+epoch  285 train_nll -1.33229 | train_fsce 0.37833 | val_dev 0.85076
+epoch  290 train_nll -1.33255 | train_fsce 0.37703 | val_dev 0.85016
+epoch  295 train_nll -1.32582 | train_fsce 0.37860 | val_dev 0.85103
+epoch  300 train_nll -1.32771 | train_fsce 0.38802 | val_dev 0.85081
 
-最佳 checkpoint：epoch 275，val_dev 0.71603
-test_dev 0.64815（123 個 patch，全程未參與訓練與選 checkpoint）
+最佳 checkpoint：epoch 245，val_dev 0.84323
+test_dev 0.73411（247 個 patch，全程未參與訓練與選 checkpoint）
 done
