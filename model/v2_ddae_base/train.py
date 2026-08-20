@@ -7,8 +7,8 @@ import torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
-                 LATENT_DIM, LR, N_NEIGHBORS, NOISE_MODE, NOISE_P, OUT, SEED,
-                 VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
+                 LATENT_DIM, LR, LR_MIN, N_NEIGHBORS, NOISE_MODE, NOISE_P, OUT,
+                 SEED, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
 from dataset import Patches, corrupt, make_split
 from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
 from common.dataset import PATCHES
@@ -29,6 +29,7 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
     torch.manual_seed(SEED)
     model = AE(LATENT_DIM).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS, eta_min=LR_MIN)
     n_edges = len(edge_i)
     n_train = len(train_idx)
     best_dev, best_epoch, best_state = float("inf"), -1, None
@@ -68,13 +69,15 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
                 total += recon.item() * len(batch)
                 total_fsce += fsce.item() * len(batch)
 
+            sched.step()
+
             if (epoch + 1) % 5 == 0 or epoch == 0:
                 dev = evaluate(model, data, val_idx)   # 驗證不加噪
                 if dev < best_dev:
                     best_dev, best_epoch = dev, epoch + 1
                     best_state = {k: v.detach().cpu().clone()
                                   for k, v in model.state_dict().items()}
-                log(f"epoch {epoch + 1:4d} | train_nll {total / len(perm):.5f} | "
+                log(f"epoch {epoch + 1:4d} train_nll {total / len(perm):.5f} | "
                     f"train_fsce {total_fsce / len(perm):.5f} | val_dev {dev:.5f}")
         except KeyboardInterrupt:
             log(f"\n[中斷] epoch {epoch + 1} 收到 Ctrl-C，用目前最佳模型存 checkpoint 跟 latent")
@@ -103,6 +106,8 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
 def main():
     log = open_log(VERSION, {
         "EPOCHS": EPOCHS,
+        "LR": LR,
+        "LR_MIN": LR_MIN,
         "SEED": SEED,
         "NOISE_P": NOISE_P,
         "NOISE_MODE": NOISE_MODE,

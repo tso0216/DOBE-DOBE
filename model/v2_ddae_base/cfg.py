@@ -14,9 +14,10 @@ CKPT = result(VERSION, "ae.pt")
 HIDDEN = 64
 LATENT_DIM = 2
 
-EPOCHS = 3000
+EPOCHS = 300
 BATCH = 256
-LR = 1e-3
+LR = 1e-2
+LR_MIN = 1e-5             # cosine annealing 排程的下限
 WEIGHT_DECAY = 1e-6
 SEED = 0
 

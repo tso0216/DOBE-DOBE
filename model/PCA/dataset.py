@@ -36,13 +36,12 @@ class Patches:
         return counts.view(b, N_CAT).float()
 
 
-def make_split(lat, lon, mode="random", seed=0, val_frac=0.15, test_frac=0.2,
+def make_split(lat, lon, mode="random", seed=0, val_frac=0.1, test_frac=0.1,
                cell=0.02):
     """lat/lon 是每個 patch 的中心座標，回傳 (train_idx, val_idx, test_idx)
     三個 torch long tensor。
 
-    mode="random"：純隨機切 patch，跟舊版 log 的切法一致，但相鄰 patch 會散在
-    不同 split，test 等於在做空間內插、分數偏樂觀。
+    mode="random"：純隨機切 patch。
     mode="spatial"：先把 lat/lon 切成 cell 度的粗網格，整塊分到同一個 split，
     相鄰 patch 不跨 split，測的是真正的空間外推。
     """

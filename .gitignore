@@ -5,3 +5,5 @@ claude.md
 .claude/
 .vscode/
 .venv/
+.bak/
+test/

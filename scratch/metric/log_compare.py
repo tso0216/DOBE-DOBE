@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 # 可以直接填入檔案路徑，或者使用 tuple: ("檔案路徑", "自訂標籤")
 # 若只有路徑，預設會使用檔案名稱作為標籤
-log1=("model/v2_ddae_base/result/result-random.log",'base')
+log1=("model/v2_deep_ae/result/result-base.log",'base')
 log2=""
-log3= ("model/v2_deep_vae/result/result.log","new")
+log3= ""
 log4=""
 log5=""
 log6=""
@@ -15,7 +15,7 @@ log7=""
 # 將所有要比較的 log 變數放入列表中，並自動過濾掉空字串
 LOG_FILES = [log for log in [log1, log2, log3, log4, log5, log6, log7] if log]
 
-MIN_EPOCH = 200
+MIN_EPOCH = 0
 
 def parse_metrics(log_path):
     """
