@@ -4,8 +4,8 @@ import sys
 import torch
 
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
-from config.dataset import PATCHES, result  # noqa: E402
-from config.train_log import open_log  # noqa: E402
+from common.dataset import PATCHES, result  # noqa: E402
+from common.train_log import open_log  # noqa: E402
 
 VERSION = "v2_ddae_residual"
 OUT = result(VERSION, "latents.npz")

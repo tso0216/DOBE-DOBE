@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../../.."))
 from cfg import LATENT_DIM, VERSION  # noqa: E402
 from dataset import Patches  # noqa: E402
 from model import AE, poisson_deviance, poisson_nll  # noqa: E402
-from config.dataset import CAT_COLORS, CAT_ZH, N_CAT, PATCHES, result  # noqa: E402
+from common.dataset import CAT_COLORS, CAT_ZH, N_CAT, PATCHES, result  # noqa: E402
 
 mpl.rcParams["font.family"] = ["Heiti TC"]
 mpl.rcParams["axes.unicode_minus"] = False

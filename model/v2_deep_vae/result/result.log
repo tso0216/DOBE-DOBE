@@ -1,0 +1,252 @@
+[dataset]
+  dataset = fsq
+  csv = data/tky_clean.csv
+  cat_col = category
+  categories = ['Dining and Drinking', 'Retail', 'Nightlife Spot', 'Community and Government', 'Travel and Transportation', 'Business and Professional Services', 'Landmarks and Outdoors', 'Arts and Entertainment', 'Health and Medicine', 'Sports and Recreation']
+  half_width = 50.0
+  cell = 15
+  center_step = 100
+  min_poi = 10
+  crs = EPSG:6677
+
+[hparams]
+  EPOCHS = 3000
+  SEED = 0
+  LAMBDA_KL = 0.001
+
+split：train 987 / val 123 / test 123
+
+epoch    1 | train_nll 0.34456 | train_kl 0.20472 | val_dev 2.85352
+epoch    5 | train_nll -0.79871 | train_kl 0.73657 | val_dev 1.68112
+epoch   10 | train_nll -0.95512 | train_kl 2.06333 | val_dev 1.41091
+epoch   15 | train_nll -1.06584 | train_kl 2.66617 | val_dev 1.17315
+epoch   20 | train_nll -1.15368 | train_kl 3.27078 | val_dev 0.99007
+epoch   25 | train_nll -1.21242 | train_kl 3.98170 | val_dev 0.94008
+epoch   30 | train_nll -1.23702 | train_kl 4.46428 | val_dev 0.90247
+epoch   35 | train_nll -1.25395 | train_kl 4.77415 | val_dev 0.90116
+epoch   40 | train_nll -1.26449 | train_kl 5.07250 | val_dev 0.86901
+epoch   45 | train_nll -1.27107 | train_kl 5.30665 | val_dev 0.89011
+epoch   50 | train_nll -1.27779 | train_kl 5.50210 | val_dev 0.85905
+epoch   55 | train_nll -1.28690 | train_kl 5.64970 | val_dev 0.84631
+epoch   60 | train_nll -1.29337 | train_kl 5.75239 | val_dev 0.83629
+epoch   65 | train_nll -1.29829 | train_kl 5.83645 | val_dev 0.83108
+epoch   70 | train_nll -1.29969 | train_kl 5.89519 | val_dev 0.84960
+epoch   75 | train_nll -1.30587 | train_kl 6.05456 | val_dev 0.83068
+epoch   80 | train_nll -1.31470 | train_kl 6.14751 | val_dev 0.80292
+epoch   85 | train_nll -1.31919 | train_kl 6.22149 | val_dev 0.81651
+epoch   90 | train_nll -1.32483 | train_kl 6.29870 | val_dev 0.80549
+epoch   95 | train_nll -1.32893 | train_kl 6.42570 | val_dev 0.79827
+epoch  100 | train_nll -1.33008 | train_kl 6.44971 | val_dev 0.79167
+epoch  105 | train_nll -1.33709 | train_kl 6.57950 | val_dev 0.78175
+epoch  110 | train_nll -1.34260 | train_kl 6.57748 | val_dev 0.77179
+epoch  115 | train_nll -1.34353 | train_kl 6.71963 | val_dev 0.77023
+epoch  120 | train_nll -1.34587 | train_kl 6.78745 | val_dev 0.78124
+epoch  125 | train_nll -1.35090 | train_kl 6.84509 | val_dev 0.76345
+epoch  130 | train_nll -1.35740 | train_kl 6.89725 | val_dev 0.76677
+epoch  135 | train_nll -1.36134 | train_kl 6.98816 | val_dev 0.75640
+epoch  140 | train_nll -1.36352 | train_kl 7.06968 | val_dev 0.75696
+epoch  145 | train_nll -1.36364 | train_kl 7.08533 | val_dev 0.75865
+epoch  150 | train_nll -1.36811 | train_kl 7.16516 | val_dev 0.76157
+epoch  155 | train_nll -1.37162 | train_kl 7.15904 | val_dev 0.75150
+epoch  160 | train_nll -1.37038 | train_kl 7.29703 | val_dev 0.74932
+epoch  165 | train_nll -1.37616 | train_kl 7.28869 | val_dev 0.76355
+epoch  170 | train_nll -1.37997 | train_kl 7.29442 | val_dev 0.75025
+epoch  175 | train_nll -1.37542 | train_kl 7.44300 | val_dev 0.77817
+epoch  180 | train_nll -1.38352 | train_kl 7.37934 | val_dev 0.76670
+epoch  185 | train_nll -1.38787 | train_kl 7.53128 | val_dev 0.77377
+epoch  190 | train_nll -1.38727 | train_kl 7.51844 | val_dev 0.76294
+epoch  195 | train_nll -1.39201 | train_kl 7.58845 | val_dev 0.76925
+epoch  200 | train_nll -1.38780 | train_kl 7.59057 | val_dev 0.76942
+epoch  205 | train_nll -1.39454 | train_kl 7.65505 | val_dev 0.76882
+epoch  210 | train_nll -1.40160 | train_kl 7.66749 | val_dev 0.76713
+epoch  215 | train_nll -1.40072 | train_kl 7.67107 | val_dev 0.78307
+epoch  220 | train_nll -1.40549 | train_kl 7.67394 | val_dev 0.78816
+epoch  225 | train_nll -1.40613 | train_kl 7.71920 | val_dev 0.79013
+epoch  230 | train_nll -1.40212 | train_kl 7.77534 | val_dev 0.80526
+epoch  235 | train_nll -1.40444 | train_kl 7.91228 | val_dev 0.80729
+epoch  240 | train_nll -1.40879 | train_kl 7.92680 | val_dev 0.80091
+epoch  245 | train_nll -1.40900 | train_kl 7.93869 | val_dev 0.79514
+epoch  250 | train_nll -1.41232 | train_kl 7.90556 | val_dev 0.80274
+epoch  255 | train_nll -1.41560 | train_kl 7.91604 | val_dev 0.78587
+epoch  260 | train_nll -1.42101 | train_kl 7.96861 | val_dev 0.80728
+epoch  265 | train_nll -1.42413 | train_kl 8.01129 | val_dev 0.82535
+epoch  270 | train_nll -1.41915 | train_kl 8.03119 | val_dev 0.82809
+epoch  275 | train_nll -1.41654 | train_kl 8.13627 | val_dev 0.82367
+epoch  280 | train_nll -1.42055 | train_kl 8.07381 | val_dev 0.82953
+epoch  285 | train_nll -1.42798 | train_kl 8.05444 | val_dev 0.84582
+epoch  290 | train_nll -1.43056 | train_kl 8.08839 | val_dev 0.83374
+epoch  295 | train_nll -1.42877 | train_kl 8.09874 | val_dev 0.83553
+epoch  300 | train_nll -1.42747 | train_kl 8.02972 | val_dev 0.85288
+epoch  305 | train_nll -1.42129 | train_kl 8.13693 | val_dev 0.87228
+epoch  310 | train_nll -1.42749 | train_kl 8.20050 | val_dev 0.83791
+epoch  315 | train_nll -1.43513 | train_kl 8.18738 | val_dev 0.87656
+epoch  320 | train_nll -1.43892 | train_kl 8.18110 | val_dev 0.86493
+epoch  325 | train_nll -1.43933 | train_kl 8.18890 | val_dev 0.90328
+epoch  330 | train_nll -1.43961 | train_kl 8.30433 | val_dev 0.90212
+epoch  335 | train_nll -1.44352 | train_kl 8.31719 | val_dev 0.88538
+epoch  340 | train_nll -1.44871 | train_kl 8.31573 | val_dev 0.91977
+epoch  345 | train_nll -1.44540 | train_kl 8.43446 | val_dev 0.91716
+epoch  350 | train_nll -1.43841 | train_kl 8.43724 | val_dev 0.90251
+epoch  355 | train_nll -1.44183 | train_kl 8.44711 | val_dev 0.90665
+epoch  360 | train_nll -1.43980 | train_kl 8.53199 | val_dev 0.91670
+epoch  365 | train_nll -1.44843 | train_kl 8.51679 | val_dev 0.94521
+epoch  370 | train_nll -1.45608 | train_kl 8.47435 | val_dev 0.94280
+epoch  375 | train_nll -1.45327 | train_kl 8.50737 | val_dev 0.95378
+epoch  380 | train_nll -1.45981 | train_kl 8.56695 | val_dev 0.95242
+epoch  385 | train_nll -1.45955 | train_kl 8.57507 | val_dev 0.96061
+epoch  390 | train_nll -1.45780 | train_kl 8.55749 | val_dev 0.96345
+epoch  395 | train_nll -1.45759 | train_kl 8.64735 | val_dev 0.96099
+epoch  400 | train_nll -1.45193 | train_kl 8.58478 | val_dev 0.97303
+epoch  405 | train_nll -1.45898 | train_kl 8.52941 | val_dev 0.94640
+epoch  410 | train_nll -1.45964 | train_kl 8.62282 | val_dev 0.96493
+epoch  415 | train_nll -1.46512 | train_kl 8.61742 | val_dev 0.97318
+epoch  420 | train_nll -1.47091 | train_kl 8.63761 | val_dev 0.97590
+epoch  425 | train_nll -1.46486 | train_kl 8.68065 | val_dev 1.00027
+epoch  430 | train_nll -1.46058 | train_kl 8.66590 | val_dev 0.98193
+epoch  435 | train_nll -1.46625 | train_kl 8.65662 | val_dev 0.98238
+epoch  440 | train_nll -1.47064 | train_kl 8.73301 | val_dev 0.97983
+epoch  445 | train_nll -1.47024 | train_kl 8.73355 | val_dev 0.98978
+epoch  450 | train_nll -1.47148 | train_kl 8.77588 | val_dev 0.98728
+epoch  455 | train_nll -1.46843 | train_kl 8.82463 | val_dev 1.01290
+epoch  460 | train_nll -1.47517 | train_kl 8.87350 | val_dev 1.00099
+epoch  465 | train_nll -1.47540 | train_kl 8.82273 | val_dev 0.99867
+epoch  470 | train_nll -1.47972 | train_kl 8.85163 | val_dev 1.02825
+epoch  475 | train_nll -1.47766 | train_kl 8.85962 | val_dev 1.01702
+epoch  480 | train_nll -1.47949 | train_kl 8.83394 | val_dev 0.97809
+epoch  485 | train_nll -1.48091 | train_kl 8.91267 | val_dev 1.00821
+epoch  490 | train_nll -1.48131 | train_kl 8.94563 | val_dev 0.99231
+epoch  495 | train_nll -1.48222 | train_kl 8.94981 | val_dev 1.00255
+epoch  500 | train_nll -1.48599 | train_kl 8.99200 | val_dev 1.05029
+epoch  505 | train_nll -1.48908 | train_kl 8.95462 | val_dev 1.02837
+epoch  510 | train_nll -1.49323 | train_kl 8.95782 | val_dev 1.02283
+epoch  515 | train_nll -1.49357 | train_kl 9.03591 | val_dev 1.05921
+epoch  520 | train_nll -1.49123 | train_kl 9.01513 | val_dev 1.04327
+epoch  525 | train_nll -1.49044 | train_kl 8.99785 | val_dev 1.05360
+epoch  530 | train_nll -1.49656 | train_kl 9.08540 | val_dev 1.04117
+epoch  535 | train_nll -1.49962 | train_kl 9.10061 | val_dev 1.02381
+epoch  540 | train_nll -1.50048 | train_kl 9.10245 | val_dev 1.03800
+epoch  545 | train_nll -1.49702 | train_kl 9.16214 | val_dev 1.08740
+epoch  550 | train_nll -1.49488 | train_kl 9.16197 | val_dev 1.05722
+epoch  555 | train_nll -1.49396 | train_kl 9.18360 | val_dev 1.08129
+epoch  560 | train_nll -1.49610 | train_kl 9.20071 | val_dev 1.04622
+epoch  565 | train_nll -1.49453 | train_kl 9.23182 | val_dev 1.06876
+epoch  570 | train_nll -1.49546 | train_kl 9.25795 | val_dev 1.09286
+epoch  575 | train_nll -1.49916 | train_kl 9.17266 | val_dev 1.06403
+epoch  580 | train_nll -1.50363 | train_kl 9.14966 | val_dev 1.06607
+epoch  585 | train_nll -1.50729 | train_kl 9.17920 | val_dev 1.07369
+epoch  590 | train_nll -1.51069 | train_kl 9.29094 | val_dev 1.06253
+epoch  595 | train_nll -1.51247 | train_kl 9.32526 | val_dev 1.08366
+epoch  600 | train_nll -1.51027 | train_kl 9.34863 | val_dev 1.08690
+epoch  605 | train_nll -1.50366 | train_kl 9.29854 | val_dev 1.11352
+epoch  610 | train_nll -1.50583 | train_kl 9.36369 | val_dev 1.11357
+epoch  615 | train_nll -1.50357 | train_kl 9.38221 | val_dev 1.12338
+epoch  620 | train_nll -1.51533 | train_kl 9.27498 | val_dev 1.09300
+epoch  625 | train_nll -1.51274 | train_kl 9.27457 | val_dev 1.13868
+epoch  630 | train_nll -1.51691 | train_kl 9.28452 | val_dev 1.12055
+epoch  635 | train_nll -1.51513 | train_kl 9.35097 | val_dev 1.09830
+epoch  640 | train_nll -1.51769 | train_kl 9.34283 | val_dev 1.10379
+epoch  645 | train_nll -1.51630 | train_kl 9.38457 | val_dev 1.12573
+epoch  650 | train_nll -1.52293 | train_kl 9.36727 | val_dev 1.10532
+epoch  655 | train_nll -1.52366 | train_kl 9.37611 | val_dev 1.10871
+epoch  660 | train_nll -1.52399 | train_kl 9.37262 | val_dev 1.14638
+epoch  665 | train_nll -1.52489 | train_kl 9.42997 | val_dev 1.10614
+epoch  670 | train_nll -1.51683 | train_kl 9.40753 | val_dev 1.14039
+epoch  675 | train_nll -1.51430 | train_kl 9.46881 | val_dev 1.14225
+epoch  680 | train_nll -1.52240 | train_kl 9.51812 | val_dev 1.14270
+epoch  685 | train_nll -1.51664 | train_kl 9.48872 | val_dev 1.16250
+epoch  690 | train_nll -1.51770 | train_kl 9.50782 | val_dev 1.17263
+epoch  695 | train_nll -1.52643 | train_kl 9.56684 | val_dev 1.14138
+epoch  700 | train_nll -1.52042 | train_kl 9.58265 | val_dev 1.16788
+epoch  705 | train_nll -1.51889 | train_kl 9.51156 | val_dev 1.16066
+epoch  710 | train_nll -1.51935 | train_kl 9.50512 | val_dev 1.12353
+epoch  715 | train_nll -1.51548 | train_kl 9.50119 | val_dev 1.15643
+epoch  720 | train_nll -1.53379 | train_kl 9.47778 | val_dev 1.15290
+epoch  725 | train_nll -1.53772 | train_kl 9.47454 | val_dev 1.16864
+epoch  730 | train_nll -1.53292 | train_kl 9.54860 | val_dev 1.15671
+epoch  735 | train_nll -1.53743 | train_kl 9.57156 | val_dev 1.18122
+epoch  740 | train_nll -1.53800 | train_kl 9.57791 | val_dev 1.19704
+epoch  745 | train_nll -1.53545 | train_kl 9.58690 | val_dev 1.16586
+epoch  750 | train_nll -1.53465 | train_kl 9.60684 | val_dev 1.18279
+epoch  755 | train_nll -1.52518 | train_kl 9.60772 | val_dev 1.18233
+epoch  760 | train_nll -1.52575 | train_kl 9.63874 | val_dev 1.19280
+epoch  765 | train_nll -1.53835 | train_kl 9.60177 | val_dev 1.16355
+epoch  770 | train_nll -1.54635 | train_kl 9.62106 | val_dev 1.19180
+epoch  775 | train_nll -1.53969 | train_kl 9.63886 | val_dev 1.20754
+epoch  780 | train_nll -1.54375 | train_kl 9.67776 | val_dev 1.20749
+epoch  785 | train_nll -1.54717 | train_kl 9.68251 | val_dev 1.19340
+epoch  790 | train_nll -1.55005 | train_kl 9.69307 | val_dev 1.19669
+epoch  795 | train_nll -1.54406 | train_kl 9.72653 | val_dev 1.20854
+epoch  800 | train_nll -1.54649 | train_kl 9.69366 | val_dev 1.21762
+epoch  805 | train_nll -1.54113 | train_kl 9.71928 | val_dev 1.20430
+epoch  810 | train_nll -1.54177 | train_kl 9.68911 | val_dev 1.24004
+epoch  815 | train_nll -1.54941 | train_kl 9.71078 | val_dev 1.19759
+epoch  820 | train_nll -1.54119 | train_kl 9.77431 | val_dev 1.23492
+epoch  825 | train_nll -1.54388 | train_kl 9.75875 | val_dev 1.25454
+epoch  830 | train_nll -1.54768 | train_kl 9.79621 | val_dev 1.21788
+epoch  835 | train_nll -1.54512 | train_kl 9.77821 | val_dev 1.23052
+epoch  840 | train_nll -1.54874 | train_kl 9.77508 | val_dev 1.21330
+epoch  845 | train_nll -1.53481 | train_kl 9.71017 | val_dev 1.25180
+epoch  850 | train_nll -1.54644 | train_kl 9.73434 | val_dev 1.24334
+epoch  855 | train_nll -1.55797 | train_kl 9.75563 | val_dev 1.25766
+epoch  860 | train_nll -1.56293 | train_kl 9.70315 | val_dev 1.24812
+epoch  865 | train_nll -1.56135 | train_kl 9.78864 | val_dev 1.29267
+epoch  870 | train_nll -1.53777 | train_kl 9.85893 | val_dev 1.30321
+epoch  875 | train_nll -1.54287 | train_kl 9.86175 | val_dev 1.26149
+epoch  880 | train_nll -1.55156 | train_kl 9.84871 | val_dev 1.21366
+epoch  885 | train_nll -1.56064 | train_kl 9.84015 | val_dev 1.27397
+epoch  890 | train_nll -1.56181 | train_kl 9.88210 | val_dev 1.23942
+epoch  895 | train_nll -1.56055 | train_kl 9.92031 | val_dev 1.29502
+epoch  900 | train_nll -1.55482 | train_kl 9.86766 | val_dev 1.26284
+epoch  905 | train_nll -1.55874 | train_kl 9.84590 | val_dev 1.27607
+epoch  910 | train_nll -1.55228 | train_kl 9.78875 | val_dev 1.31422
+epoch  915 | train_nll -1.56013 | train_kl 9.89561 | val_dev 1.22303
+epoch  920 | train_nll -1.55807 | train_kl 9.93825 | val_dev 1.28893
+epoch  925 | train_nll -1.55840 | train_kl 9.93992 | val_dev 1.32068
+epoch  930 | train_nll -1.56034 | train_kl 9.94398 | val_dev 1.33182
+epoch  935 | train_nll -1.56075 | train_kl 9.97928 | val_dev 1.26887
+epoch  940 | train_nll -1.54640 | train_kl 9.90382 | val_dev 1.29837
+epoch  945 | train_nll -1.54875 | train_kl 9.91352 | val_dev 1.33871
+epoch  950 | train_nll -1.54905 | train_kl 9.92861 | val_dev 1.32477
+epoch  955 | train_nll -1.55988 | train_kl 9.85510 | val_dev 1.28043
+epoch  960 | train_nll -1.56080 | train_kl 9.91416 | val_dev 1.27665
+epoch  965 | train_nll -1.56663 | train_kl 9.94820 | val_dev 1.32296
+epoch  970 | train_nll -1.57228 | train_kl 9.95280 | val_dev 1.33346
+epoch  975 | train_nll -1.57300 | train_kl 9.96854 | val_dev 1.33767
+epoch  980 | train_nll -1.56189 | train_kl 9.98574 | val_dev 1.33957
+epoch  985 | train_nll -1.56247 | train_kl 10.01751 | val_dev 1.34151
+epoch  990 | train_nll -1.56857 | train_kl 9.98933 | val_dev 1.35366
+epoch  995 | train_nll -1.56819 | train_kl 9.96305 | val_dev 1.39225
+epoch 1000 | train_nll -1.57340 | train_kl 9.98767 | val_dev 1.37085
+epoch 1005 | train_nll -1.56914 | train_kl 9.95443 | val_dev 1.38078
+epoch 1010 | train_nll -1.56621 | train_kl 10.01175 | val_dev 1.36329
+epoch 1015 | train_nll -1.56920 | train_kl 10.02638 | val_dev 1.39343
+epoch 1020 | train_nll -1.56902 | train_kl 9.99159 | val_dev 1.36373
+epoch 1025 | train_nll -1.56949 | train_kl 9.94167 | val_dev 1.36778
+epoch 1030 | train_nll -1.56704 | train_kl 9.99079 | val_dev 1.40575
+epoch 1035 | train_nll -1.55034 | train_kl 10.03553 | val_dev 1.42834
+epoch 1040 | train_nll -1.55004 | train_kl 10.00567 | val_dev 1.31652
+epoch 1045 | train_nll -1.56005 | train_kl 10.01007 | val_dev 1.37843
+epoch 1050 | train_nll -1.57337 | train_kl 9.97650 | val_dev 1.37280
+epoch 1055 | train_nll -1.57334 | train_kl 9.97662 | val_dev 1.38425
+epoch 1060 | train_nll -1.57411 | train_kl 10.03234 | val_dev 1.39990
+epoch 1065 | train_nll -1.57819 | train_kl 10.06574 | val_dev 1.41172
+epoch 1070 | train_nll -1.58241 | train_kl 10.01397 | val_dev 1.41203
+epoch 1075 | train_nll -1.57634 | train_kl 10.08607 | val_dev 1.44322
+epoch 1080 | train_nll -1.57492 | train_kl 10.12972 | val_dev 1.43981
+epoch 1085 | train_nll -1.57652 | train_kl 10.12276 | val_dev 1.44150
+epoch 1090 | train_nll -1.57795 | train_kl 10.09193 | val_dev 1.45314
+epoch 1095 | train_nll -1.58040 | train_kl 10.09312 | val_dev 1.45744
+epoch 1100 | train_nll -1.58031 | train_kl 10.11118 | val_dev 1.44889
+epoch 1105 | train_nll -1.57604 | train_kl 10.09661 | val_dev 1.42471
+epoch 1110 | train_nll -1.56977 | train_kl 10.12246 | val_dev 1.47846
+epoch 1115 | train_nll -1.56832 | train_kl 10.14024 | val_dev 1.44143
+epoch 1120 | train_nll -1.57606 | train_kl 10.14584 | val_dev 1.41815
+epoch 1125 | train_nll -1.58262 | train_kl 10.09702 | val_dev 1.42583
+epoch 1130 | train_nll -1.58726 | train_kl 10.12574 | val_dev 1.43668
+epoch 1135 | train_nll -1.58590 | train_kl 10.16239 | val_dev 1.46604
+
+[中斷] epoch 1137 收到 Ctrl-C，用目前最佳模型存 checkpoint 跟 latent
+
+最佳 checkpoint：epoch 160，val_dev 0.74932
+test_dev 0.72186（123 個 patch，全程未參與訓練與選 checkpoint）
+done

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/.."))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../../.."))
 from cfg import VERSION  # noqa: E402
-from config.dataset import result  # noqa: E402
+from common.dataset import result  # noqa: E402
 
 LATENTS = result(VERSION, "latents.npz")
 OUT = result(VERSION, "latent_plot_plain.png")

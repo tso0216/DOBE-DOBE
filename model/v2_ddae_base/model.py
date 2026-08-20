@@ -9,41 +9,41 @@ from umap.umap_ import find_ab_params, fuzzy_simplicial_set
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import HIDDEN
-from config.dataset import N_CAT
+from common.dataset import N_CAT
 
 
 class AE(nn.Module):
-    def __init__(self, latent_dim=2):
+    def __init__(self, latent_dim=2, hidden=HIDDEN):
         super().__init__()
         self.encoder = nn.Sequential(
-            nn.Linear(N_CAT, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(N_CAT, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, latent_dim),   # latent 前不接 norm/激活
+            nn.Linear(hidden, latent_dim),   # latent 前不接 norm/激活
         )
         self.decoder = nn.Sequential(
-            nn.Linear(latent_dim, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(latent_dim, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, HIDDEN),
-            nn.LayerNorm(HIDDEN),
+            nn.Linear(hidden, hidden),
+            nn.LayerNorm(hidden),
             nn.GELU(),
-            nn.Linear(HIDDEN, N_CAT),   # 輸出是 log λ，不接 norm
+            nn.Linear(hidden, N_CAT),   # 輸出是 log λ，不接 norm
         )
 
     def encode(self, x):

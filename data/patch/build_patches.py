@@ -1,12 +1,8 @@
 """把來源 POI 切成以規則格點為中心的鄰域 patch，存成稀疏點列表。
 
-來源資料集、類別表與幾何參數都在 config/dataset.py。
+類別表與幾何參數都在 common/dataset.py。
 不直接存 40x40 矩陣，因為 patch 要在訓練時做隨機旋轉再 binning，
 存相對座標(公尺)才能正確旋轉。
-
-會另外存一個 config_hash 欄位，記錄產生當下 config/dataset.py 的參數指紋，
-train.py 開始前會呼叫 config.dataset.ensure_patches() 檢查這個指紋，
-跟目前設定對不上就自動重跑這支腳本，不用手動先跑一次 build_patches。
 """
 
 import os
@@ -18,15 +14,14 @@ from pyproj import Transformer
 from scipy.spatial import cKDTree
 
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
-from config.dataset import (CAT_COL, CATEGORIES, CENTER_STEP, CRS,  # noqa: E402
-                            CSV, DATASET, MIN_POI, PATCHES, HALF_WIDTH,
-                            patch_fingerprint)
+from common.dataset import (CAT_COL, CATEGORIES, CENTER_STEP, CRS,  # noqa: E402
+                            CSV, MIN_POI, PATCHES, HALF_WIDTH)
 
 OUT = PATCHES
 
 
 def build():
-    print(f"資料集 {DATASET}：{CSV}")
+    print(f"資料集：{CSV}")
     df = pd.read_csv(CSV)
     transformer = Transformer.from_crs("EPSG:4326", CRS, always_xy=True)
     x, y = transformer.transform(df["lon"].values, df["lat"].values)
@@ -67,7 +62,6 @@ def build():
         center_lat=np.asarray(clat, dtype=np.float32),
         center_lon=np.asarray(clon, dtype=np.float32),
         n_poi=counts,
-        config_hash=patch_fingerprint(),
     )
 
     print(f"patch {len(centers)}，總點數 {len(idx)}")

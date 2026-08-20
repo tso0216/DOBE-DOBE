@@ -9,7 +9,7 @@ from umap.umap_ import find_ab_params, fuzzy_simplicial_set
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import HIDDEN
-from config.dataset import N_CAT
+from common.dataset import N_CAT
 
 
 class ResidualLinear(nn.Module):

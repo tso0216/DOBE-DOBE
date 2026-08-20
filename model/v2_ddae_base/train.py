@@ -11,7 +11,7 @@ from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
                  VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
 from dataset import Patches, corrupt, make_split
 from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
-from config.dataset import ensure_patches, PATCHES
+from common.dataset import PATCHES
 
 
 def evaluate(model, data, idx):
@@ -110,7 +110,6 @@ def main():
         "WARMUP_EPOCHS": WARMUP_EPOCHS,
     })
 
-    ensure_patches()
     data = Patches(PATCHES)
     train_idx, val_idx, test_idx = make_split(data.lat, data.lon, seed=SEED)
     log(f"split：train {len(train_idx)} / val {len(val_idx)} / test {len(test_idx)}\n")

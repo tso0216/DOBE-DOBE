@@ -12,7 +12,7 @@ from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
                  open_log)
 from dataset import Patches, corrupt
 from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
-from config.dataset import ensure_patches, PATCHES
+from common.dataset import PATCHES
 
 
 def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
@@ -20,7 +20,7 @@ def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
     err 是 (N,) 的 Poisson deviance，兩者都用乾淨輸入、eval 模式算出來。
     data 是 Patches；train_idx / val_idx 是 patch 編號的 LongTensor；
     edge_i / edge_j / edge_w / a / b 是 build_fsce_graph() 的回傳值。
-    log 是 config.train_log.open_log() 回傳的函式，訓練過程的訊息都灌進去。
+    log 是 common.train_log.open_log() 回傳的函式，訓練過程的訊息都灌進去。
     訓練中按 Ctrl-C 會提前跳出迴圈，用當下的模型狀態存 checkpoint 跟 latent，
     不會整個丟掉重來。
     """
@@ -113,7 +113,6 @@ def main():
         "NOISE_P": NOISE_P, "NOISE_MODE": NOISE_MODE,
     })
 
-    ensure_patches()
     data = Patches(PATCHES)
     log(f"{data.n} 個 patch，device={device}，"
         f"噪聲 {NOISE_MODE} p={NOISE_P}")

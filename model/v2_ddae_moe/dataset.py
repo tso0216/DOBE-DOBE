@@ -5,7 +5,7 @@ import numpy as np
 import torch
 
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
-from config.dataset import N_CAT # noqa: E402,F401
+from common.dataset import N_CAT # noqa: E402,F401
 
 
 class Patches:

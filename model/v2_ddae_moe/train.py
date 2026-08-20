@@ -12,7 +12,7 @@ from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC,
                  WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
 from dataset import Patches, corrupt, make_split
 from model import (AE, build_fsce_graph, fsce_loss,poisson_deviance, poisson_nll)
-from config.dataset import PATCHES
+from common.dataset import PATCHES
 
 
 def evaluate(model, data, idx):
