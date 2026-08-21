@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/.."))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../../.."))
-from cfg import LATENT_DIM, VERSION  # noqa: E402
+from cfg import CKPT, LATENT_DIM, VERSION  # noqa: E402
 from dataset import Patches  # noqa: E402
 from model import AE, poisson_deviance, poisson_nll  # noqa: E402
 from common.dataset import CAT_COLORS, CAT_ZH, N_CAT, PATCHES, result  # noqa: E402
@@ -33,7 +33,7 @@ def main():
     assert 0 <= n < data.n, f"--n 要在 0~{data.n - 1}"
 
     model = AE(LATENT_DIM)
-    model.load_state_dict(torch.load(result(VERSION, "ae.pt"), map_location="cpu"))
+    model.load_state_dict(torch.load(CKPT, map_location="cpu"))
     model.eval()
 
     idx = torch.tensor([n])

@@ -17,8 +17,8 @@ ratios = counts / counts.sum() * 100
 
 fig, ax = plt.subplots(figsize=(8, 6))
 bars = ax.barh(counts.index[::-1], ratios[::-1])
-ax.set_xlabel('比例 (%)')
-ax.set_title(f'POI 類別比例 (n={len(df)})')
+ax.set_xlabel('percentage (%)')
+ax.set_title(f'POI category percentage ')
 
 for bar, ratio, count in zip(bars, ratios[::-1], counts[::-1]):
     ax.text(bar.get_width() + 0.3, bar.get_y() + bar.get_height() / 2,

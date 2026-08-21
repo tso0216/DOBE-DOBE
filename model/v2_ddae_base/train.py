@@ -6,9 +6,10 @@ import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
-from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
-                 LATENT_DIM, LR, LR_MIN, N_NEIGHBORS, NOISE_MODE, NOISE_P, OUT,
-                 SEED, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
+from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, FSCE, GRAPH_METRIC,
+                 LAMBDA_FSCE, LATENT_DIM, LR, LR_MIN, N_NEIGHBORS, NOISE_MODE,
+                 NOISE_P, OUT, SEED, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY,
+                 device, open_log)
 from dataset import Patches, corrupt
 from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
 from common.dataset import PATCHES, make_split
@@ -30,7 +31,7 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
     model = AE(LATENT_DIM).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=EPOCHS, eta_min=LR_MIN)
-    n_edges = len(edge_i)
+    n_edges = len(edge_i) if FSCE else 0
     n_train = len(train_idx)
     best_dev, best_epoch, best_state = float("inf"), -1, None
 
@@ -49,36 +50,41 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
                 _, log_lam = model(x_in)
                 recon = poisson_nll(log_lam, x).mean()   # 目標永遠是乾淨的 x
 
-                eg = torch.randint(0, n_edges, (EDGE_BATCH,), generator=g)
-                pi, pj, pw = edge_i[eg], edge_j[eg], edge_w[eg]
-                # 負樣本只從 train 抽，val/test 的 patch 不能進入任何梯度
-                ni = train_idx[torch.randint(0, n_train, (EDGE_BATCH,), generator=g)]
-                nj = train_idx[torch.randint(0, n_train, (EDGE_BATCH,), generator=g)]
-                xi = corrupt(data.agg(torch.cat([pi, ni])), NOISE_P,
-                             NOISE_MODE, generator=g).to(device)
-                xj = corrupt(data.agg(torch.cat([pj, nj])), NOISE_P,
-                             NOISE_MODE, generator=g).to(device)
-                w = torch.cat([pw, torch.zeros(EDGE_BATCH)]).to(device)
-                zi, zj = model.encode(xi), model.encode(xj)
-                fsce = fsce_loss(zi, zj, w, a, b).mean()
+                if FSCE:
+                    eg = torch.randint(0, n_edges, (EDGE_BATCH,), generator=g)
+                    pi, pj, pw = edge_i[eg], edge_j[eg], edge_w[eg]
+                    # 負樣本只從 train 抽，val/test 的 patch 不能進入任何梯度
+                    ni = train_idx[torch.randint(0, n_train, (EDGE_BATCH,), generator=g)]
+                    nj = train_idx[torch.randint(0, n_train, (EDGE_BATCH,), generator=g)]
+                    xi = corrupt(data.agg(torch.cat([pi, ni])), NOISE_P,
+                                 NOISE_MODE, generator=g).to(device)
+                    xj = corrupt(data.agg(torch.cat([pj, nj])), NOISE_P,
+                                 NOISE_MODE, generator=g).to(device)
+                    w = torch.cat([pw, torch.zeros(EDGE_BATCH)]).to(device)
+                    zi, zj = model.encode(xi), model.encode(xj)
+                    fsce = fsce_loss(zi, zj, w, a, b).mean()
+                    loss = recon + lam_t * fsce
+                    total_fsce += fsce.item() * len(batch)
+                else:
+                    loss = recon
 
-                loss = recon + lam_t * fsce
                 opt.zero_grad()
                 loss.backward()
                 opt.step()
                 total += recon.item() * len(batch)
-                total_fsce += fsce.item() * len(batch)
 
             sched.step()
 
             if (epoch + 1) % 5 == 0 or epoch == 0:
                 dev = evaluate(model, data, val_idx)   # 驗證不加噪
+                test_dev = evaluate(model, data, test_idx)
                 if dev < best_dev:
                     best_dev, best_epoch = dev, epoch + 1
                     best_state = {k: v.detach().cpu().clone()
                                   for k, v in model.state_dict().items()}
                 log(f"epoch {epoch + 1:4d} train_nll {total / len(perm):.5f} | "
-                    f"train_fsce {total_fsce / len(perm):.5f} | val_dev {dev:.5f}")
+                    f"train_fsce {total_fsce / len(perm):.5f} | val_dev {dev:.5f} | "
+                    f"test_dev {test_dev:.5f}")
         except KeyboardInterrupt:
             log(f"\n[中斷] epoch {epoch + 1} 收到 Ctrl-C，用目前最佳模型存 checkpoint 跟 latent")
             break
@@ -111,6 +117,7 @@ def main():
         "SEED": SEED,
         "NOISE_P": NOISE_P,
         "NOISE_MODE": NOISE_MODE,
+        "FSCE": FSCE,
         "LAMBDA_FSCE": LAMBDA_FSCE,
         "WARMUP_EPOCHS": WARMUP_EPOCHS,
     })
@@ -119,11 +126,14 @@ def main():
     train_idx, val_idx, test_idx = make_split(data.lat, data.lon, seed=SEED)
     log(f"split：train {len(train_idx)} / val {len(val_idx)} / test {len(test_idx)}\n")
 
-    # fuzzy graph 只用 train 建，邊的 index 再 map 回全域，val/test 不進梯度
-    x_tr = np.log1p(data.agg(train_idx).numpy())
-    ei, ej, edge_w, a, b = build_fsce_graph(
-        x_tr, n_neighbors=N_NEIGHBORS, metric=GRAPH_METRIC)
-    edge_i, edge_j = train_idx[ei], train_idx[ej]
+    if FSCE:
+        # fuzzy graph 只用 train 建，邊的 index 再 map 回全域，val/test 不進梯度
+        x_tr = np.log1p(data.agg(train_idx).numpy())
+        ei, ej, edge_w, a, b = build_fsce_graph(
+            x_tr, n_neighbors=N_NEIGHBORS, metric=GRAPH_METRIC)
+        edge_i, edge_j = train_idx[ei], train_idx[ej]
+    else:
+        edge_i, edge_j, edge_w, a, b = None, None, None, None, None
 
     z, err = run(data, train_idx, val_idx, test_idx,
                  edge_i, edge_j, edge_w, a, b, log)

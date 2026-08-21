@@ -32,8 +32,8 @@ weights = np.ones_like(sim_dist) / len(sim_dist)
 ax.hist(sim_dist, bins=50, weights=weights, color='skyblue', edgecolor='black')
 ax.yaxis.set_major_formatter(PercentFormatter(1))
 
-ax.set_title(f'模型輸入 patch 間 cosine 相似度分佈 (n={n}, pairs={len(sim_dist)})')
-ax.set_xlabel('Cosine 相似度')
+ax.set_title(f"model's input cosine similarity")
+ax.set_xlabel('Cosine similarity')
 ax.set_ylabel('佔比')
 
 plt.tight_layout()

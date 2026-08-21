@@ -58,9 +58,9 @@ PATCH_PARAMS = {
 
 
 def result(version, name):
-    d = os.path.join(ROOT, "model", version, "result")
-    os.makedirs(d, exist_ok=True)
-    return os.path.join(d, name)
+    path = os.path.join(ROOT, "model", version, "result", name)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    return path
 
 
 

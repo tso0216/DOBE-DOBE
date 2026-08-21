@@ -24,9 +24,9 @@ for cat in categories:
     sub = df[df['category'] == cat]
     ax.scatter(sub['lon'], sub['lat'], s=1, alpha=0.3, label=cat)
 
-ax.set_xlabel('經度')
-ax.set_ylabel('緯度')
-ax.set_title(f'POI 空間分佈 (n={len(df)})')
+ax.set_xlabel('longitude')
+ax.set_ylabel('latitude')
+ax.set_title(f'POI spatial distribution')
 ax.set_aspect('equal')
 ax.legend(markerscale=3, fontsize=8, loc='upper left', bbox_to_anchor=(1.02, 1))
 plt.tight_layout()

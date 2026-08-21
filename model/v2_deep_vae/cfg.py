@@ -9,18 +9,18 @@ from common.train_log import open_log  # noqa: E402
 
 VERSION = "v2_deep_vae"
 OUT = result(VERSION, "latents.npz")
-CKPT = result(VERSION, "ae.pt")
+SEED = int(os.environ.get("SEED", 0))
+CKPT = result(VERSION, f"model_weight/ae_seed{SEED}.pt")
 
-HIDDEN = 64
-LATENT_DIM = 2
+HIDDEN = int(os.environ.get("HIDDEN", 64))
+LATENT_DIM = int(os.environ.get("LATENT_DIM", 2))
 
-EPOCHS = 300
-BATCH = 256
-LR = 1e-3
-WEIGHT_DECAY = 1e-6
-SEED = 0
+EPOCHS = int(os.environ.get("EPOCHS", 300))
+BATCH = int(os.environ.get("BATCH", 256))
+LR = float(os.environ.get("LR", 1e-3))
+WEIGHT_DECAY = float(os.environ.get("WEIGHT_DECAY", 1e-6))
 
-LAMBDA_KL = 1e-3          # KL 散度的固定權重
+LAMBDA_KL = float(os.environ.get("LAMBDA_KL", 1e-3))          # KL 散度的固定權重
 
 device = ("mps" if torch.backends.mps.is_available()
           else "cuda" if torch.cuda.is_available() else "cpu")
