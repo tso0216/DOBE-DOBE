@@ -17,10 +17,10 @@ OUT = result(VERSION, "latents.npz")
 SEED = int(os.environ.get("SEED", 1))
 CKPT = result(VERSION, f"model_weight/ae_seed{SEED}.pt")
 
-HIDDEN = int(os.environ.get("HIDDEN", 32))
+HIDDEN = int(os.environ.get("HIDDEN", 64))
 LATENT_DIM = int(os.environ.get("LATENT_DIM", 2))
 
-EPOCHS = int(os.environ.get("EPOCHS", 1000))
+EPOCHS = int(os.environ.get("EPOCHS", 2000))
 BATCH = int(os.environ.get("BATCH", 256))
 LR = float(os.environ.get("LR", 1e-3))
 LR_MIN = float(os.environ.get("LR_MIN", 1e-3))             # cosine annealing 排程的下限
@@ -31,7 +31,7 @@ N_NEIGHBORS = int(os.environ.get("N_NEIGHBORS", 15))         # 建高維 fuzzy g
 GRAPH_METRIC = os.environ.get("GRAPH_METRIC", "euclidean")  # 在 log1p 上算，組成與總量都敏感——跟 Poisson NLL 的要求一致
 EDGE_BATCH = int(os.environ.get("EDGE_BATCH", 256))          # 每個 step 抽的正樣本邊數，負樣本抽等量
 LAMBDA_FSCE = float(os.environ.get("LAMBDA_FSCE", 0.5))        # FSCE loss 的權重，warm-up 結束後的最終值
-WARMUP_EPOCHS = int(os.environ.get("WARMUP_EPOCHS", 1))       # lambda 從 0 線性升到 LAMBDA_FSCE 所花的 epoch 數
+WARMUP_EPOCHS = int(os.environ.get("WARMUP_EPOCHS", 200))       # lambda 從 0 線性升到 LAMBDA_FSCE 所花的 epoch 數
 
 NOISE_P = float(os.environ.get("NOISE_P", 0.3))             # 破壞強度：thinning 是每個 POI 被丟掉的機率，mask 是整類被抹成 0 的機率
 NOISE_MODE = os.environ.get("NOISE_MODE", "thinning")   # "thinning"（逐 POI 丟）或 "mask"（整類歸零）

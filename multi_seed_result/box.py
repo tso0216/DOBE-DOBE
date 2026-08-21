@@ -25,7 +25,7 @@ def main():
         "mean": row["mean"],
     } for _, row in df.iterrows()]
 
-    fig, ax = plt.subplots(figsize=(10, 4.5))
+    fig, ax = plt.subplots(figsize=(15, 4.5))
     box = ax.bxp(stats, showfliers=False, showmeans=plot_mean, meanline=plot_mean)
     ax.set_xlabel("label")
     ax.set_ylabel("test_dev")

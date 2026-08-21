@@ -17,7 +17,7 @@ MODELS = {
 TEST_DEV_RE = re.compile(r"test_dev ([0-9.eE+-]+)（")
 
 PARAMETER = {
-    "LAMBDA_FSCE": [0.005,0.01,0.05,0.25,0.75],
+    "LAMBDA_FSCE": [0.01,0.05,0.1,0.5,1],
     # "HIDDEN": [16, 32, 64],
 }
 
@@ -49,15 +49,12 @@ def run_multi_seed(version, amount, overrides=None, label=""):
     scores = []
     for seed in range(amount):
         score = run_seed(version, seed, overrides)
-        print(f"{label}seed {seed}: test_dev {score:.5f}")
+        print(f"seed {seed}: test_dev {score:.5f}")
         scores.append(score)
 
     scores = np.array(scores)
     q1, med, q3 = np.percentile(scores, [25, 50, 75])
-    print(f"{label}mean {scores.mean():.5f} | std {scores.std():.5f} | "
-          f"max {scores.max():.5f} | min {scores.min():.5f} | "
-          f"q1 {q1:.5f} | median {med:.5f} | q3 {q3:.5f}")
-    print(f"{scores.mean():.5f},{scores.std():.5f},{scores.max():.5f},{scores.min():.5f},"
+    print(f"{label},{scores.mean():.5f},{scores.std():.5f},{scores.max():.5f},{scores.min():.5f},"
           f"{q1:.5f},{med:.5f},{q3:.5f}\n")
 
 
