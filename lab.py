@@ -8,17 +8,22 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button, RadioButtons
 from scipy.spatial import cKDTree
 
-ROOT = os.path.abspath(f"{os.path.dirname(__file__)}/..")
+ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, ROOT)
 from common.dataset import (CAT_COLORS, CAT_ZH, CELL, GRID, N_CAT,  # noqa: E402
                             PATCHES, HALF_WIDTH, result)
 
-MODEL_VERSION = "v2_ddae_fsce"
+
+
+
+MODEL_VERSION = "ddae"
 MODELS = {
-    "v2_ae": dict(latent_dim=2, v2=True),
-    "v2_vae": dict(latent_dim=2, v2=True, vae=True),
-    "v2_ddae_fsce": dict(latent_dim=2, v2=True),
+    "ae": dict(latent_dim=2, dir="v2_deep_ae", pt="ae_fsce.pt"),
+    "vae": dict(latent_dim=2, dir="v2_deep_vae", pt="vae.pt", vae=True),
+    "ddae": dict(latent_dim=2, dir="v2_ddae_base", pt="ae.pt"),
 }
+CKPT = ''
+
 cfg = MODELS[MODEL_VERSION]
 PATCH_IDX = None     # None = 從 robust 距離最小（最典型）的 patch 起手；或填 patch 編號
 BATCH_N = 50         # 「+N 隨機」一次灑幾顆
@@ -27,16 +32,8 @@ ZOOM_PCT = (1, 99)   # latent 圖初始視野
 SEED = 0
 DOT = 3.0
 
-sys.path.insert(0, os.path.join(ROOT, "model", MODEL_VERSION))
-if cfg.get("v2"):
-    if cfg.get("perceiver"):
-        from ae import PerceiverAE as ModelClass  # type: ignore # noqa: E402
-    elif cfg.get("vae"):
-        from ae import VAE as ModelClass  # type: ignore # noqa: E402
-    else:
-        from ae import MLPAE as ModelClass  # type: ignore # noqa: E402
-else:
-    from ae import ConvAE as ModelClass  # type: ignore # noqa: E402
+sys.path.insert(0, os.path.join(ROOT, "model", cfg["dir"]))
+from model import AE as ModelClass  # type: ignore # noqa: E402
 
 mpl.rcParams["font.family"] = ["Heiti TC"]
 mpl.rcParams["axes.unicode_minus"] = False
@@ -49,16 +46,7 @@ def robust_distance(z, ref):
     return np.linalg.norm((z - med) / mad, axis=-1)
 
 
-def render(dx, dy, cat):
-    """把一組點列表 binning 成 (1,N_CAT,40,40) 的輸入矩陣。"""
-    ix = np.clip(np.floor(dx / CELL + GRID / 2), 0, GRID - 1).astype(np.int64)
-    iy = np.clip(np.floor(dy / CELL + GRID / 2), 0, GRID - 1).astype(np.int64)
-    flat = (cat.astype(np.int64) * GRID + iy) * GRID + ix
-    counts = np.bincount(flat, minlength=N_CAT * GRID * GRID)
-    counts = counts.reshape(1, N_CAT, GRID, GRID).astype(np.float32)
-    if cfg.get("log1p", True):
-        counts = np.log1p(counts)
-    return torch.from_numpy(counts)
+
 
 
 def sample_disk(rng, k):
@@ -87,15 +75,15 @@ def fit_to2d(z_all, latent_dim):
 
 cfg = MODELS[MODEL_VERSION]
 p = np.load(PATCHES)
-d = np.load(result(MODEL_VERSION, "latents.npz"))
+d = np.load(result(cfg["dir"], "latents.npz"))
 z_all, n_poi = d["z"], d["n_poi"]
 assert len(z_all) == len(p["n_poi"]), (
     f"latents({len(z_all)}) 與 patches({len(p['n_poi'])}) 的 patch 數不一致，"
-    f"請先重跑 model/{MODEL_VERSION}/train.py")
+    f"請先重跑 model/{cfg['dir']}/train.py")
 
 model = ModelClass(cfg["latent_dim"])
-model.load_state_dict(torch.load(result(MODEL_VERSION, "ae.pt"),
-                                 map_location="cpu"))
+ckpt_path = CKPT if CKPT else result(cfg["dir"], cfg["pt"])
+model.load_state_dict(torch.load(ckpt_path, map_location="cpu"))
 model.eval()
 
 dist_all = robust_distance(z_all, z_all)
@@ -151,22 +139,10 @@ def encode_current():
     cat = np.concatenate([cat0] + [np.full(len(b[0]), b[2], dtype=cat0.dtype)
                                    for b in state["added"]])
     with torch.no_grad():
-        if cfg.get("v2"):
-            if cfg.get("perceiver"):
-                T = len(cat)
-                tok = torch.from_numpy(cat).unsqueeze(0).long()
-                pad_mask = torch.zeros(1, T, dtype=torch.bool)
-                if T == 0:
-                    tok = torch.zeros(1, 1, dtype=torch.long)
-                    pad_mask = torch.ones(1, 1, dtype=torch.bool)
-                z, _ = model(tok, pad_mask)
-            else:
-                counts = np.bincount(cat, minlength=N_CAT)
-                x = torch.from_numpy(counts).unsqueeze(0).float()
-                out = model(x)
-                z = out[0] if not cfg.get("vae") else out[2]
-        else:
-            z, _ = model(render(dx, dy, cat))
+        counts = np.bincount(cat, minlength=N_CAT)
+        x = torch.from_numpy(counts).unsqueeze(0).float()
+        out = model(x)
+        z = out[0] if not cfg.get("vae") else out[2]
     return z[0].numpy()
 
 
