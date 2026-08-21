@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="以二維 latent 探索東京 POI 組成與加入 POI 後的模型反應。">
+    <title>{% block title %}Tokyo POI Latent Lab{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% block content %}{% endblock %}
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
