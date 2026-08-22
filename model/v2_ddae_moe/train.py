@@ -7,23 +7,25 @@ import torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC,
-                 LAMBDA_FSCE, LAMBDA_MOE, LATENT_DIM, LR, N_EXPERTS,
+                 LAMBDA_FSCE, LAMBDA_MOE, LATENT_DIM, LR, METRIC, N_EXPERTS,
                  N_NEIGHBORS, NOISE_P, OUT, SEED, TOP_K, VERSION,
                  WARMUP_EPOCHS, WEIGHT_DECAY, device, open_log)
 from dataset import Patches, corrupt, make_split
-from model import (AE, build_fsce_graph, fsce_loss,poisson_deviance, poisson_nll)
+from model import (AE, METRICS, build_fsce_graph, fsce_loss, poisson_nll)
 from common.dataset import PATCHES
+
+metric_fn = METRICS[METRIC]
 
 
 def evaluate(model, data, idx):
-    """idx 是 patch 編號的 tensor，回傳這批 patch 的平均 deviance（不加噪）。"""
+    """idx 是 patch 編號的 tensor，回傳這批 patch 的平均 cfg.METRIC 指標（不加噪）。"""
     model.eval()
     out = []
     with torch.no_grad():
         for i in range(0, len(idx), BATCH):
             x = data.agg(idx[i:i + BATCH]).to(device)
             _, log_lam, _ = model(x)
-            out.append(poisson_deviance(log_lam, x))
+            out.append(metric_fn(log_lam, x))
     return torch.cat(out).mean().item()
 
 
@@ -33,7 +35,7 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
     opt = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     n_edges = len(edge_i)
     n_train = len(train_idx)
-    best_dev, best_epoch, best_state = float("inf"), -1, None
+    best_metric, best_epoch, best_state = float("inf"), -1, None
 
     for epoch in range(EPOCHS):
         try:
@@ -70,24 +72,24 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
                 total_moe += moe_aux.item() * len(batch)
 
             if (epoch + 1) % 5 == 0 or epoch == 0:
-                dev = evaluate(model, data, val_idx)   # 驗證不加噪
-                if dev < best_dev:
-                    best_dev, best_epoch = dev, epoch + 1
+                val_metric = evaluate(model, data, val_idx)   # 驗證不加噪
+                if val_metric < best_metric:
+                    best_metric, best_epoch = val_metric, epoch + 1
                     best_state = {k: v.detach().cpu().clone()
                                   for k, v in model.state_dict().items()}
                 log(f"epoch {epoch + 1:4d} | train_nll {total / len(perm):.5f} | "
                     f"train_fsce {total_fsce / len(perm):.5f} | "
-                    f"train_moe {total_moe / len(perm):.5f} | val_dev {dev:.5f}")
+                    f"train_moe {total_moe / len(perm):.5f} | val_{METRIC} {val_metric:.5f}")
         except KeyboardInterrupt:
             log(f"\n[中斷] epoch {epoch + 1} 收到 Ctrl-C，用目前最佳模型存 checkpoint 跟 latent")
             break
 
     if best_state is not None:   # 用 val 最好的那版，不是最後一版
         model.load_state_dict(best_state)
-        log(f"\n最佳 checkpoint：epoch {best_epoch}，val_dev {best_dev:.5f}")
+        log(f"\n最佳 checkpoint：epoch {best_epoch}，val_{METRIC} {best_metric:.5f}")
     torch.save(model.state_dict(), CKPT)
 
-    log(f"test_dev {evaluate(model, data, test_idx):.5f}"
+    log(f"test_{METRIC} {evaluate(model, data, test_idx):.5f}"
         f"（{len(test_idx)} 個 patch，全程未參與訓練與選 checkpoint）")
 
     model.eval()
@@ -98,7 +100,7 @@ def run(data, train_idx, val_idx, test_idx, edge_i, edge_j, edge_w, a, b, log):
             x = data.agg(idx).to(device)   # 推論不加噪
             z, log_lam, _ = model(x)
             zs.append(z.cpu())
-            errs.append(poisson_deviance(log_lam, x).cpu())
+            errs.append(metric_fn(log_lam, x).cpu())
     return torch.cat(zs).numpy(), torch.cat(errs).numpy()
 
 
@@ -106,6 +108,7 @@ def main():
     log = open_log(VERSION, {
         "EPOCHS": EPOCHS,
         "SEED": SEED,
+        "METRIC": METRIC,
         "NOISE_P": NOISE_P,
         "N_EXPERTS": N_EXPERTS, 
         "TOP_K": TOP_K,

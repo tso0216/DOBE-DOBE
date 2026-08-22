@@ -15,15 +15,16 @@ MODELS = {
 }
 
 TEST_DEV_RE = re.compile(r"test_dev ([0-9.eE+-]+)（")
+BEST_EPOCH_RE = re.compile(r"最佳 checkpoint：epoch (\d+)")
 
 PARAMETER = {
-    "LAMBDA_FSCE": [0.01,0.05,0.1,0.5,1],
+    "LR": [0.014,0.016],
     # "HIDDEN": [16, 32, 64],
 }
 
 
 def run_seed(version, seed, overrides=None):
-    """跑單一 seed 的 train.py，回傳最終 test_dev 數值。overrides 會蓋掉 cfg 對應的環境變數。"""
+    """跑單一 seed 的 train.py，回傳 (最終 test_dev 數值, 最佳 checkpoint 的 epoch，找不到為 None)。overrides 會蓋掉 cfg 對應的環境變數。"""
     env = os.environ.copy()
     env["SEED"] = str(seed)
     if overrides:
@@ -41,15 +42,18 @@ def run_seed(version, seed, overrides=None):
     matches = TEST_DEV_RE.findall(proc.stdout)
     if not matches:
         raise RuntimeError(f"seed {seed} 找不到 test_dev：\n{proc.stdout[-2000:]}")
-    return float(matches[-1])
+    epochs = BEST_EPOCH_RE.findall(proc.stdout)
+    best_epoch = int(epochs[-1]) if epochs else None
+    return float(matches[-1]), best_epoch
 
 
 def run_multi_seed(version, amount, overrides=None, label=""):
     """跑 amount 個 seed，印出並回傳 test_dev 的 mean/std/max/min/q1/mid/q3。"""
     scores = []
     for seed in range(amount):
-        score = run_seed(version, seed, overrides)
-        print(f"seed {seed}: test_dev {score:.5f}")
+        score, best_epoch = run_seed(version, seed, overrides)
+        epoch_txt = f"epoch {best_epoch}" if best_epoch is not None else "epoch ?"
+        print(f"seed {seed}: test_dev {score:.5f}（{epoch_txt}）")
         scores.append(score)
 
     scores = np.array(scores)
@@ -72,7 +76,7 @@ def main():
 
     for param, values in PARAMETER.items():
         for value in values:
-            run_multi_seed(version, args.amount, {param: value}, label=f"[{param}={value}] ")
+            run_multi_seed(version, args.amount, {param: value}, label=f"[{value}]")
 
 
 if __name__ == "__main__":

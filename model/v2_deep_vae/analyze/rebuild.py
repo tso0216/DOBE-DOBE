@@ -13,10 +13,12 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/.."))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../../.."))
-from cfg import CKPT, LATENT_DIM, VERSION  # noqa: E402
+from cfg import CKPT, LATENT_DIM, METRIC, VERSION  # noqa: E402
 from dataset import Patches  # noqa: E402
-from model import AE, poisson_deviance, poisson_nll  # noqa: E402
+from model import AE, METRICS, poisson_nll  # noqa: E402
 from common.dataset import CAT_COLORS, CAT_ZH, N_CAT, PATCHES, result  # noqa: E402
+
+metric_fn = METRICS[METRIC]
 
 mpl.rcParams["font.family"] = ["Heiti TC"]
 mpl.rcParams["axes.unicode_minus"] = False
@@ -41,16 +43,16 @@ def main():
         z, log_lam, _, _ = model(x)
     cnt = x[0].numpy()
     lam = torch.exp(log_lam)[0].numpy()
-    dev = poisson_deviance(log_lam, x).item()
+    mv = metric_fn(log_lam, x).item()
     nll = poisson_nll(log_lam, x).item()
 
     err = np.load(result(VERSION, "latents.npz"))["err"]
-    pct = (err < dev).mean() * 100
+    pct = (err < mv).mean() * 100
 
     print(f"patch {n}：POI {int(data.n_poi[n])}  "
           f"({float(data.lat[n]):.5f}, {float(data.lon[n]):.5f})")
     print(f"latent z = ({z[0, 0]:+.3f}, {z[0, 1]:+.3f})")
-    print(f"deviance = {dev:.6f}（全體中位數 {np.median(err):.6f}，"
+    print(f"{METRIC.upper()} = {mv:.6f}（全體中位數 {np.median(err):.6f}，"
           f"此 patch 排在第 {pct:.1f} 百分位）")
     print(f"NLL = {nll:.6f}（省略 log(y!) 常數項，可能為負）")
 
@@ -68,7 +70,7 @@ def main():
     ax.grid(alpha=0.15, linewidth=0.5, axis="y")
     for s in ax.spines.values():
         s.set_alpha(0.3)
-    ax.set_title(f"{VERSION} patch {n}（deviance {dev:.4f}，"
+    ax.set_title(f"{VERSION} patch {n}（{METRIC.upper()} {mv:.4f}，"
                  f"POI {int(data.n_poi[n])} 個）", fontsize=11)
 
     fig.tight_layout()

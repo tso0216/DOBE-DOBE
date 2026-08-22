@@ -1,0 +1,121 @@
+category,model,amount,avg_offset
+Dining and Drinking,AE,1,0.07613885402679443
+Dining and Drinking,AE,3,0.2076469510793686
+Dining and Drinking,AE,5,0.31161895394325256
+Dining and Drinking,AE+FSCE,1,0.10711470991373062
+Dining and Drinking,AE+FSCE,3,0.30046331882476807
+Dining and Drinking,AE+FSCE,5,0.45477911829948425
+Dining and Drinking,DAE,1,0.091063492000103
+Dining and Drinking,DAE,3,0.27457255125045776
+Dining and Drinking,DAE,5,0.4351128935813904
+Dining and Drinking,DAE+FSCE,1,0.3143928349018097
+Dining and Drinking,DAE+FSCE,3,0.9150096774101257
+Dining and Drinking,DAE+FSCE,5,1.510162591934204
+Retail,AE,1,0.11467086523771286
+Retail,AE,3,0.3305593729019165
+Retail,AE,5,0.5464431047439575
+Retail,AE+FSCE,1,0.17548805475234985
+Retail,AE+FSCE,3,0.511195957660675
+Retail,AE+FSCE,5,0.8195846676826477
+Retail,DAE,1,0.1915522813796997
+Retail,DAE,3,0.46025922894477844
+Retail,DAE,5,0.6641902327537537
+Retail,DAE+FSCE,1,0.5831851363182068
+Retail,DAE+FSCE,3,1.710941195487976
+Retail,DAE+FSCE,5,2.602876663208008
+Nightlife Spot,AE,1,0.1664692461490631
+Nightlife Spot,AE,3,0.4478955864906311
+Nightlife Spot,AE,5,0.6671543121337891
+Nightlife Spot,AE+FSCE,1,0.25044381618499756
+Nightlife Spot,AE+FSCE,3,0.6923935413360596
+Nightlife Spot,AE+FSCE,5,1.0475730895996094
+Nightlife Spot,DAE,1,0.2829774022102356
+Nightlife Spot,DAE,3,0.7994399070739746
+Nightlife Spot,DAE,5,1.1642107963562012
+Nightlife Spot,DAE+FSCE,1,0.7539898157119751
+Nightlife Spot,DAE+FSCE,3,1.8279931545257568
+Nightlife Spot,DAE+FSCE,5,2.3628318309783936
+Community and Government,AE,1,0.08575980365276337
+Community and Government,AE,3,0.27462151646614075
+Community and Government,AE,5,0.5261088013648987
+Community and Government,AE+FSCE,1,0.09793229401111603
+Community and Government,AE+FSCE,3,0.314641535282135
+Community and Government,AE+FSCE,5,0.560920774936676
+Community and Government,DAE,1,0.23751065135002136
+Community and Government,DAE,3,0.9501314759254456
+Community and Government,DAE,5,1.503547191619873
+Community and Government,DAE+FSCE,1,0.7776075005531311
+Community and Government,DAE+FSCE,3,3.0110089778900146
+Community and Government,DAE+FSCE,5,4.824852466583252
+Travel and Transportation,AE,1,0.18183556199073792
+Travel and Transportation,AE,3,0.4603426456451416
+Travel and Transportation,AE,5,0.6711238026618958
+Travel and Transportation,AE+FSCE,1,0.27555420994758606
+Travel and Transportation,AE+FSCE,3,0.7366775274276733
+Travel and Transportation,AE+FSCE,5,1.1097941398620605
+Travel and Transportation,DAE,1,0.5713269710540771
+Travel and Transportation,DAE,3,0.9468693733215332
+Travel and Transportation,DAE,5,1.2351235151290894
+Travel and Transportation,DAE+FSCE,1,3.552335023880005
+Travel and Transportation,DAE+FSCE,3,4.311882495880127
+Travel and Transportation,DAE+FSCE,5,4.9927825927734375
+Business and Professional Services,AE,1,0.07503855228424072
+Business and Professional Services,AE,3,0.21870321035385132
+Business and Professional Services,AE,5,0.3284406363964081
+Business and Professional Services,AE+FSCE,1,0.11504629999399185
+Business and Professional Services,AE+FSCE,3,0.34361550211906433
+Business and Professional Services,AE+FSCE,5,0.4986344575881958
+Business and Professional Services,DAE,1,0.32697373628616333
+Business and Professional Services,DAE,3,0.5283035039901733
+Business and Professional Services,DAE,5,0.6586362719535828
+Business and Professional Services,DAE+FSCE,1,0.6142609715461731
+Business and Professional Services,DAE+FSCE,3,1.483384132385254
+Business and Professional Services,DAE+FSCE,5,1.9325107336044312
+Landmarks and Outdoors,AE,1,0.1481265127658844
+Landmarks and Outdoors,AE,3,0.38725805282592773
+Landmarks and Outdoors,AE,5,0.5344647169113159
+Landmarks and Outdoors,AE+FSCE,1,0.21888695657253265
+Landmarks and Outdoors,AE+FSCE,3,0.46021705865859985
+Landmarks and Outdoors,AE+FSCE,5,0.518003523349762
+Landmarks and Outdoors,DAE,1,0.2770010828971863
+Landmarks and Outdoors,DAE,3,0.6704893112182617
+Landmarks and Outdoors,DAE,5,0.8548066020011902
+Landmarks and Outdoors,DAE+FSCE,1,0.6590568423271179
+Landmarks and Outdoors,DAE+FSCE,3,1.6448755264282227
+Landmarks and Outdoors,DAE+FSCE,5,2.4769961833953857
+Arts and Entertainment,AE,1,0.14369186758995056
+Arts and Entertainment,AE,3,0.530190646648407
+Arts and Entertainment,AE,5,0.9155248999595642
+Arts and Entertainment,AE+FSCE,1,0.185166135430336
+Arts and Entertainment,AE+FSCE,3,0.6597240567207336
+Arts and Entertainment,AE+FSCE,5,1.0658198595046997
+Arts and Entertainment,DAE,1,0.26459380984306335
+Arts and Entertainment,DAE,3,1.2536907196044922
+Arts and Entertainment,DAE,5,2.122283697128296
+Arts and Entertainment,DAE+FSCE,1,0.8683949708938599
+Arts and Entertainment,DAE+FSCE,3,2.2328438758850098
+Arts and Entertainment,DAE+FSCE,5,3.009793281555176
+Health and Medicine,AE,1,0.05080046132206917
+Health and Medicine,AE,3,0.14488579332828522
+Health and Medicine,AE,5,0.2463684231042862
+Health and Medicine,AE+FSCE,1,0.07230738550424576
+Health and Medicine,AE+FSCE,3,0.2201940268278122
+Health and Medicine,AE+FSCE,5,0.38653573393821716
+Health and Medicine,DAE,1,0.205536350607872
+Health and Medicine,DAE,3,0.7392802834510803
+Health and Medicine,DAE,5,1.1189179420471191
+Health and Medicine,DAE+FSCE,1,0.5258579850196838
+Health and Medicine,DAE+FSCE,3,1.6397244930267334
+Health and Medicine,DAE+FSCE,5,2.8277361392974854
+Sports and Recreation,AE,1,0.08575467020273209
+Sports and Recreation,AE,3,0.28125301003456116
+Sports and Recreation,AE,5,0.45485949516296387
+Sports and Recreation,AE+FSCE,1,0.13389435410499573
+Sports and Recreation,AE+FSCE,3,0.3934502899646759
+Sports and Recreation,AE+FSCE,5,0.574962317943573
+Sports and Recreation,DAE,1,0.2761886417865753
+Sports and Recreation,DAE,3,0.8537895679473877
+Sports and Recreation,DAE,5,1.0993701219558716
+Sports and Recreation,DAE+FSCE,1,0.6259991526603699
+Sports and Recreation,DAE+FSCE,3,1.5227230787277222
+Sports and Recreation,DAE+FSCE,5,1.9245198965072632

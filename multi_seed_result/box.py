@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 plot_mean = True
-csv = 'multi_seed_result/csv/baseline_compare.csv'
+csv = 'multi_seed_result/csv/lr.csv'
 
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -25,10 +25,10 @@ def main():
         "mean": row["mean"],
     } for _, row in df.iterrows()]
 
-    fig, ax = plt.subplots(figsize=(15, 4.5))
+    fig, ax = plt.subplots(figsize=(7, 4.5))
     box = ax.bxp(stats, showfliers=False, showmeans=plot_mean, meanline=plot_mean)
     ax.set_xlabel("label")
-    ax.set_ylabel("test_dev")
+    ax.set_ylabel("deviance")
     ax.grid(alpha=0.1, axis="y")
     if plot_mean:
         ax.legend([box["medians"][0], box["means"][0]], ["median", "mean"])

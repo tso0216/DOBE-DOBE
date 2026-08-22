@@ -14,7 +14,7 @@ def env_bool(name, default):
 
 VERSION = "v2_ddae_base"
 OUT = result(VERSION, "latents.npz")
-SEED = int(os.environ.get("SEED", 1))
+SEED = int(os.environ.get("SEED", 0))
 CKPT = result(VERSION, f"model_weight/ae_seed{SEED}.pt")
 
 HIDDEN = int(os.environ.get("HIDDEN", 64))
@@ -22,7 +22,7 @@ LATENT_DIM = int(os.environ.get("LATENT_DIM", 2))
 
 EPOCHS = int(os.environ.get("EPOCHS", 2000))
 BATCH = int(os.environ.get("BATCH", 256))
-LR = float(os.environ.get("LR", 1e-3))
+LR = float(os.environ.get("LR", 1e-2))
 LR_MIN = float(os.environ.get("LR_MIN", 1e-3))             # cosine annealing 排程的下限
 WEIGHT_DECAY = float(os.environ.get("WEIGHT_DECAY", 1e-6))
 
@@ -35,6 +35,8 @@ WARMUP_EPOCHS = int(os.environ.get("WARMUP_EPOCHS", 200))       # lambda 從 0 �
 
 NOISE_P = float(os.environ.get("NOISE_P", 0.3))             # 破壞強度：thinning 是每個 POI 被丟掉的機率，mask 是整類被抹成 0 的機率
 NOISE_MODE = os.environ.get("NOISE_MODE", "thinning")   # "thinning"（逐 POI 丟）或 "mask"（整類歸零）
+
+METRIC = os.environ.get("METRIC", "mae")   # 評估指標："wape"、"mae" 或 "mse"，見 model.METRICS
 
 device = ("mps" if torch.backends.mps.is_available()
           else "cuda" if torch.cuda.is_available() else "cpu")

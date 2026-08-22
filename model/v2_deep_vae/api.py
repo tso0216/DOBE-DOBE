@@ -4,8 +4,10 @@ import sys
 import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from cfg import CKPT, LATENT_DIM
-from model import AE, poisson_deviance
+from cfg import CKPT, LATENT_DIM, METRIC
+from model import AE, METRICS
+
+metric_fn = METRICS[METRIC]
 
 
 def load_model(ckpt=CKPT, device="cpu"):
@@ -33,7 +35,7 @@ def rebuild(model, x):
 
 def evaluate(model, data, idx, batch=256):
     """model：AE。data：Patches。idx：要評估的 patch 編號 tensor。batch：每批大小。
-    回傳這批 idx 的平均 poisson deviance。
+    回傳這批 idx 的平均 cfg.METRIC 指標。
     """
     model.eval()
     out = []
@@ -41,5 +43,5 @@ def evaluate(model, data, idx, batch=256):
         for i in range(0, len(idx), batch):
             x = data.agg(idx[i:i + batch])
             _, log_lam, _, _ = model(x)
-            out.append(poisson_deviance(log_lam, x))
+            out.append(metric_fn(log_lam, x))
     return torch.cat(out).mean().item()

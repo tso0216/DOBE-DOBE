@@ -30,5 +30,7 @@ WARMUP_EPOCHS = 200       # lambda 從 0 線性升到 LAMBDA_FSCE 所花的 epoc
 NOISE_P = 0.3             # 破壞強度：thinning 是每個 POI 被丟掉的機率，mask 是整類被抹成 0 的機率
 NOISE_MODE = "thinning"   # "thinning"（逐 POI 丟）或 "mask"（整類歸零）
 
+METRIC = os.environ.get("METRIC", "wape")   # 評估指標："wape"、"mae" 或 "mse"，見 model.METRICS
+
 device = ("mps" if torch.backends.mps.is_available()
           else "cuda" if torch.cuda.is_available() else "cpu")

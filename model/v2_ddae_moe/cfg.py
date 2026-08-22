@@ -31,6 +31,8 @@ N_EXPERTS = 4             # encoder 每組的 expert 數
 TOP_K = 4                 # 每組每次啟用幾個 expert
 LAMBDA_MOE = 0.01         # load-balance loss 權重，避免所有 token 擠同一個 expert
 
+METRIC = os.environ.get("METRIC", "wape")   # 評估指標："wape"、"mae" 或 "mse"，見 model.METRICS
+
 OUT = os.path.join(RESULT_DIR, "latents.npz")
 CKPT = os.path.join(RESULT_DIR, "ae.pt")
 

@@ -22,5 +22,7 @@ WEIGHT_DECAY = float(os.environ.get("WEIGHT_DECAY", 1e-6))
 
 LAMBDA_KL = float(os.environ.get("LAMBDA_KL", 1e-3))          # KL 散度的固定權重
 
+METRIC = os.environ.get("METRIC", "mae")   # 評估指標："wape"、"mae" 或 "mse"，見 model.METRICS
+
 device = ("mps" if torch.backends.mps.is_available()
           else "cuda" if torch.cuda.is_available() else "cpu")

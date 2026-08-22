@@ -7,17 +7,19 @@ import torch
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from cfg import (BATCH, CKPT, EDGE_BATCH, EPOCHS, GRAPH_METRIC, LAMBDA_FSCE,
-                 LATENT_DIM, LR, N_NEIGHBORS, NOISE_MODE, NOISE_P, OUT, SEED,
-                 VAL_FRAC, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY, device,
-                 open_log)
+                 LATENT_DIM, LR, METRIC, N_NEIGHBORS, NOISE_MODE, NOISE_P,
+                 OUT, SEED, VAL_FRAC, VERSION, WARMUP_EPOCHS, WEIGHT_DECAY,
+                 device, open_log)
 from dataset import Patches, corrupt
-from model import AE, build_fsce_graph, fsce_loss, poisson_deviance, poisson_nll
+from model import AE, METRICS, build_fsce_graph, fsce_loss, poisson_nll
 from common.dataset import PATCHES
+
+metric_fn = METRICS[METRIC]
 
 
 def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
     """訓練並回傳全體 patch 的 (z, err)：z 是 (N,LATENT_DIM) 的 latent 座標，
-    err 是 (N,) 的 Poisson deviance，兩者都用乾淨輸入、eval 模式算出來。
+    err 是 (N,) 的 cfg.METRIC 指標，兩者都用乾淨輸入、eval 模式算出來。
     data 是 Patches；train_idx / val_idx 是 patch 編號的 LongTensor；
     edge_i / edge_j / edge_w / a / b 是 build_fsce_graph() 的回傳值。
     log 是 common.train_log.open_log() 回傳的函式，訓練過程的訊息都灌進去。
@@ -29,8 +31,8 @@ def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
     opt = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     n_edges = len(edge_i)
 
-    # 空模型（λ=訓練集全域平均）的 log_lam，當 explained deviance 的分母，
-    # 用訓練集估、驗證集算 deviance，不然分母本身就偷看了驗證集
+    # 空模型（λ=訓練集全域平均）的 log_lam，當 explained metric 的分母，
+    # 用訓練集估、驗證集算 metric，不然分母本身就偷看了驗證集
     log_lam_null = data.agg(train_idx).mean(dim=0, keepdim=True) \
         .clamp_min(1e-8).log().to(device)
 
@@ -72,19 +74,19 @@ def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
             if (epoch + 1) % 5 == 0 or epoch == 0:
                 model.eval()
                 with torch.no_grad():
-                    vd, vdn = [], []
+                    vm, vmn = [], []
                     for i in range(0, len(val_idx), BATCH):
                         batch = val_idx[i:i + BATCH]
                         x = data.agg(batch).to(device)   # 驗證不加噪
                         _, log_lam = model(x)
-                        vd.append(poisson_deviance(log_lam, x))
-                        vdn.append(poisson_deviance(log_lam_null.expand(len(batch), -1), x))
-                    dev = torch.cat(vd).mean().item()
-                    dev_null = torch.cat(vdn).mean().item()
-                    expl = 1 - dev / dev_null
+                        vm.append(metric_fn(log_lam, x))
+                        vmn.append(metric_fn(log_lam_null.expand(len(batch), -1), x))
+                    val_metric = torch.cat(vm).mean().item()
+                    metric_null = torch.cat(vmn).mean().item()
+                    expl = 1 - val_metric / metric_null
                 log(f"epoch {epoch + 1:4d} | train_nll {total / len(perm):.5f} | "
-                    f"train_fsce {total_fsce / len(perm):.5f} | val_dev {dev:.5f} | "
-                    f"expl_dev {expl:.5f}")
+                    f"train_fsce {total_fsce / len(perm):.5f} | val_{METRIC} {val_metric:.5f} | "
+                    f"expl_{METRIC} {expl:.5f}")
         except KeyboardInterrupt:
             log(f"\n[中斷] epoch {epoch + 1} 收到 Ctrl-C，用目前模型存 checkpoint 跟 latent")
             break
@@ -99,7 +101,7 @@ def run(data, train_idx, val_idx, edge_i, edge_j, edge_w, a, b, log):
             x = data.agg(idx).to(device)   # 推論不加噪
             z, log_lam = model(x)
             zs.append(z.cpu())
-            errs.append(poisson_deviance(log_lam, x).cpu())
+            errs.append(metric_fn(log_lam, x).cpu())
     return torch.cat(zs).numpy(), torch.cat(errs).numpy()
 
 
@@ -107,6 +109,7 @@ def main():
     log = open_log(VERSION, {
         "LATENT_DIM": LATENT_DIM, "EPOCHS": EPOCHS, "BATCH": BATCH, "LR": LR,
         "WEIGHT_DECAY": WEIGHT_DECAY, "VAL_FRAC": VAL_FRAC, "SEED": SEED,
+        "METRIC": METRIC,
         "N_NEIGHBORS": N_NEIGHBORS, "GRAPH_METRIC": GRAPH_METRIC,
         "EDGE_BATCH": EDGE_BATCH, "LAMBDA_FSCE": LAMBDA_FSCE,
         "WARMUP_EPOCHS": WARMUP_EPOCHS,

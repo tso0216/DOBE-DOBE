@@ -75,11 +75,25 @@ def poisson_nll(log_lam, x):
     return cell.mean(dim=1)
 
 
-def poisson_deviance(log_lam, x):
-    """log_lam：(B,N_CAT) 重建的 log λ。x：(B,N_CAT) 乾淨 count。回傳 (B,) 的 deviance。"""
+def wape(log_lam, x):
+    """log_lam：(B,N_CAT) 重建的 log λ。x：(B,N_CAT) 乾淨 count。回傳 (B,) 各 patch 的 WAPE。"""
     lam = torch.exp(log_lam)
-    cell = 2 * (torch.xlogy(x, x) - x * log_lam - x + lam)
-    return cell.mean(dim=1)
+    return (x - lam).abs().sum(dim=1) / x.sum(dim=1).clamp_min(1e-8)
+
+
+def mae(log_lam, x):
+    """log_lam：(B,N_CAT) 重建的 log λ。x：(B,N_CAT) 乾淨 count。回傳 (B,) 各 patch 的 MAE。"""
+    lam = torch.exp(log_lam)
+    return (x - lam).abs().mean(dim=1)
+
+
+def mse(log_lam, x):
+    """log_lam：(B,N_CAT) 重建的 log λ。x：(B,N_CAT) 乾淨 count。回傳 (B,) 各 patch 的 MSE。"""
+    lam = torch.exp(log_lam)
+    return (x - lam).pow(2).mean(dim=1)
+
+
+METRICS = {"wape": wape, "mae": mae, "mse": mse}   # cfg.METRIC 選哪個就用哪個當評估指標
 
 
 def kl_divergence(mu, logvar):
