@@ -1,0 +1,81 @@
+[hparams]
+  EPOCHS = 2000
+  LR = 0.01
+  LR_MIN = 0.001
+  METRIC = mae
+  SEED = 0
+  NOISE_P = 0.3
+  NOISE_MODE = thinning
+  FSCE = True
+  GRAPH_MODE = tfidf
+  LAMBDA_FSCE = 0.25
+  WARMUP_EPOCHS = 200
+  PCGRAD = True
+  N_CLUSTERS = 8
+  SNAPSHOT_PERCENTS = [10, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100]
+  HIDDEN = 64
+  WEIGHT_DECAY = 1e-06
+  EDGE_BATCH = 256
+  N_NEIGHBORS = 10
+
+split：train 801 / val 185 / test 247
+
+TF-IDF POI 特徵轉換完成（IDF 獨特性加權計算完成）
+  Dining and Drinking                 IDF = 1.0041
+  Retail                              IDF = 1.1361
+  Nightlife Spot                      IDF = 1.3882
+  Community and Government            IDF = 2.4413
+  Travel and Transportation           IDF = 1.8603
+  Business and Professional Services  IDF = 1.7550
+  Landmarks and Outdoors              IDF = 2.3404
+  Arts and Entertainment              IDF = 1.8700
+  Health and Medicine                 IDF = 2.8147
+  Sports and Recreation               IDF = 3.8140
+
+TF-IDF 高維 POI 機能分群（K=8）
+TF-IDF Weighted FSCE graph：10304 條邊，a=1.5769 b=0.8951
+epoch    1 train_nll 0.29447 | train_fsce 3.45542 | val_mae 1.52061 | test_mae 1.44281
+epoch   50 train_nll -1.20390 | train_fsce 0.54948 | val_mae 0.86182 | test_mae 0.82793
+epoch  100 train_nll -1.24908 | train_fsce 0.53216 | val_mae 0.84122 | test_mae 0.79604
+epoch  150 train_nll -1.24954 | train_fsce 0.52743 | val_mae 0.79753 | test_mae 0.75100
+epoch  200 train_nll -1.27834 | train_fsce 0.54906 | val_mae 0.80401 | test_mae 0.74275
+epoch  250 train_nll -1.27313 | train_fsce 0.51439 | val_mae 0.78340 | test_mae 0.70576
+epoch  300 train_nll -1.29111 | train_fsce 0.51070 | val_mae 0.74854 | test_mae 0.71321
+epoch  350 train_nll -1.29851 | train_fsce 0.52373 | val_mae 0.74860 | test_mae 0.69233
+epoch  400 train_nll -1.29077 | train_fsce 0.51603 | val_mae 0.73300 | test_mae 0.68745
+epoch  450 train_nll -1.30557 | train_fsce 0.52858 | val_mae 0.74729 | test_mae 0.68940
+epoch  500 train_nll -1.27730 | train_fsce 0.52658 | val_mae 0.79816 | test_mae 0.74329
+epoch  550 train_nll -1.30576 | train_fsce 0.52766 | val_mae 0.73284 | test_mae 0.66939
+epoch  600 train_nll -1.31094 | train_fsce 0.51870 | val_mae 0.72872 | test_mae 0.67506
+epoch  650 train_nll -1.24559 | train_fsce 0.53474 | val_mae 0.82538 | test_mae 0.76992
+epoch  700 train_nll -1.30133 | train_fsce 0.51997 | val_mae 0.70348 | test_mae 0.67068
+epoch  750 train_nll -1.31285 | train_fsce 0.53743 | val_mae 0.72859 | test_mae 0.67014
+epoch  800 train_nll -1.31841 | train_fsce 0.52926 | val_mae 0.72667 | test_mae 0.64781
+epoch  850 train_nll -1.25281 | train_fsce 0.55149 | val_mae 0.85598 | test_mae 0.79901
+epoch  900 train_nll -1.29202 | train_fsce 0.54979 | val_mae 0.78204 | test_mae 0.71679
+epoch  950 train_nll -1.29502 | train_fsce 0.52980 | val_mae 0.72745 | test_mae 0.67609
+epoch 1000 train_nll -1.27342 | train_fsce 0.52364 | val_mae 0.77007 | test_mae 0.68025
+epoch 1050 train_nll -1.29090 | train_fsce 0.53508 | val_mae 0.75242 | test_mae 0.69063
+epoch 1100 train_nll -1.31598 | train_fsce 0.50599 | val_mae 0.72443 | test_mae 0.68321
+epoch 1150 train_nll -1.30875 | train_fsce 0.52493 | val_mae 0.74854 | test_mae 0.69599
+epoch 1200 train_nll -1.30660 | train_fsce 0.52430 | val_mae 0.73737 | test_mae 0.68832
+epoch 1250 train_nll -1.32384 | train_fsce 0.50825 | val_mae 0.71742 | test_mae 0.66656
+epoch 1300 train_nll -1.32485 | train_fsce 0.51925 | val_mae 0.72046 | test_mae 0.66667
+epoch 1350 train_nll -1.33291 | train_fsce 0.51203 | val_mae 0.70425 | test_mae 0.65215
+epoch 1400 train_nll -1.32549 | train_fsce 0.54364 | val_mae 0.71457 | test_mae 0.66565
+epoch 1450 train_nll -1.34503 | train_fsce 0.54957 | val_mae 0.69463 | test_mae 0.64848
+epoch 1500 train_nll -1.33987 | train_fsce 0.51670 | val_mae 0.69935 | test_mae 0.64566
+epoch 1550 train_nll -1.33752 | train_fsce 0.54504 | val_mae 0.70272 | test_mae 0.64769
+epoch 1600 train_nll -1.34089 | train_fsce 0.52514 | val_mae 0.69264 | test_mae 0.64624
+epoch 1650 train_nll -1.34189 | train_fsce 0.52951 | val_mae 0.71339 | test_mae 0.63178
+epoch 1700 train_nll -1.35056 | train_fsce 0.54836 | val_mae 0.68654 | test_mae 0.62182
+epoch 1750 train_nll -1.35077 | train_fsce 0.53664 | val_mae 0.69509 | test_mae 0.63052
+epoch 1800 train_nll -1.35196 | train_fsce 0.53474 | val_mae 0.69015 | test_mae 0.62376
+epoch 1850 train_nll -1.34102 | train_fsce 0.54102 | val_mae 0.68469 | test_mae 0.61681
+epoch 1900 train_nll -1.35395 | train_fsce 0.53714 | val_mae 0.70775 | test_mae 0.61159
+epoch 1950 train_nll -1.35897 | train_fsce 0.52938 | val_mae 0.68672 | test_mae 0.62181
+epoch 2000 train_nll -1.35197 | train_fsce 0.52553 | val_mae 0.67472 | test_mae 0.62166
+
+最佳 checkpoint：epoch 1994，val_mae 0.66681
+test_mae 0.61774（247 個 patch，全程未參與訓練與選 checkpoint）
+done

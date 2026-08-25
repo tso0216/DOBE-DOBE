@@ -26,7 +26,7 @@ LR = float(os.environ.get("LR", 1e-2))
 LR_MIN = float(os.environ.get("LR_MIN", 1e-3))             # cosine annealing 排程的下限
 WEIGHT_DECAY = float(os.environ.get("WEIGHT_DECAY", 1e-6))
 
-USE_FSCE = env_bool("USE_FSCE", True)         # 開關：是否加 FSCE loss
+USE_FSCE = env_bool("USE_FSCE", False)         # 開關：是否加 FSCE loss
 N_NEIGHBORS = int(os.environ.get("N_NEIGHBORS", 12))         # 建高維 fuzzy graph 的 kNN 數，跟 data/patch/umap_grid.py 一致
 GRAPH_METRIC = os.environ.get("GRAPH_METRIC", "euclidean")  # 在 log1p 上算，組成與總量都敏感——跟 Poisson NLL 的要求一致
 EDGE_BATCH = int(os.environ.get("EDGE_BATCH", 256))          # 每個 step 抽的正樣本邊數，負樣本抽等量

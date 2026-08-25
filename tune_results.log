@@ -1,1 +1,0 @@
-ours LAMBDA_FSCE=1 METRIC=mse mse=1.33839（epoch 1813�tSours LAMBDA_FSCE=0.5 METRIC=mse mse=1.32728（epoch 153tSNEours LAMBDA_FSCE=0.1 METRIC=mse mse=1.12704（epoch 15tSNE ours LAMBDA_FSCE=0.01 METRIC=mse mse=1.24651（epoch 1tSNE Lours LAMBDA_FSCE=0 METRIC=mse mse=1.12241（epoch 969）
