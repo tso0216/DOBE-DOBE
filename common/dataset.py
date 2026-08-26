@@ -90,3 +90,39 @@ def make_split(lat, lon, mode="random", seed=0, val_frac=0.15, test_frac=0.2,
         return torch.from_numpy(np.sort(a.astype(np.int64)))
 
     return cat(bucket[0]), cat(bucket[1]), cat(bucket[2])
+
+
+def make_kfold_split(lat, lon, mode="random", seed=0, test_frac=0.2, n_splits=5,
+                     cell=0.02):
+    """傳入：lat/lon（patch 中心座標，用於 spatial 分桶）、test_frac（獨立 test 集比例）、
+    n_splits（k-fold 折數）。回傳：test_idx（獨立於所有 fold 的 test 集）、
+    folds（長度 n_splits 的 [(train_idx, val_idx), ...] 列表，val 輪流取 test_idx 以外資料的 1/n_splits）。"""
+    rng = np.random.default_rng(seed)
+
+    if mode == "random":
+        member = [np.array([i]) for i in range(len(lat))]
+    elif mode == "spatial":
+        key = (np.floor(np.asarray(lat) / cell).astype(np.int64) * 1_000_000 +
+               np.floor(np.asarray(lon) / cell).astype(np.int64))
+        member = [np.flatnonzero(key == b) for b in np.unique(key)]
+
+    def cat(bucket_ids):
+        xs = [member[u] for u in bucket_ids]
+        a = np.concatenate(xs) if xs else np.empty(0, dtype=np.int64)
+        return torch.from_numpy(np.sort(a.astype(np.int64)))
+
+    order = rng.permutation(len(member))
+    n_test = int(round(len(member) * test_frac))
+    test_idx = cat(order[:n_test])
+
+    pool = rng.permutation(order[n_test:])
+    fold_buckets = np.array_split(pool, n_splits)
+
+    folds = []
+    for k in range(n_splits):
+        val_idx = cat(fold_buckets[k])
+        train_idx = cat(np.concatenate(
+            [fold_buckets[j] for j in range(n_splits) if j != k]))
+        folds.append((train_idx, val_idx))
+
+    return test_idx, folds

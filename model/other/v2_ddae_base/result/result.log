@@ -1,0 +1,23 @@
+[hparams]
+  EPOCHS = 2000
+  LR = 0.01
+  LR_MIN = 0.001
+  METRIC = mae
+  SEED = 0
+  NOISE_P = 0.3
+  NOISE_MODE = thinning
+  FSCE = True
+  LAMBDA_FSCE = 0.25
+  WARMUP_EPOCHS = 200
+
+split：train 801 / val 185 / test 247
+
+epoch    1 train_nll 0.29447 | train_fsce 3.36732 | val_mae 1.52069 | test_mae 1.44285
+epoch   50 train_nll -1.14364 | train_fsce 0.55823 | val_mae 0.96701 | test_mae 0.91752
+epoch  100 train_nll -1.23700 | train_fsce 0.51822 | val_mae 0.83913 | test_mae 0.79058
+
+[中斷] epoch 110 收到 Ctrl-C，用目前最佳模型存 checkpoint 跟 latent
+
+最佳 checkpoint：epoch 81，val_mae 0.78546
+test_mae 0.73508（247 個 patch，全程未參與訓練與選 checkpoint）
+done

@@ -10,16 +10,17 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, ROOT)
 from common.dataset import PATCHES  # noqa: E402
-from model.v3_ddae_tfidf.cfg import LATENT_DIM, N_NEIGHBORS, SEED, device  # noqa: E402
+from model.v3_ddae_tfidf.cfg import LATENT_DIM, N_NEIGHBORS, device  # noqa: E402
 from model.v3_ddae_tfidf.dataset import Patches  # noqa: E402
 from model.v3_ddae_tfidf.model import AE, compute_tfidf_features  # noqa: E402
 
 CKPT_DIR = os.path.join(HERE, "..", "model", "entropy_progress_ckpt")
+FOLD = 3
 SNAPSHOT_PERCENTS = list(range(5, 101, 5))
 
 
 def ckpt_path(percent):
-    return os.path.join(CKPT_DIR, f"epoch_pct{percent}_seed{SEED}.pt")
+    return os.path.join(CKPT_DIR, f"epoch_pct{percent}_fold{FOLD}.pt")
 
 
 def neighbor_preservation(z, neighbors_high, k):

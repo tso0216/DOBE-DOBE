@@ -1,7 +1,0 @@
-model,mae
-AE,0.69738
-AE+fsce,0.66934
-AE+fsce+tfidf,0.66741
-DAE,0.65538
-DAE+fsce,0.62166
-DAE+fsce+tfidf (Ours),0.61774

@@ -3,19 +3,17 @@ import sys
 
 import torch
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from cfg import CKPT, LATENT_DIM, METRIC
-from model import AE, METRICS
-
-metric_fn = METRICS[METRIC]
+sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
+from model.v2_deep_vae.cfg import ANALYZE_FOLD, ANALYZE_METRIC, LATENT_DIM, ckpt_path
+from model.v2_deep_vae.model import AE, METRICS
 
 
-def load_model(ckpt=CKPT, device="cpu"):
-    """ckpt：checkpoint 檔案路徑。device：載入到哪個裝置。
-    回傳已載入權重、eval() 模式的 AE。
+def load_model(fold=ANALYZE_FOLD, metric=ANALYZE_METRIC, device="cpu"):
+    """fold：fold 編號（1 起算）。metric：要載入哪份 checkpoint（mae/mse/wape/deviance）。
+    device：載入到哪個裝置。回傳已載入權重、eval() 模式的 AE。
     """
     model = AE(LATENT_DIM).to(device)
-    model.load_state_dict(torch.load(ckpt, map_location=device))
+    model.load_state_dict(torch.load(ckpt_path(fold, metric), map_location=device))
     model.eval()
     return model
 
@@ -33,10 +31,11 @@ def rebuild(model, x):
     return log_lam
 
 
-def evaluate(model, data, idx, batch=256):
-    """model：AE。data：Patches。idx：要評估的 patch 編號 tensor。batch：每批大小。
-    回傳這批 idx 的平均 cfg.METRIC 指標。
+def evaluate(model, data, idx, metric=ANALYZE_METRIC, batch=256):
+    """model：AE。data：Patches。idx：要評估的 patch 編號 tensor。metric：指標名。batch：每批大小。
+    回傳這批 idx 的平均指標值。
     """
+    metric_fn = METRICS[metric]
     model.eval()
     out = []
     with torch.no_grad():

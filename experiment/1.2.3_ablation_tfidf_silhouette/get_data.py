@@ -12,7 +12,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, ROOT)
 from common.dataset import PATCHES  # noqa: E402
-from model.v2_ddae_base.dataset import Patches  # noqa: E402
+from model.other.v2_ddae_base.dataset import Patches  # noqa: E402
 from model.v3_ddae_tfidf.model import compute_tfidf_features  # noqa: E402
 
 N_CLUSTERS = 8

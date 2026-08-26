@@ -3,8 +3,11 @@
   LR = 0.01
   LR_MIN = 0.001
   METRIC = mae
+  CKPT_METRICS = ['mae', 'mse', 'wape', 'deviance']
+  N_SPLITS = 5
+  TEST_FRAC = 0.2
   SEED = 0
-  NOISE_P = 0.3
+  NOISE_P = 0.0
   NOISE_MODE = thinning
   FSCE = True
   GRAPH_MODE = tfidf
@@ -18,7 +21,7 @@
   EDGE_BATCH = 256
   N_NEIGHBORS = 10
 
-split：train 801 / val 185 / test 247
+test 集：247 個 patch（20%，獨立於全部 5 個 fold 的訓練與驗證）
 
 TF-IDF POI 特徵轉換完成（IDF 獨特性加權計算完成）
   Dining and Drinking                 IDF = 1.0041
@@ -33,49 +36,261 @@ TF-IDF POI 特徵轉換完成（IDF 獨特性加權計算完成）
   Sports and Recreation               IDF = 3.8140
 
 TF-IDF 高維 POI 機能分群（K=8）
-TF-IDF Weighted FSCE graph：10304 條邊，a=1.5769 b=0.8951
-epoch    1 train_nll 0.29447 | train_fsce 3.45542 | val_mae 1.52061 | test_mae 1.44281
-epoch   50 train_nll -1.20390 | train_fsce 0.54948 | val_mae 0.86182 | test_mae 0.82793
-epoch  100 train_nll -1.24908 | train_fsce 0.53216 | val_mae 0.84122 | test_mae 0.79604
-epoch  150 train_nll -1.24954 | train_fsce 0.52743 | val_mae 0.79753 | test_mae 0.75100
-epoch  200 train_nll -1.27834 | train_fsce 0.54906 | val_mae 0.80401 | test_mae 0.74275
-epoch  250 train_nll -1.27313 | train_fsce 0.51439 | val_mae 0.78340 | test_mae 0.70576
-epoch  300 train_nll -1.29111 | train_fsce 0.51070 | val_mae 0.74854 | test_mae 0.71321
-epoch  350 train_nll -1.29851 | train_fsce 0.52373 | val_mae 0.74860 | test_mae 0.69233
-epoch  400 train_nll -1.29077 | train_fsce 0.51603 | val_mae 0.73300 | test_mae 0.68745
-epoch  450 train_nll -1.30557 | train_fsce 0.52858 | val_mae 0.74729 | test_mae 0.68940
-epoch  500 train_nll -1.27730 | train_fsce 0.52658 | val_mae 0.79816 | test_mae 0.74329
-epoch  550 train_nll -1.30576 | train_fsce 0.52766 | val_mae 0.73284 | test_mae 0.66939
-epoch  600 train_nll -1.31094 | train_fsce 0.51870 | val_mae 0.72872 | test_mae 0.67506
-epoch  650 train_nll -1.24559 | train_fsce 0.53474 | val_mae 0.82538 | test_mae 0.76992
-epoch  700 train_nll -1.30133 | train_fsce 0.51997 | val_mae 0.70348 | test_mae 0.67068
-epoch  750 train_nll -1.31285 | train_fsce 0.53743 | val_mae 0.72859 | test_mae 0.67014
-epoch  800 train_nll -1.31841 | train_fsce 0.52926 | val_mae 0.72667 | test_mae 0.64781
-epoch  850 train_nll -1.25281 | train_fsce 0.55149 | val_mae 0.85598 | test_mae 0.79901
-epoch  900 train_nll -1.29202 | train_fsce 0.54979 | val_mae 0.78204 | test_mae 0.71679
-epoch  950 train_nll -1.29502 | train_fsce 0.52980 | val_mae 0.72745 | test_mae 0.67609
-epoch 1000 train_nll -1.27342 | train_fsce 0.52364 | val_mae 0.77007 | test_mae 0.68025
-epoch 1050 train_nll -1.29090 | train_fsce 0.53508 | val_mae 0.75242 | test_mae 0.69063
-epoch 1100 train_nll -1.31598 | train_fsce 0.50599 | val_mae 0.72443 | test_mae 0.68321
-epoch 1150 train_nll -1.30875 | train_fsce 0.52493 | val_mae 0.74854 | test_mae 0.69599
-epoch 1200 train_nll -1.30660 | train_fsce 0.52430 | val_mae 0.73737 | test_mae 0.68832
-epoch 1250 train_nll -1.32384 | train_fsce 0.50825 | val_mae 0.71742 | test_mae 0.66656
-epoch 1300 train_nll -1.32485 | train_fsce 0.51925 | val_mae 0.72046 | test_mae 0.66667
-epoch 1350 train_nll -1.33291 | train_fsce 0.51203 | val_mae 0.70425 | test_mae 0.65215
-epoch 1400 train_nll -1.32549 | train_fsce 0.54364 | val_mae 0.71457 | test_mae 0.66565
-epoch 1450 train_nll -1.34503 | train_fsce 0.54957 | val_mae 0.69463 | test_mae 0.64848
-epoch 1500 train_nll -1.33987 | train_fsce 0.51670 | val_mae 0.69935 | test_mae 0.64566
-epoch 1550 train_nll -1.33752 | train_fsce 0.54504 | val_mae 0.70272 | test_mae 0.64769
-epoch 1600 train_nll -1.34089 | train_fsce 0.52514 | val_mae 0.69264 | test_mae 0.64624
-epoch 1650 train_nll -1.34189 | train_fsce 0.52951 | val_mae 0.71339 | test_mae 0.63178
-epoch 1700 train_nll -1.35056 | train_fsce 0.54836 | val_mae 0.68654 | test_mae 0.62182
-epoch 1750 train_nll -1.35077 | train_fsce 0.53664 | val_mae 0.69509 | test_mae 0.63052
-epoch 1800 train_nll -1.35196 | train_fsce 0.53474 | val_mae 0.69015 | test_mae 0.62376
-epoch 1850 train_nll -1.34102 | train_fsce 0.54102 | val_mae 0.68469 | test_mae 0.61681
-epoch 1900 train_nll -1.35395 | train_fsce 0.53714 | val_mae 0.70775 | test_mae 0.61159
-epoch 1950 train_nll -1.35897 | train_fsce 0.52938 | val_mae 0.68672 | test_mae 0.62181
-epoch 2000 train_nll -1.35197 | train_fsce 0.52553 | val_mae 0.67472 | test_mae 0.62166
 
-最佳 checkpoint：epoch 1994，val_mae 0.66681
-test_mae 0.61774（247 個 patch，全程未參與訓練與選 checkpoint）
+===== fold 1/5 =====
+split：train 788 / val 198 / test 247
+TF-IDF Weighted FSCE graph：10088 條邊，a=1.5769 b=0.8951
+[fold 1] epoch    1 train_nll 0.46727 | train_fsce 3.40469 | val mae=1.41664 mse=6.65672 wape=0.81956 deviance=1.87584 | test_mae 1.38481
+[fold 1] epoch   50 train_nll -1.26508 | train_fsce 0.52303 | val mae=0.81790 mse=1.89511 wape=0.45928 deviance=0.89831 | test_mae 0.77027
+[fold 1] epoch  100 train_nll -1.29226 | train_fsce 0.48224 | val mae=0.77126 mse=1.74530 wape=0.43114 deviance=0.83069 | test_mae 0.73165
+[fold 1] epoch  150 train_nll -1.32877 | train_fsce 0.48213 | val mae=0.76100 mse=1.81622 wape=0.42103 deviance=0.83867 | test_mae 0.72071
+[fold 1] epoch  200 train_nll -1.32423 | train_fsce 0.47603 | val mae=0.76940 mse=1.97446 wape=0.43126 deviance=0.86204 | test_mae 0.69375
+[fold 1] epoch  250 train_nll -1.33223 | train_fsce 0.46975 | val mae=0.76995 mse=2.13593 wape=0.41581 deviance=0.86821 | test_mae 0.71687
+[fold 1] epoch  300 train_nll -1.37237 | train_fsce 0.48621 | val mae=0.71712 mse=1.65826 wape=0.40362 deviance=0.80113 | test_mae 0.67619
+[fold 1] epoch  350 train_nll -1.38139 | train_fsce 0.48170 | val mae=0.71841 mse=1.62544 wape=0.39514 deviance=0.80215 | test_mae 0.67718
+[fold 1] epoch  400 train_nll -1.39982 | train_fsce 0.48147 | val mae=0.72187 mse=1.48937 wape=0.40525 deviance=0.80327 | test_mae 0.67524
+[fold 1] epoch  450 train_nll -1.41793 | train_fsce 0.46983 | val mae=0.71499 mse=1.63259 wape=0.39535 deviance=0.84641 | test_mae 0.64845
+[fold 1] epoch  500 train_nll -1.42283 | train_fsce 0.48939 | val mae=0.71907 mse=1.87410 wape=0.39683 deviance=0.87671 | test_mae 0.66387
+[fold 1] epoch  550 train_nll -1.43600 | train_fsce 0.47070 | val mae=0.72064 mse=1.71756 wape=0.40836 deviance=0.86549 | test_mae 0.67570
+[fold 1] epoch  600 train_nll -1.41801 | train_fsce 0.48647 | val mae=0.75528 mse=1.82449 wape=0.41920 deviance=0.84268 | test_mae 0.71210
+[fold 1] epoch  650 train_nll -1.39140 | train_fsce 0.48037 | val mae=0.74269 mse=1.79415 wape=0.41423 deviance=0.81752 | test_mae 0.66556
+[fold 1] epoch  700 train_nll -1.42663 | train_fsce 0.48210 | val mae=0.73815 mse=1.73955 wape=0.40967 deviance=0.88645 | test_mae 0.66091
+[fold 1] epoch  750 train_nll -1.43189 | train_fsce 0.49079 | val mae=0.73713 mse=1.81644 wape=0.41597 deviance=0.87983 | test_mae 0.68384
+[fold 1] epoch  800 train_nll -1.42559 | train_fsce 0.50114 | val mae=0.75387 mse=1.95904 wape=0.41931 deviance=0.87151 | test_mae 0.67622
+[fold 1] epoch  850 train_nll -1.38253 | train_fsce 0.52051 | val mae=0.73296 mse=1.70750 wape=0.41269 deviance=0.81226 | test_mae 0.68746
+[fold 1] epoch  900 train_nll -1.40038 | train_fsce 0.50671 | val mae=0.76662 mse=1.97944 wape=0.42396 deviance=0.87830 | test_mae 0.68926
+[fold 1] epoch  950 train_nll -1.42907 | train_fsce 0.50792 | val mae=0.74995 mse=1.87098 wape=0.42008 deviance=0.85628 | test_mae 0.66353
+[fold 1] epoch 1000 train_nll -1.44044 | train_fsce 0.49370 | val mae=0.76456 mse=1.95429 wape=0.42093 deviance=0.90876 | test_mae 0.66172
+[fold 1] epoch 1050 train_nll -1.44590 | train_fsce 0.48672 | val mae=0.75048 mse=1.90749 wape=0.42358 deviance=0.94263 | test_mae 0.65618
+[fold 1] epoch 1100 train_nll -1.40836 | train_fsce 0.50913 | val mae=0.75976 mse=1.84330 wape=0.42206 deviance=0.89914 | test_mae 0.68432
+[fold 1] epoch 1150 train_nll -1.42806 | train_fsce 0.50943 | val mae=0.74712 mse=1.85963 wape=0.41506 deviance=0.83711 | test_mae 0.69592
+[fold 1] epoch 1200 train_nll -1.45519 | train_fsce 0.46614 | val mae=0.77104 mse=2.17375 wape=0.42187 deviance=0.88313 | test_mae 0.69366
+[fold 1] epoch 1250 train_nll -1.47345 | train_fsce 0.51241 | val mae=0.76995 mse=2.07392 wape=0.42234 deviance=0.90381 | test_mae 0.67332
+[fold 1] epoch 1300 train_nll -1.48887 | train_fsce 0.50167 | val mae=0.77551 mse=2.14667 wape=0.42430 deviance=0.92145 | test_mae 0.68799
+[fold 1] epoch 1350 train_nll -1.49472 | train_fsce 0.48187 | val mae=0.78513 mse=2.18188 wape=0.43362 deviance=0.94206 | test_mae 0.70212
+[fold 1] epoch 1400 train_nll -1.50513 | train_fsce 0.46976 | val mae=0.77172 mse=2.19869 wape=0.42200 deviance=0.95715 | test_mae 0.69859
+[fold 1] epoch 1450 train_nll -1.50014 | train_fsce 0.48600 | val mae=0.77325 mse=2.12621 wape=0.42337 deviance=1.00192 | test_mae 0.70179
+[fold 1] epoch 1500 train_nll -1.51501 | train_fsce 0.47111 | val mae=0.79792 mse=2.36242 wape=0.43624 deviance=1.07400 | test_mae 0.72944
+[fold 1] epoch 1550 train_nll -1.51433 | train_fsce 0.48372 | val mae=0.78943 mse=2.32405 wape=0.43011 deviance=1.07687 | test_mae 0.72707
+[fold 1] epoch 1600 train_nll -1.52327 | train_fsce 0.50639 | val mae=0.79685 mse=2.34963 wape=0.43562 deviance=1.08399 | test_mae 0.73647
+[fold 1] epoch 1650 train_nll -1.52996 | train_fsce 0.51679 | val mae=0.80019 mse=2.37211 wape=0.43959 deviance=1.10889 | test_mae 0.74519
+[fold 1] epoch 1700 train_nll -1.53268 | train_fsce 0.48122 | val mae=0.79565 mse=2.40305 wape=0.43366 deviance=1.14614 | test_mae 0.74365
+[fold 1] epoch 1750 train_nll -1.53553 | train_fsce 0.46629 | val mae=0.79332 mse=2.41053 wape=0.43205 deviance=1.17708 | test_mae 0.75025
+[fold 1] epoch 1800 train_nll -1.53619 | train_fsce 0.49612 | val mae=0.79471 mse=2.43714 wape=0.43564 deviance=1.15549 | test_mae 0.75287
+[fold 1] epoch 1850 train_nll -1.54278 | train_fsce 0.47026 | val mae=0.80614 mse=2.60470 wape=0.43961 deviance=1.19463 | test_mae 0.75863
+[fold 1] epoch 1900 train_nll -1.54640 | train_fsce 0.48502 | val mae=0.80571 mse=2.62347 wape=0.43797 deviance=1.21953 | test_mae 0.76179
+[fold 1] epoch 1950 train_nll -1.54816 | train_fsce 0.48571 | val mae=0.80521 mse=2.68055 wape=0.43994 deviance=1.21443 | test_mae 0.77376
+[fold 1] epoch 2000 train_nll -1.54933 | train_fsce 0.48061 | val mae=0.81492 mse=2.68039 wape=0.44512 deviance=1.25772 | test_mae 0.77741
+[fold 1] ckpt[mae] epoch 442，val_mae 0.69215 → test mae=0.66790 mse=1.37060 wape=0.38124 deviance=0.74441
+[fold 1] ckpt[mse] epoch 442，val_mse 1.39000 → test mae=0.66790 mse=1.37060 wape=0.38124 deviance=0.74441
+[fold 1] ckpt[wape] epoch 541，val_wape 0.38730 → test mae=0.64811 mse=1.36755 wape=0.36577 deviance=0.75202
+[fold 1] ckpt[deviance] epoch 373，val_deviance 0.77717 → test mae=0.70332 mse=1.54584 wape=0.39761 deviance=0.74525
+
+===== fold 2/5 =====
+split：train 789 / val 197 / test 247
+TF-IDF Weighted FSCE graph：10182 條邊，a=1.5769 b=0.8951
+[fold 2] epoch    1 train_nll 0.67135 | train_fsce 2.15378 | val mae=1.41744 mse=6.58721 wape=0.88155 deviance=1.87188 | test_mae 1.37089
+[fold 2] epoch   50 train_nll -1.28075 | train_fsce 0.55602 | val mae=0.80778 mse=1.93706 wape=0.46538 deviance=0.89282 | test_mae 0.74926
+[fold 2] epoch  100 train_nll -1.29561 | train_fsce 0.49462 | val mae=0.81744 mse=2.46296 wape=0.45612 deviance=0.88863 | test_mae 0.76944
+[fold 2] epoch  150 train_nll -1.31102 | train_fsce 0.47307 | val mae=0.74952 mse=1.89903 wape=0.42585 deviance=0.83336 | test_mae 0.72317
+[fold 2] epoch  200 train_nll -1.34909 | train_fsce 0.47307 | val mae=0.74536 mse=1.97018 wape=0.42542 deviance=0.78651 | test_mae 0.68318
+[fold 2] epoch  250 train_nll -1.34956 | train_fsce 0.46461 | val mae=0.74475 mse=1.89323 wape=0.42286 deviance=0.78318 | test_mae 0.68242
+[fold 2] epoch  300 train_nll -1.37001 | train_fsce 0.48204 | val mae=0.74024 mse=1.95884 wape=0.41912 deviance=0.81248 | test_mae 0.67195
+[fold 2] epoch  350 train_nll -1.34991 | train_fsce 0.48230 | val mae=0.78819 mse=1.97560 wape=0.44980 deviance=0.90427 | test_mae 0.70421
+[fold 2] epoch  400 train_nll -1.36744 | train_fsce 0.49545 | val mae=0.80690 mse=2.43834 wape=0.43817 deviance=0.88376 | test_mae 0.75594
+[fold 2] epoch  450 train_nll -1.31132 | train_fsce 0.47527 | val mae=0.89939 mse=3.47057 wape=0.50515 deviance=0.92939 | test_mae 0.83281
+[fold 2] epoch  500 train_nll -1.33539 | train_fsce 0.52212 | val mae=0.80110 mse=2.42442 wape=0.45669 deviance=0.86374 | test_mae 0.73155
+[fold 2] epoch  550 train_nll -1.38103 | train_fsce 0.47404 | val mae=0.75189 mse=2.18416 wape=0.41870 deviance=0.83890 | test_mae 0.69282
+[fold 2] epoch  600 train_nll -1.34135 | train_fsce 0.52305 | val mae=0.72984 mse=1.77315 wape=0.41449 deviance=0.80808 | test_mae 0.71488
+[fold 2] epoch  650 train_nll -1.39239 | train_fsce 0.48447 | val mae=0.74364 mse=2.02553 wape=0.40833 deviance=0.80932 | test_mae 0.68704
+[fold 2] epoch  700 train_nll -1.41579 | train_fsce 0.47479 | val mae=0.73682 mse=1.98891 wape=0.42018 deviance=0.84113 | test_mae 0.69895
+[fold 2] epoch  750 train_nll -1.43275 | train_fsce 0.48803 | val mae=0.71708 mse=1.77181 wape=0.40610 deviance=0.81320 | test_mae 0.69429
+[fold 2] epoch  800 train_nll -1.40335 | train_fsce 0.48653 | val mae=0.71762 mse=1.72091 wape=0.41376 deviance=0.79678 | test_mae 0.69687
+[fold 2] epoch  850 train_nll -1.42772 | train_fsce 0.51338 | val mae=0.68286 mse=1.58309 wape=0.37927 deviance=0.74486 | test_mae 0.68408
+[fold 2] epoch  900 train_nll -1.39042 | train_fsce 0.50592 | val mae=0.74299 mse=2.15181 wape=0.41953 deviance=0.81613 | test_mae 0.72561
+[fold 2] epoch  950 train_nll -1.44147 | train_fsce 0.50123 | val mae=0.69896 mse=1.66909 wape=0.39539 deviance=0.78912 | test_mae 0.70062
+[fold 2] epoch 1000 train_nll -1.46419 | train_fsce 0.48740 | val mae=0.69591 mse=1.67275 wape=0.38464 deviance=0.81646 | test_mae 0.69222
+[fold 2] epoch 1050 train_nll -1.46873 | train_fsce 0.48633 | val mae=0.73011 mse=1.91056 wape=0.40420 deviance=0.82612 | test_mae 0.70076
+[fold 2] epoch 1100 train_nll -1.48668 | train_fsce 0.48476 | val mae=0.72675 mse=1.89070 wape=0.40483 deviance=0.85944 | test_mae 0.71395
+[fold 2] epoch 1150 train_nll -1.49879 | train_fsce 0.48033 | val mae=0.72416 mse=1.95665 wape=0.40126 deviance=0.86505 | test_mae 0.72823
+[fold 2] epoch 1200 train_nll -1.51069 | train_fsce 0.47053 | val mae=0.72185 mse=1.89745 wape=0.40559 deviance=0.87750 | test_mae 0.73928
+[fold 2] epoch 1250 train_nll -1.51569 | train_fsce 0.48376 | val mae=0.71977 mse=1.89275 wape=0.39968 deviance=0.91770 | test_mae 0.75329
+[fold 2] epoch 1300 train_nll -1.52582 | train_fsce 0.48027 | val mae=0.72112 mse=1.89800 wape=0.40549 deviance=0.93960 | test_mae 0.74403
+[fold 2] epoch 1350 train_nll -1.53895 | train_fsce 0.49907 | val mae=0.73087 mse=2.00050 wape=0.40840 deviance=0.98211 | test_mae 0.74376
+[fold 2] epoch 1400 train_nll -1.53742 | train_fsce 0.49221 | val mae=0.74157 mse=2.01096 wape=0.41694 deviance=1.00663 | test_mae 0.74981
+[fold 2] epoch 1450 train_nll -1.55433 | train_fsce 0.46611 | val mae=0.75746 mse=2.19001 wape=0.42024 deviance=1.05532 | test_mae 0.77395
+[fold 2] epoch 1500 train_nll -1.55798 | train_fsce 0.45716 | val mae=0.75671 mse=2.27244 wape=0.41661 deviance=1.10170 | test_mae 0.77971
+[fold 2] epoch 1550 train_nll -1.56895 | train_fsce 0.49176 | val mae=0.75035 mse=2.24475 wape=0.41919 deviance=1.13080 | test_mae 0.77704
+[fold 2] epoch 1600 train_nll -1.57270 | train_fsce 0.47487 | val mae=0.76239 mse=2.31662 wape=0.42491 deviance=1.14246 | test_mae 0.78639
+[fold 2] epoch 1650 train_nll -1.57903 | train_fsce 0.45467 | val mae=0.76794 mse=2.33249 wape=0.42659 deviance=1.17107 | test_mae 0.79455
+[fold 2] epoch 1700 train_nll -1.58542 | train_fsce 0.46363 | val mae=0.76788 mse=2.31994 wape=0.42601 deviance=1.18825 | test_mae 0.80843
+[fold 2] epoch 1750 train_nll -1.58893 | train_fsce 0.45660 | val mae=0.79300 mse=2.53457 wape=0.43982 deviance=1.24379 | test_mae 0.80687
+[fold 2] epoch 1800 train_nll -1.59392 | train_fsce 0.48586 | val mae=0.76943 mse=2.34504 wape=0.42682 deviance=1.23536 | test_mae 0.80813
+[fold 2] epoch 1850 train_nll -1.59774 | train_fsce 0.47802 | val mae=0.78666 mse=2.50673 wape=0.43628 deviance=1.28012 | test_mae 0.82006
+[fold 2] epoch 1900 train_nll -1.59577 | train_fsce 0.46671 | val mae=0.79085 mse=2.61332 wape=0.43778 deviance=1.27799 | test_mae 0.81864
+[fold 2] epoch 1950 train_nll -1.60139 | train_fsce 0.49531 | val mae=0.79906 mse=2.58937 wape=0.44349 deviance=1.31989 | test_mae 0.81352
+[fold 2] epoch 2000 train_nll -1.60480 | train_fsce 0.47172 | val mae=0.81571 mse=2.76876 wape=0.45210 deviance=1.34769 | test_mae 0.82318
+[fold 2] ckpt[mae] epoch 1018，val_mae 0.66972 → test mae=0.69636 mse=1.97259 wape=0.38508 deviance=0.81148
+[fold 2] ckpt[mse] epoch 807，val_mse 1.45442 → test mae=0.69129 mse=1.59267 wape=0.38960 deviance=0.76670
+[fold 2] ckpt[wape] epoch 1018，val_wape 0.37071 → test mae=0.69636 mse=1.97259 wape=0.38508 deviance=0.81148
+[fold 2] ckpt[deviance] epoch 850，val_deviance 0.74486 → test mae=0.68408 mse=1.62104 wape=0.38184 deviance=0.71677
+
+===== fold 3/5 =====
+split：train 789 / val 197 / test 247
+TF-IDF Weighted FSCE graph：10182 條邊，a=1.5769 b=0.8951
+[fold 3] epoch    1 train_nll -0.05289 | train_fsce 3.37133 | val mae=1.62366 mse=8.70563 wape=1.00587 deviance=2.09796 | test_mae 1.57142
+[fold 3] epoch   50 train_nll -1.23966 | train_fsce 0.54967 | val mae=0.86577 mse=2.63242 wape=0.47147 deviance=0.98667 | test_mae 0.81482
+[fold 3] epoch  100 train_nll -1.28170 | train_fsce 0.48792 | val mae=0.80668 mse=2.18486 wape=0.44971 deviance=0.93631 | test_mae 0.76046
+[fold 3] epoch  150 train_nll -1.32467 | train_fsce 0.47340 | val mae=0.80846 mse=2.05929 wape=0.45218 deviance=0.90744 | test_mae 0.74632
+[fold 3] epoch  200 train_nll -1.33169 | train_fsce 0.46731 | val mae=0.78207 mse=2.16034 wape=0.43607 deviance=0.89593 | test_mae 0.71344
+[fold 3] epoch  250 train_nll -1.37065 | train_fsce 0.44894 | val mae=0.75059 mse=2.00020 wape=0.41499 deviance=0.88181 | test_mae 0.67538
+[fold 3] epoch  300 train_nll -1.34695 | train_fsce 0.47224 | val mae=0.85367 mse=2.41455 wape=0.48103 deviance=1.00974 | test_mae 0.81886
+[fold 3] epoch  350 train_nll -1.32017 | train_fsce 0.48560 | val mae=0.80836 mse=2.18002 wape=0.45733 deviance=0.90811 | test_mae 0.74717
+[fold 3] epoch  400 train_nll -1.38745 | train_fsce 0.46387 | val mae=0.75484 mse=2.13679 wape=0.40763 deviance=0.89590 | test_mae 0.68294
+[fold 3] epoch  450 train_nll -1.40964 | train_fsce 0.47578 | val mae=0.77258 mse=2.10245 wape=0.42328 deviance=0.87458 | test_mae 0.69021
+[fold 3] epoch  500 train_nll -1.40082 | train_fsce 0.49022 | val mae=0.79121 mse=2.34897 wape=0.42552 deviance=0.87591 | test_mae 0.70433
+[fold 3] epoch  550 train_nll -1.43014 | train_fsce 0.47410 | val mae=0.73547 mse=1.87008 wape=0.40322 deviance=0.83518 | test_mae 0.68881
+[fold 3] epoch  600 train_nll -1.41200 | train_fsce 0.47873 | val mae=0.78996 mse=2.32567 wape=0.43703 deviance=0.93296 | test_mae 0.69558
+[fold 3] epoch  650 train_nll -1.44446 | train_fsce 0.48566 | val mae=0.74536 mse=2.01660 wape=0.40215 deviance=0.83701 | test_mae 0.71376
+[fold 3] epoch  700 train_nll -1.45093 | train_fsce 0.47344 | val mae=0.77309 mse=2.31201 wape=0.41624 deviance=0.85386 | test_mae 0.70860
+[fold 3] epoch  750 train_nll -1.46431 | train_fsce 0.46005 | val mae=0.76118 mse=2.20786 wape=0.41072 deviance=0.88684 | test_mae 0.70708
+[fold 3] epoch  800 train_nll -1.47645 | train_fsce 0.46466 | val mae=0.75236 mse=2.12349 wape=0.40951 deviance=0.83953 | test_mae 0.70246
+[fold 3] epoch  850 train_nll -1.47967 | train_fsce 0.47908 | val mae=0.76240 mse=2.16521 wape=0.41621 deviance=0.87699 | test_mae 0.71127
+[fold 3] epoch  900 train_nll -1.48924 | train_fsce 0.46006 | val mae=0.78940 mse=2.46157 wape=0.43209 deviance=0.90291 | test_mae 0.70965
+[fold 3] epoch  950 train_nll -1.49183 | train_fsce 0.48429 | val mae=0.76805 mse=2.19214 wape=0.41593 deviance=0.89027 | test_mae 0.71917
+[fold 3] epoch 1000 train_nll -1.50731 | train_fsce 0.48168 | val mae=0.78099 mse=2.31490 wape=0.42391 deviance=0.89588 | test_mae 0.71595
+[fold 3] epoch 1050 train_nll -1.51958 | train_fsce 0.51450 | val mae=0.76254 mse=2.14919 wape=0.41382 deviance=0.86402 | test_mae 0.72425
+[fold 3] epoch 1100 train_nll -1.50692 | train_fsce 0.49476 | val mae=0.76411 mse=2.25420 wape=0.41595 deviance=0.85646 | test_mae 0.72903
+[fold 3] epoch 1150 train_nll -1.51881 | train_fsce 0.48553 | val mae=0.78213 mse=2.42559 wape=0.42555 deviance=0.92403 | test_mae 0.77231
+[fold 3] epoch 1200 train_nll -1.53632 | train_fsce 0.49261 | val mae=0.78063 mse=2.37509 wape=0.42808 deviance=0.93788 | test_mae 0.75860
+[fold 3] epoch 1250 train_nll -1.53440 | train_fsce 0.46924 | val mae=0.79949 mse=2.56225 wape=0.43131 deviance=0.98130 | test_mae 0.76415
+[fold 3] epoch 1300 train_nll -1.54867 | train_fsce 0.48134 | val mae=0.80829 mse=2.64382 wape=0.43827 deviance=1.01194 | test_mae 0.76566
+[fold 3] epoch 1350 train_nll -1.54797 | train_fsce 0.48244 | val mae=0.81937 mse=2.64431 wape=0.44810 deviance=1.06196 | test_mae 0.77591
+[fold 3] epoch 1400 train_nll -1.55507 | train_fsce 0.44122 | val mae=0.82468 mse=2.59634 wape=0.45203 deviance=1.07689 | test_mae 0.78691
+[fold 3] epoch 1450 train_nll -1.56067 | train_fsce 0.49008 | val mae=0.83060 mse=2.69522 wape=0.45331 deviance=1.11501 | test_mae 0.78769
+[fold 3] epoch 1500 train_nll -1.57569 | train_fsce 0.49669 | val mae=0.82612 mse=2.70877 wape=0.45020 deviance=1.15411 | test_mae 0.77289
+[fold 3] epoch 1550 train_nll -1.57864 | train_fsce 0.47577 | val mae=0.83931 mse=2.71322 wape=0.46194 deviance=1.13316 | test_mae 0.80575
+[fold 3] epoch 1600 train_nll -1.58100 | train_fsce 0.47309 | val mae=0.82166 mse=2.68320 wape=0.45099 deviance=1.16063 | test_mae 0.80267
+[fold 3] epoch 1650 train_nll -1.58740 | train_fsce 0.47513 | val mae=0.83898 mse=2.90483 wape=0.45801 deviance=1.19685 | test_mae 0.80500
+[fold 3] epoch 1700 train_nll -1.58902 | train_fsce 0.47341 | val mae=0.83781 mse=2.84072 wape=0.46022 deviance=1.21167 | test_mae 0.81580
+[fold 3] epoch 1750 train_nll -1.59420 | train_fsce 0.47507 | val mae=0.85139 mse=2.87990 wape=0.46719 deviance=1.22846 | test_mae 0.82958
+[fold 3] epoch 1800 train_nll -1.59708 | train_fsce 0.50087 | val mae=0.84170 mse=2.94057 wape=0.46172 deviance=1.26495 | test_mae 0.83285
+[fold 3] epoch 1850 train_nll -1.60097 | train_fsce 0.46121 | val mae=0.84608 mse=2.87057 wape=0.46480 deviance=1.27048 | test_mae 0.83808
+[fold 3] epoch 1900 train_nll -1.60057 | train_fsce 0.47172 | val mae=0.85660 mse=2.97696 wape=0.47046 deviance=1.28380 | test_mae 0.85406
+[fold 3] epoch 1950 train_nll -1.60381 | train_fsce 0.47047 | val mae=0.87723 mse=3.24639 wape=0.48124 deviance=1.31158 | test_mae 0.87077
+[fold 3] epoch 2000 train_nll -1.60349 | train_fsce 0.47721 | val mae=0.87768 mse=3.28686 wape=0.48443 deviance=1.33709 | test_mae 0.85955
+[fold 3] ckpt[mae] epoch 547，val_mae 0.72203 → test mae=0.67202 mse=1.57913 wape=0.38228 deviance=0.74783
+[fold 3] ckpt[mse] epoch 208，val_mse 1.80579 → test mae=0.75921 mse=1.86398 wape=0.43204 deviance=0.83204
+[fold 3] ckpt[wape] epoch 547，val_wape 0.39318 → test mae=0.67202 mse=1.57913 wape=0.38228 deviance=0.74783
+[fold 3] ckpt[deviance] epoch 625，val_deviance 0.78524 → test mae=0.68906 mse=1.74333 wape=0.38974 deviance=0.78401
+
+===== fold 4/5 =====
+split：train 789 / val 197 / test 247
+TF-IDF Weighted FSCE graph：10152 條邊，a=1.5769 b=0.8951
+[fold 4] epoch    1 train_nll -0.16913 | train_fsce 2.78322 | val mae=1.44368 mse=7.83045 wape=0.84734 deviance=2.00446 | test_mae 1.36737
+[fold 4] epoch   50 train_nll -1.22152 | train_fsce 0.49717 | val mae=1.00429 mse=4.10459 wape=0.52816 deviance=1.04961 | test_mae 0.93701
+[fold 4] epoch  100 train_nll -1.28424 | train_fsce 0.48549 | val mae=0.77539 mse=1.88051 wape=0.42955 deviance=0.87185 | test_mae 0.72870
+[fold 4] epoch  150 train_nll -1.30552 | train_fsce 0.49357 | val mae=0.80778 mse=2.44588 wape=0.43650 deviance=0.87549 | test_mae 0.73101
+[fold 4] epoch  200 train_nll -1.33067 | train_fsce 0.46144 | val mae=0.76805 mse=2.07501 wape=0.41570 deviance=0.83971 | test_mae 0.71825
+[fold 4] epoch  250 train_nll -1.31630 | train_fsce 0.46467 | val mae=0.81729 mse=2.57733 wape=0.43645 deviance=0.84728 | test_mae 0.77755
+[fold 4] epoch  300 train_nll -1.35926 | train_fsce 0.45534 | val mae=0.77458 mse=2.22868 wape=0.42371 deviance=0.80856 | test_mae 0.69685
+[fold 4] epoch  350 train_nll -1.37091 | train_fsce 0.49385 | val mae=0.77203 mse=2.61174 wape=0.41369 deviance=0.80547 | test_mae 0.70150
+[fold 4] epoch  400 train_nll -1.37438 | train_fsce 0.47151 | val mae=0.78145 mse=2.53596 wape=0.41915 deviance=0.80750 | test_mae 0.71413
+[fold 4] epoch  450 train_nll -1.32555 | train_fsce 0.50217 | val mae=0.80627 mse=2.81458 wape=0.42654 deviance=0.85603 | test_mae 0.73920
+[fold 4] epoch  500 train_nll -1.35644 | train_fsce 0.46844 | val mae=0.76058 mse=2.18280 wape=0.41632 deviance=0.80022 | test_mae 0.72856
+[fold 4] epoch  550 train_nll -1.31065 | train_fsce 0.49614 | val mae=0.80791 mse=2.55955 wape=0.44154 deviance=0.89819 | test_mae 0.71038
+[fold 4] epoch  600 train_nll -1.35257 | train_fsce 0.48900 | val mae=0.88409 mse=3.52299 wape=0.46962 deviance=0.88718 | test_mae 0.78793
+[fold 4] epoch  650 train_nll -1.36160 | train_fsce 0.47445 | val mae=0.75919 mse=2.09109 wape=0.40873 deviance=0.82830 | test_mae 0.69367
+[fold 4] epoch  700 train_nll -1.36980 | train_fsce 0.47419 | val mae=0.78764 mse=2.31262 wape=0.42212 deviance=0.83438 | test_mae 0.71254
+[fold 4] epoch  750 train_nll -1.39475 | train_fsce 0.49889 | val mae=0.77665 mse=2.34233 wape=0.43002 deviance=0.83348 | test_mae 0.70630
+[fold 4] epoch  800 train_nll -1.42994 | train_fsce 0.48548 | val mae=0.77008 mse=2.39687 wape=0.42328 deviance=0.83917 | test_mae 0.71732
+[fold 4] epoch  850 train_nll -1.41193 | train_fsce 0.46209 | val mae=0.77622 mse=2.68079 wape=0.41801 deviance=0.87811 | test_mae 0.74121
+[fold 4] epoch  900 train_nll -1.41004 | train_fsce 0.45512 | val mae=0.82465 mse=2.84754 wape=0.44583 deviance=0.97967 | test_mae 0.76385
+[fold 4] epoch  950 train_nll -1.39404 | train_fsce 0.48462 | val mae=0.79034 mse=2.55174 wape=0.42582 deviance=0.85490 | test_mae 0.72504
+[fold 4] epoch 1000 train_nll -1.42589 | train_fsce 0.48849 | val mae=0.80848 mse=2.52214 wape=0.43497 deviance=0.90573 | test_mae 0.75089
+[fold 4] epoch 1050 train_nll -1.44638 | train_fsce 0.49981 | val mae=0.77940 mse=2.45727 wape=0.41652 deviance=0.95581 | test_mae 0.72038
+[fold 4] epoch 1100 train_nll -1.46530 | train_fsce 0.47512 | val mae=0.77375 mse=2.29646 wape=0.42052 deviance=0.96252 | test_mae 0.73271
+[fold 4] epoch 1150 train_nll -1.46963 | train_fsce 0.47914 | val mae=0.75442 mse=2.13497 wape=0.41739 deviance=0.95672 | test_mae 0.73344
+[fold 4] epoch 1200 train_nll -1.48720 | train_fsce 0.47064 | val mae=0.77161 mse=2.26695 wape=0.42420 deviance=0.99566 | test_mae 0.74766
+[fold 4] epoch 1250 train_nll -1.49514 | train_fsce 0.46024 | val mae=0.77015 mse=2.17070 wape=0.42315 deviance=1.01949 | test_mae 0.73480
+[fold 4] epoch 1300 train_nll -1.49910 | train_fsce 0.46299 | val mae=0.81111 mse=2.59039 wape=0.44624 deviance=1.11889 | test_mae 0.75378
+[fold 4] epoch 1350 train_nll -1.50541 | train_fsce 0.47195 | val mae=0.79257 mse=2.39131 wape=0.43958 deviance=1.09534 | test_mae 0.75872
+[fold 4] epoch 1400 train_nll -1.51877 | train_fsce 0.47742 | val mae=0.78568 mse=2.31462 wape=0.43798 deviance=1.13234 | test_mae 0.75177
+[fold 4] epoch 1450 train_nll -1.52602 | train_fsce 0.45414 | val mae=0.80891 mse=2.55004 wape=0.45140 deviance=1.16561 | test_mae 0.77176
+[fold 4] epoch 1500 train_nll -1.53287 | train_fsce 0.47832 | val mae=0.82222 mse=2.73235 wape=0.45087 deviance=1.22427 | test_mae 0.77075
+[fold 4] epoch 1550 train_nll -1.53889 | train_fsce 0.47132 | val mae=0.81837 mse=2.48894 wape=0.44954 deviance=1.21699 | test_mae 0.78128
+[fold 4] epoch 1600 train_nll -1.54492 | train_fsce 0.48386 | val mae=0.83062 mse=2.66633 wape=0.45978 deviance=1.27993 | test_mae 0.80482
+[fold 4] epoch 1650 train_nll -1.54342 | train_fsce 0.46587 | val mae=0.82431 mse=2.63557 wape=0.45369 deviance=1.29233 | test_mae 0.79822
+[fold 4] epoch 1700 train_nll -1.55588 | train_fsce 0.46444 | val mae=0.84581 mse=2.85953 wape=0.46361 deviance=1.33016 | test_mae 0.82363
+[fold 4] epoch 1750 train_nll -1.55620 | train_fsce 0.47152 | val mae=0.84544 mse=2.68226 wape=0.46371 deviance=1.36944 | test_mae 0.81895
+[fold 4] epoch 1800 train_nll -1.56170 | train_fsce 0.48901 | val mae=0.86039 mse=2.99526 wape=0.47143 deviance=1.40806 | test_mae 0.82674
+[fold 4] epoch 1850 train_nll -1.56533 | train_fsce 0.45079 | val mae=0.87199 mse=3.07932 wape=0.47385 deviance=1.43756 | test_mae 0.83004
+[fold 4] epoch 1900 train_nll -1.56918 | train_fsce 0.49179 | val mae=0.88052 mse=3.14302 wape=0.47992 deviance=1.47028 | test_mae 0.83988
+[fold 4] epoch 1950 train_nll -1.56948 | train_fsce 0.46845 | val mae=0.89434 mse=3.23142 wape=0.49234 deviance=1.48144 | test_mae 0.85985
+[fold 4] epoch 2000 train_nll -1.57305 | train_fsce 0.47597 | val mae=0.88986 mse=3.27417 wape=0.48143 deviance=1.51485 | test_mae 0.85945
+[fold 4] ckpt[mae] epoch 509，val_mae 0.71966 → test mae=0.68526 mse=1.54625 wape=0.38981 deviance=0.71777
+[fold 4] ckpt[mse] epoch 213，val_mse 1.65508 → test mae=0.71237 mse=1.75500 wape=0.40094 deviance=0.78370
+[fold 4] ckpt[wape] epoch 725，val_wape 0.39211 → test mae=0.68808 mse=1.59868 wape=0.39024 deviance=0.77180
+[fold 4] ckpt[deviance] epoch 389，val_deviance 0.76104 → test mae=0.67051 mse=1.66903 wape=0.37544 deviance=0.73826
+
+===== fold 5/5 =====
+split：train 789 / val 197 / test 247
+TF-IDF Weighted FSCE graph：10100 條邊，a=1.5769 b=0.8951
+[fold 5] epoch    1 train_nll 0.10486 | train_fsce 2.46221 | val mae=1.46130 mse=7.42680 wape=0.86197 deviance=1.98343 | test_mae 1.35794
+[fold 5] epoch   50 train_nll -1.18909 | train_fsce 0.53325 | val mae=0.86355 mse=2.80797 wape=0.48567 deviance=1.00117 | test_mae 0.81103
+[fold 5] epoch  100 train_nll -1.28206 | train_fsce 0.50536 | val mae=0.75643 mse=1.84403 wape=0.42297 deviance=0.83779 | test_mae 0.69999
+[fold 5] epoch  150 train_nll -1.30062 | train_fsce 0.47052 | val mae=0.82609 mse=2.90533 wape=0.43644 deviance=0.89872 | test_mae 0.74976
+[fold 5] epoch  200 train_nll -1.35169 | train_fsce 0.46397 | val mae=0.75069 mse=1.83932 wape=0.41507 deviance=0.81208 | test_mae 0.66393
+[fold 5] epoch  250 train_nll -1.34724 | train_fsce 0.46703 | val mae=0.74116 mse=1.79690 wape=0.41103 deviance=0.81422 | test_mae 0.66446
+[fold 5] epoch  300 train_nll -1.35854 | train_fsce 0.48729 | val mae=0.76212 mse=2.05857 wape=0.41351 deviance=0.77114 | test_mae 0.68336
+[fold 5] epoch  350 train_nll -1.34571 | train_fsce 0.48946 | val mae=0.73143 mse=1.67655 wape=0.40068 deviance=0.79859 | test_mae 0.69054
+[fold 5] epoch  400 train_nll -1.39308 | train_fsce 0.49955 | val mae=0.74002 mse=1.85376 wape=0.40567 deviance=0.79898 | test_mae 0.68621
+[fold 5] epoch  450 train_nll -1.30662 | train_fsce 0.53582 | val mae=0.76112 mse=2.04549 wape=0.42178 deviance=0.86158 | test_mae 0.73145
+[fold 5] epoch  500 train_nll -1.38193 | train_fsce 0.48639 | val mae=0.74632 mse=2.04911 wape=0.40163 deviance=0.79722 | test_mae 0.69987
+[fold 5] epoch  550 train_nll -1.34842 | train_fsce 0.49157 | val mae=0.75062 mse=1.77152 wape=0.41888 deviance=0.82910 | test_mae 0.71212
+[fold 5] epoch  600 train_nll -1.39252 | train_fsce 0.49662 | val mae=0.72939 mse=1.89017 wape=0.39641 deviance=0.81536 | test_mae 0.67553
+[fold 5] epoch  650 train_nll -1.41414 | train_fsce 0.46949 | val mae=0.75309 mse=2.03517 wape=0.40596 deviance=0.84893 | test_mae 0.67364
+[fold 5] epoch  700 train_nll -1.34115 | train_fsce 0.48247 | val mae=0.79090 mse=2.14992 wape=0.44219 deviance=0.86420 | test_mae 0.72429
+[fold 5] epoch  750 train_nll -1.39201 | train_fsce 0.48842 | val mae=0.80974 mse=2.55675 wape=0.44655 deviance=0.89863 | test_mae 0.69543
+[fold 5] epoch  800 train_nll -1.42564 | train_fsce 0.46583 | val mae=0.77748 mse=2.38605 wape=0.42471 deviance=0.87945 | test_mae 0.69505
+[fold 5] epoch  850 train_nll -1.44198 | train_fsce 0.47755 | val mae=0.74202 mse=1.91910 wape=0.40799 deviance=0.87072 | test_mae 0.67112
+[fold 5] epoch  900 train_nll -1.44792 | train_fsce 0.49635 | val mae=0.75836 mse=2.09575 wape=0.41258 deviance=0.86945 | test_mae 0.69821
+[fold 5] epoch  950 train_nll -1.46100 | train_fsce 0.48559 | val mae=0.76752 mse=2.14398 wape=0.42576 deviance=0.93534 | test_mae 0.70587
+[fold 5] epoch 1000 train_nll -1.45500 | train_fsce 0.48948 | val mae=0.76748 mse=2.17136 wape=0.41973 deviance=0.91663 | test_mae 0.70035
+[fold 5] epoch 1050 train_nll -1.47013 | train_fsce 0.48270 | val mae=0.80646 mse=2.62562 wape=0.43689 deviance=0.99536 | test_mae 0.70649
+[fold 5] epoch 1100 train_nll -1.49389 | train_fsce 0.46985 | val mae=0.80116 mse=2.53147 wape=0.43998 deviance=0.99974 | test_mae 0.69455
+[fold 5] epoch 1150 train_nll -1.50445 | train_fsce 0.49098 | val mae=0.81673 mse=2.75201 wape=0.45030 deviance=1.03027 | test_mae 0.69625
+[fold 5] epoch 1200 train_nll -1.49810 | train_fsce 0.48423 | val mae=0.83297 mse=2.84183 wape=0.45810 deviance=1.08672 | test_mae 0.70591
+[fold 5] epoch 1250 train_nll -1.51177 | train_fsce 0.51252 | val mae=0.83815 mse=2.86590 wape=0.46054 deviance=1.09289 | test_mae 0.69642
+[fold 5] epoch 1300 train_nll -1.51283 | train_fsce 0.47612 | val mae=0.85846 mse=3.26973 wape=0.46470 deviance=1.13879 | test_mae 0.75954
+[fold 5] epoch 1350 train_nll -1.53193 | train_fsce 0.46393 | val mae=0.85941 mse=3.18723 wape=0.46370 deviance=1.13601 | test_mae 0.74501
+[fold 5] epoch 1400 train_nll -1.53663 | train_fsce 0.46448 | val mae=0.85738 mse=2.88518 wape=0.46888 deviance=1.17922 | test_mae 0.74377
+[fold 5] epoch 1450 train_nll -1.54531 | train_fsce 0.48329 | val mae=0.87185 mse=3.19727 wape=0.47315 deviance=1.23210 | test_mae 0.74681
+[fold 5] epoch 1500 train_nll -1.54515 | train_fsce 0.47435 | val mae=0.86316 mse=3.23273 wape=0.46618 deviance=1.20224 | test_mae 0.74965
+[fold 5] epoch 1550 train_nll -1.55581 | train_fsce 0.46465 | val mae=0.87687 mse=3.25321 wape=0.47545 deviance=1.30189 | test_mae 0.76187
+[fold 5] epoch 1600 train_nll -1.55796 | train_fsce 0.46012 | val mae=0.88830 mse=3.33091 wape=0.48673 deviance=1.30232 | test_mae 0.78012
+[fold 5] epoch 1650 train_nll -1.56101 | train_fsce 0.47232 | val mae=0.89979 mse=3.53613 wape=0.48501 deviance=1.35110 | test_mae 0.78967
+[fold 5] epoch 1700 train_nll -1.56748 | train_fsce 0.45885 | val mae=0.89100 mse=3.43133 wape=0.48607 deviance=1.34784 | test_mae 0.78601
+[fold 5] epoch 1750 train_nll -1.57066 | train_fsce 0.48052 | val mae=0.89411 mse=3.53027 wape=0.48670 deviance=1.36273 | test_mae 0.79023
+[fold 5] epoch 1800 train_nll -1.57455 | train_fsce 0.48206 | val mae=0.91295 mse=3.83893 wape=0.49426 deviance=1.42240 | test_mae 0.80479
+[fold 5] epoch 1850 train_nll -1.57590 | train_fsce 0.47116 | val mae=0.90327 mse=3.69167 wape=0.48936 deviance=1.42199 | test_mae 0.79385
+[fold 5] epoch 1900 train_nll -1.57750 | train_fsce 0.46744 | val mae=0.90756 mse=3.77720 wape=0.48754 deviance=1.45784 | test_mae 0.80951
+[fold 5] epoch 1950 train_nll -1.58168 | train_fsce 0.45227 | val mae=0.93144 mse=4.13352 wape=0.50171 deviance=1.51121 | test_mae 0.81395
+[fold 5] epoch 2000 train_nll -1.58286 | train_fsce 0.47258 | val mae=0.93607 mse=4.28479 wape=0.50093 deviance=1.53622 | test_mae 0.80854
+[fold 5] ckpt[mae] epoch 371，val_mae 0.69418 → test mae=0.64123 mse=1.43344 wape=0.36184 deviance=0.71768
+[fold 5] ckpt[mse] epoch 123，val_mse 1.47948 → test mae=0.68544 mse=1.44156 wape=0.39092 deviance=0.78014
+[fold 5] ckpt[wape] epoch 371，val_wape 0.38140 → test mae=0.64123 mse=1.43344 wape=0.36184 deviance=0.71768
+[fold 5] ckpt[deviance] epoch 298，val_deviance 0.75690 → test mae=0.65339 mse=1.29348 wape=0.37002 deviance=0.72848
+
+===== 5-fold test 結果（每個指標取自己那份 checkpoint）=====
+fold           mae         mse        wape    deviance
+1          0.66790     1.37060     0.36577     0.74525
+2          0.69636     1.59267     0.38508     0.71677
+3          0.67202     1.86398     0.38228     0.78401
+4          0.68526     1.75500     0.39024     0.73826
+5          0.64123     1.44156     0.36184     0.72848
+------------------------------------------------------
+mean       0.67255     1.60476     0.37704     0.74255
+std        0.01861     0.18514     0.01117     0.02283
+
 done

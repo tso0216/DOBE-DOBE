@@ -4,9 +4,8 @@ import sys
 import torch
 import torch.nn as nn
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
-from cfg import HIDDEN
+from model.v2_deep_vae.cfg import HIDDEN
 from common.dataset import N_CAT
 
 
@@ -93,7 +92,15 @@ def mse(log_lam, x):
     return (x - lam).pow(2).mean(dim=1)
 
 
-METRICS = {"wape": wape, "mae": mae, "mse": mse}   # cfg.METRIC 選哪個就用哪個當評估指標
+def deviance(log_lam, x):
+    """log_lam：(B,N_CAT) 重建的 log λ。x：(B,N_CAT) 乾淨 count。回傳 (B,) 各 patch 的 Poisson deviance。"""
+    lam = torch.exp(log_lam)
+    xlogx = torch.where(x > 0, x * torch.log(x.clamp_min(1e-8)), torch.zeros_like(x))
+    d = 2 * (xlogx - x * log_lam - x + lam)
+    return d.mean(dim=1)
+
+
+METRICS = {"wape": wape, "mae": mae, "mse": mse, "deviance": deviance}   # cfg.CKPT_METRICS 各自存一份 checkpoint
 
 
 def kl_divergence(mu, logvar):

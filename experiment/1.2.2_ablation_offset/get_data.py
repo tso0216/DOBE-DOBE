@@ -10,7 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, ROOT)
 from common.dataset import CATEGORIES, N_CAT, PATCHES, make_split  # noqa: E402
-from model.v2_ddae_base.dataset import Patches  # noqa: E402
+from model.other.v2_ddae_base.dataset import Patches  # noqa: E402
 
 MODEL_DIR = os.path.join(HERE, "..", "model")
 ADD_AMOUNT = [1, 2, 3]
@@ -18,12 +18,12 @@ SEED = 0
 
 # (權重檔名，圖上顯示的標籤)
 MODELS = [
-    ("ae.pt", "AE"),
-    ("ae_fsce.pt", "AE+fsce"),
-    ("ae_tfidf.pt", "AE+fsce+tfidf"),
-    ("dae.pt", "DAE"),
-    ("dae_fsce.pt", "DAE+fsce"),
-    ("dae_tfidf.pt", "DAE+fsce+tfidf (Ours)"),
+    ("ae/fold3_mae.pt", "AE"),
+    ("ae_fsce/fold3_mae.pt", "AE+fsce"),
+    ("ae_fsce_tfidf/fold3_mae.pt", "AE+fsce+tfidf"),
+    ("dae.pt/fold3_mae", "DAE"),
+    ("dae_fsce/fold3_mae.pt", "DAE+fsce"),
+    ("dae_fsce_tfidf/fold3_mae.pt", "DAE+fsce+tfidf (Ours)"),
 ]
 
 

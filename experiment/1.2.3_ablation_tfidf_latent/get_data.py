@@ -13,11 +13,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
 sys.path.insert(0, ROOT)
 from common.dataset import N_CAT, PATCHES  # noqa: E402
-from model.v2_ddae_base.dataset import Patches  # noqa: E402
+from model.other.v2_ddae_base.dataset import Patches  # noqa: E402
 from model.v3_ddae_tfidf.model import compute_tfidf_features  # noqa: E402
 
 MODEL_DIR = os.path.join(HERE, "..", "model")
-WEIGHT_NAME = "dae_tfidf.pt"
+WEIGHT_NAME = "ddae_fsce_tfidf/fold3_mae.pt"
 N_CLUSTERS = 8
 SEED = 0
 

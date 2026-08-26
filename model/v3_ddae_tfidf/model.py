@@ -8,7 +8,6 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.neighbors import NearestNeighbors
 from umap.umap_ import find_ab_params, fuzzy_simplicial_set
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.abspath(f"{os.path.dirname(__file__)}/../.."))
 from model.v3_ddae_tfidf.cfg import HIDDEN, N_NEIGHBORS
 from common.dataset import N_CAT
@@ -76,7 +75,14 @@ def mse(log_lam, x):
     return (x - lam).pow(2).mean(dim=1)
 
 
-METRICS = {"wape": wape, "mae": mae, "mse": mse}
+def deviance(log_lam, x):
+    lam = torch.exp(log_lam)
+    xlogx = torch.where(x > 0, x * torch.log(x.clamp_min(1e-8)), torch.zeros_like(x))
+    d = 2 * (xlogx - x * log_lam - x + lam)
+    return d.mean(dim=1)
+
+
+METRICS = {"wape": wape, "mae": mae, "mse": mse, "deviance": deviance}
 
 
 def compute_tfidf_features(x_all_np):
@@ -105,12 +111,12 @@ def build_tfidf_fsce_graph(x_tfidf_tr, n_neighbors=N_NEIGHBORS):
     return edge_i, edge_j, edge_w, a, b
 
 
-def build_fsce_graph(x, n_neighbors=N_NEIGHBORS, metric="euclidean"):
+def build_fsce_graph(x, n_neighbors=N_NEIGHBORS):
     """建 plain（非 TF-IDF 加權）FSCE graph：x 是 log1p count 特徵。"""
-    knn = NearestNeighbors(n_neighbors=n_neighbors, metric=metric).fit(x)
+    knn = NearestNeighbors(n_neighbors=n_neighbors, metric="euclidean").fit(x)
     knn_dists, knn_idx = knn.kneighbors(x)
     graph, _, _ = fuzzy_simplicial_set(
-        x, n_neighbors=n_neighbors, random_state=0, metric=metric,
+        x, n_neighbors=n_neighbors, random_state=0, metric="euclidean",
         knn_indices=knn_idx, knn_dists=knn_dists,
     )
     graph = graph.tocoo()
