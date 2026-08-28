@@ -1,0 +1,121 @@
+model,category,amount,avg_offset
+PCA,Dining and Drinking,1,0.04805651307106018
+PCA,Dining and Drinking,2,0.090108223259449
+PCA,Dining and Drinking,3,0.12774863839149475
+PCA,Retail,1,0.2407185435295105
+PCA,Retail,2,0.4178594648838043
+PCA,Retail,3,0.5606553554534912
+PCA,Nightlife Spot,1,0.3575976490974426
+PCA,Nightlife Spot,2,0.5929921269416809
+PCA,Nightlife Spot,3,0.7716102600097656
+PCA,Community and Government,1,0.02841075137257576
+PCA,Community and Government,2,0.045504286885261536
+PCA,Community and Government,3,0.057819560170173645
+PCA,Travel and Transportation,1,0.22997033596038818
+PCA,Travel and Transportation,2,0.37309274077415466
+PCA,Travel and Transportation,3,0.4783044755458832
+PCA,Business and Professional Services,1,0.08141390234231949
+PCA,Business and Professional Services,2,0.13258858025074005
+PCA,Business and Professional Services,3,0.17035013437271118
+PCA,Landmarks and Outdoors,1,0.08147338032722473
+PCA,Landmarks and Outdoors,2,0.13069017231464386
+PCA,Landmarks and Outdoors,3,0.16622662544250488
+PCA,Arts and Entertainment,1,0.19810540974140167
+PCA,Arts and Entertainment,2,0.3215671181678772
+PCA,Arts and Entertainment,3,0.4122733771800995
+PCA,Health and Medicine,1,0.0024211870040744543
+PCA,Health and Medicine,2,0.003866663435474038
+PCA,Health and Medicine,3,0.00490329135209322
+PCA,Sports and Recreation,1,0.005486251320689917
+PCA,Sports and Recreation,2,0.008723837323486805
+PCA,Sports and Recreation,3,0.011031691916286945
+AE,Dining and Drinking,1,0.15670564770698547
+AE,Dining and Drinking,2,0.30224156379699707
+AE,Dining and Drinking,3,0.44720667600631714
+AE,Retail,1,0.5100566744804382
+AE,Retail,2,0.7663135528564453
+AE,Retail,3,0.9677757024765015
+AE,Nightlife Spot,1,0.48770129680633545
+AE,Nightlife Spot,2,0.9857748746871948
+AE,Nightlife Spot,3,1.5553522109985352
+AE,Community and Government,1,0.5438210368156433
+AE,Community and Government,2,1.1814470291137695
+AE,Community and Government,3,1.7479114532470703
+AE,Travel and Transportation,1,1.490391492843628
+AE,Travel and Transportation,2,2.0444703102111816
+AE,Travel and Transportation,3,2.5262317657470703
+AE,Business and Professional Services,1,0.5388391017913818
+AE,Business and Professional Services,2,1.0486236810684204
+AE,Business and Professional Services,3,1.3230832815170288
+AE,Landmarks and Outdoors,1,0.6430288553237915
+AE,Landmarks and Outdoors,2,1.223496913909912
+AE,Landmarks and Outdoors,3,1.6404304504394531
+AE,Arts and Entertainment,1,0.33693963289260864
+AE,Arts and Entertainment,2,0.7374865412712097
+AE,Arts and Entertainment,3,0.9911909103393555
+AE,Health and Medicine,1,0.596972644329071
+AE,Health and Medicine,2,1.0818997621536255
+AE,Health and Medicine,3,1.390495777130127
+AE,Sports and Recreation,1,0.6302221417427063
+AE,Sports and Recreation,2,1.287308692932129
+AE,Sports and Recreation,3,1.9615963697433472
+VAE,Dining and Drinking,1,0.11023430526256561
+VAE,Dining and Drinking,2,0.21123254299163818
+VAE,Dining and Drinking,3,0.3090743124485016
+VAE,Retail,1,0.2666400969028473
+VAE,Retail,2,0.4848603904247284
+VAE,Retail,3,0.6412366032600403
+VAE,Nightlife Spot,1,0.32659709453582764
+VAE,Nightlife Spot,2,0.6350877285003662
+VAE,Nightlife Spot,3,0.9034304618835449
+VAE,Community and Government,1,0.24736666679382324
+VAE,Community and Government,2,0.4924734830856323
+VAE,Community and Government,3,0.7575029134750366
+VAE,Travel and Transportation,1,0.4238508343696594
+VAE,Travel and Transportation,2,0.8138023614883423
+VAE,Travel and Transportation,3,1.134562373161316
+VAE,Business and Professional Services,1,0.2440049946308136
+VAE,Business and Professional Services,2,0.4118770956993103
+VAE,Business and Professional Services,3,0.5328059196472168
+VAE,Landmarks and Outdoors,1,0.2686816453933716
+VAE,Landmarks and Outdoors,2,0.5124302506446838
+VAE,Landmarks and Outdoors,3,0.8030279278755188
+VAE,Arts and Entertainment,1,0.20725281536579132
+VAE,Arts and Entertainment,2,0.4117683172225952
+VAE,Arts and Entertainment,3,0.6150830388069153
+VAE,Health and Medicine,1,0.1407831609249115
+VAE,Health and Medicine,2,0.2587716281414032
+VAE,Health and Medicine,3,0.35357892513275146
+VAE,Sports and Recreation,1,0.17772430181503296
+VAE,Sports and Recreation,2,0.4076152741909027
+VAE,Sports and Recreation,3,0.649933397769928
+Ours,Dining and Drinking,1,0.17241714894771576
+Ours,Dining and Drinking,2,0.415204256772995
+Ours,Dining and Drinking,3,0.6399582028388977
+Ours,Retail,1,0.6167734861373901
+Ours,Retail,2,1.1703355312347412
+Ours,Retail,3,1.522526741027832
+Ours,Nightlife Spot,1,0.905777633190155
+Ours,Nightlife Spot,2,1.661738395690918
+Ours,Nightlife Spot,3,2.284358501434326
+Ours,Community and Government,1,0.7208312153816223
+Ours,Community and Government,2,1.4136449098587036
+Ours,Community and Government,3,2.2025296688079834
+Ours,Travel and Transportation,1,1.1304123401641846
+Ours,Travel and Transportation,2,1.8249479532241821
+Ours,Travel and Transportation,3,2.4454824924468994
+Ours,Business and Professional Services,1,0.548204779624939
+Ours,Business and Professional Services,2,0.9809067845344543
+Ours,Business and Professional Services,3,1.3326584100723267
+Ours,Landmarks and Outdoors,1,0.6174680590629578
+Ours,Landmarks and Outdoors,2,1.227880835533142
+Ours,Landmarks and Outdoors,3,1.9527229070663452
+Ours,Arts and Entertainment,1,0.619841456413269
+Ours,Arts and Entertainment,2,1.227840542793274
+Ours,Arts and Entertainment,3,1.8249480724334717
+Ours,Health and Medicine,1,0.5955303907394409
+Ours,Health and Medicine,2,1.0787746906280518
+Ours,Health and Medicine,3,1.3995596170425415
+Ours,Sports and Recreation,1,0.8792325854301453
+Ours,Sports and Recreation,2,1.67107093334198
+Ours,Sports and Recreation,3,2.3006503582000732
