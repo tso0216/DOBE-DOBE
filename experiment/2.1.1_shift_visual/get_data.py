@@ -13,7 +13,7 @@ from common.dataset import CATEGORIES, N_CAT, PATCHES, make_split  # noqa: E402
 from model.other.v2_ddae_base.dataset import Patches  # noqa: E402
 
 MODEL_DIR = os.path.join(HERE, "..", "model")
-ADD_AMOUNT = [3]      # 想看多段位移就改成 [1, 2, 3] 之類的遞增清單
+ADD_AMOUNT = [1, 2, 3]  # 每個 POI 類別分別 +1、+2、+3，觀察 latent 位移軌跡
 SEED = 0
 
 # (權重檔名，圖上顯示的標籤)
