@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOBE Latent &amp; Geographic Workbench</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="page">
+
+  <header class="topbar card">
+    <div class="stats">
+      <div class="stat score-stat">
+        <div class="label">S-SCORE</div>
+        <div class="value" id="score-value">–</div>
+        <div class="chip" id="score-chip">Δ +0.000 · Unchanged</div>
+      </div>
+      <div class="stat">
+        <div class="label">ACTIVE PATCH</div>
+        <div class="value" id="patch-value">–</div>
+      </div>
+      <div class="stat">
+        <div class="label">BASE POIS</div>
+        <div class="value" id="base-value">–</div>
+      </div>
+      <div class="stat">
+        <div class="label">ADDED POIS</div>
+        <div class="value" id="added-value">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">ROBUST DISTANCE</div>
+        <div class="value" id="robust-value">–</div>
+        <div class="chip" id="robust-chip">–</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="panels">
+    <section class="card panel">
+      <div class="panel-title">Geographic Region Map</div>
+      <div class="canvas-wrap">
+        <canvas id="geo"></canvas>
+        <div class="zoom-ctl">
+          <button id="geo-zoom-in" title="放大">＋</button>
+          <button id="geo-zoom-out" title="縮小">−</button>
+          <button id="geo-zoom-reset" title="還原視野">⟲</button>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="cell" style="background:rgba(192,57,43,0.35)"></i>Train (locked)</span>
+        <span><i class="cell" style="background:rgba(37,99,235,0.38)"></i>Test</span>
+        <span><i class="sq" style="border-color:#1d4ed8"></i>Selected</span>
+        <span><i class="dot" style="background:#9ca3af"></i>POI (by category)</span>
+      </div>
+    </section>
+
+    <section class="card panel">
+      <div class="panel-title">Latent Space Projection</div>
+      <div class="canvas-wrap"><canvas id="latent"></canvas></div>
+      <div class="legend">
+        <span><i class="dot" style="background:#6b7280"></i>Patches</span>
+        <span><i class="star"></i>Origin</span>
+        <span><i class="dot" style="background:#c0392b"></i>Current</span>
+        <span><i class="line"></i>Trajectory</span>
+      </div>
+    </section>
+
+    <section class="card panel">
+      <div class="panel-title">Spatial POI Map (100m Grid)</div>
+      <div class="canvas-wrap"><canvas id="poi"></canvas></div>
+      <div class="legend">
+        <span><i class="dot" style="background:#4363d8"></i>Base POI</span>
+        <span><i class="x-mark">✕</i>Added POI</span>
+        <span><i class="cellb"></i>Cell Boundary</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="card controls">
+    <div class="cats">
+      <span class="cats-label">Category:</span>
+      <div class="cat-list" id="cat-list"></div>
+    </div>
+    <div class="actions">
+      <button id="btn-random" class="btn primary">+50 Random</button>
+      <button id="btn-undo" class="btn">Undo</button>
+      <button id="btn-reset" class="btn">Reset</button>
+    </div>
+  </footer>
+
+</div>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
