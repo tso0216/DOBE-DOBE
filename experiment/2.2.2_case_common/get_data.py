@@ -115,31 +115,33 @@ def exhaustive_path(model, x0, tree, k, budget, obj):
 
 def main():
     data = Patches(PATCHES)
-    _, _, test_idx = make_split(data.lat, data.lon, seed=SEED)
+    train_idx, val_idx, test_idx = make_split(data.lat, data.lon, seed=SEED)
+    # 參考點集只用 train+val；test patch 只當查詢，不進參考資料庫
+    ref_idx = torch.cat([train_idx, val_idx]).sort().values
     eval_idx = test_idx.numpy()
+    x_ref = data.agg(ref_idx)
     x_test = data.agg(test_idx)
 
     model = load_model(CKPT)
+    z_ref = encode(model, x_ref)
     z_test = encode(model, x_test)
-    score = loo_score(z_test, K)
+    tree = cKDTree(z_ref)
+    ref_score = loo_score(z_ref, K)
+    score = knn_score(tree, z_test, K)
 
     pos = int(np.argmax(score) if PICK == "outlier" else np.argmin(score))
     target = eval_idx[pos]
-
-    role = np.full(len(eval_idx), "other", dtype=object)
-    role[pos] = "target"
 
     bg_path = os.path.join(HERE, "background.csv")
     with open(bg_path, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["patch_id", "z1", "z2", "score", "n_poi", "role"])
-        for j, i in enumerate(eval_idx):
-            w.writerow([i, z_test[j, 0], z_test[j, 1], score[j],
-                        data.n_poi[i], role[j]])
+        for j, i in enumerate(ref_idx.numpy()):
+            w.writerow([i, z_ref[j, 0], z_ref[j, 1], ref_score[j],
+                        data.n_poi[i], "reference"])
+        w.writerow([target, z_test[pos, 0], z_test[pos, 1], score[pos],
+                    data.n_poi[target], "target"])
 
-    # 參考點集扣掉目標自己，否則位移後它的原始位置會被當成鄰居把分數壓低
-    keep = np.arange(len(eval_idx)) != pos
-    tree = cKDTree(z_test[keep])
     path = exhaustive_path(model, x_test[pos], tree, K, B_MAX, OBJ)
 
     out_path = os.path.join(HERE, "data.csv")
@@ -151,8 +153,8 @@ def main():
             w.writerow([step, z[0], z[1], s, gain] + list(x))
 
     print(f"{PICK} patch id={target}，POI 數 {data.n_poi[target]}，"
-          f"原始分數 {path[0][2]:.4f}（test 集 {len(eval_idx)} 個 patch，"
-          f"中位數 {np.median(score):.4f}）")
+          f"原始分數 {path[0][2]:.4f}（test 集 {len(eval_idx)} 個查詢 patch；"
+          f"參考集 train+val {len(ref_idx)} 個 patch，中位數 {np.median(ref_score):.4f}）")
     print("原始組成：" + "、".join(
         f"{CATEGORIES[c]}×{int(v)}" for c, v in enumerate(path[0][0]) if v > 0))
     x0 = path[0][0]
