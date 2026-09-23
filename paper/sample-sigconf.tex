@@ -255,7 +255,7 @@ Within urban geographic information analysis, evaluating the functional composit
 \begin{figure}[htbp]
     \centering
     % Ensure the image file is in the same directory as your .tex file
-    \includegraphics[width=.9\linewidth]{figure/poi_saturation_example.png}
+    \includegraphics[width=.9\linewidth]{figure/fig1.png}
     \caption{Comparison of POI distributions using peer context: a reasonable co-cluster aggregation near a transit hub (left) versus a structural imbalance in a residential alley (right).}
     \label{fig:poi_saturation_example}
 \end{figure}
@@ -292,7 +292,7 @@ These three lines of research provide complementary foundations for the problem 
 According to Figure~\ref{fig:method}, this section consists of the Offline Process for model training and the Online Process for user interaction and evaluation, strictly following the data flow illustrated in the system architecture.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{figure/method}
+    \includegraphics[width=\linewidth]{figure/fig2.png}
     \caption{System architecture illustrating the data flow of the Offline Process for model training and the Online Process for user interaction and evaluation.}
     \label{fig:method}
 \end{figure}
@@ -368,7 +368,7 @@ For the proposed methodology, temporal features (e.g., timezone offsets and UTC 
 To understand the baseline structural context, we analyzed the categorical proportions and spatial distribution of the Foursquare check-in data. As shown in Figure \ref{fig:poi_dist}, the dataset exhibits extreme categorical imbalance. Dining and Drinking heavily dominate the region (41.9\%), followed by Retail (21.3\%), accounting for over 60\% of the data collectively. In contrast, the smallest category, Sports and Recreation, constitutes merely 0.99\%. 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{figure/poi_combined_analysis.png}
+    \includegraphics[width=\linewidth]{figure/fig3.png}
     \caption{Data Observation: (a) POI Category Distribution and (b) POI Spatial Distribution across the target region.}
     \label{fig:poi_dist}
 \end{figure}
@@ -471,7 +471,7 @@ To validate whether TF-IDF improves feature representation, we clustered patches
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{figure/latent.png}
+    \includegraphics[width=\linewidth]{figure/fig4.png}
     \caption{Latent Space Distribution Impact of TF-IDF Preprocessing. The right panel demonstrates improved cluster separability when TF-IDF suppresses overly common POI noise.}
     \label{fig:tfidf_impact}
 \end{figure}
@@ -482,7 +482,7 @@ To validate whether TF-IDF improves feature representation, we clustered patches
 We monitored the topological integrity during training by calculating the neighbor preservation rate, defined as the overlap of the top $k=10$ neighbors between the high-dimensional space and the 2D latent space. Figure \ref{fig:neighbor_preservation} confirms that the preservation rate reliably climbs as training progresses. This indicates that FSCE encourages the model to preserve functional neighbor relationships, so that patches close together in the latent space tend to share comparable functional compositions.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{figure/neighbors.png}
+    \includegraphics[width=\linewidth]{figure/fig5.png}
     \caption{Neighbor Preservation across Training Stages. The steady increase indicates that FSCE anchors the low-dimensional embeddings to high-dimensional contextual realities.}
     \label{fig:neighbor_preservation}
 \end{figure}
@@ -495,7 +495,7 @@ We visually analyzed the latent space offset caused by adding specific POI quant
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{figure/latent_shift_all_steps.png}
+    \includegraphics[width=\linewidth]{figure/fig6.png}
     \caption{Latent Space Trajectory Shift: Tracking the movement of embeddings as 1, 2, or 3 POIs are injected into the input vector.}
     \label{fig:latent_shift}
 \end{figure}
@@ -505,7 +505,7 @@ We visually analyzed the latent space offset caused by adding specific POI quant
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{figure/image.png}
+    \includegraphics[width=\linewidth]{figure/fig7.png}
     \caption{Latent Trajectory and Category Breakdown Comparison. The top row shows a typical patch becoming an outlier due to over-concentration, while the bottom row shows an imbalanced patch achieving structural harmony through supportive POI additions.}
     \label{fig:case_study}
 \end{figure}

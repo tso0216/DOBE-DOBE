@@ -19,7 +19,7 @@
 - [x] **Online 階段拿 test set 當 reference database**（R1-#6）
   - Method 3.2「leave-one-out kNN average latent distance against the test set」需要改成用 train（或 train+val）作為 reference，test set 只用於評估。
   - 已改：論文 Method 文字、`experiment/2.2.{1,2}_*/get_data.py`（reference = train+val）。
-  - 已重跑並更新 `paper/figure/image.png`（由 `experiment/2.2.3_case_combined/draw.py` 產生）與 5.4 內文分數：outlier 0.91→0.17、common 0.08→2.59。
+  - 已重跑並更新 `paper/figure/fig7.png`（由 `experiment/2.2.3_case_combined/draw.py` 產生）與 5.4 內文分數：outlier 0.91→0.17、common 0.08→2.59。
 - [x] **內文交叉引用錯誤**（自行檢查發現）
   - L316：「Section 5.3」的 log(1+x) baseline，Section 5.3 實際上沒有這個比較 → 補上實驗或刪除這句。
   - L376：「TF-IDF preprocessing module discussed in Section 2」→ 應為 Section 3。
