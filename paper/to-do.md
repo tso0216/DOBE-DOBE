@@ -13,7 +13,7 @@
   - 順便修正圖中錯字 `Calcuate` → `Calculate`（兩處）。
 - [ ] **Figure 2 缺少進入 stage 2 的箭頭**（R1-#2、#9b）
   - 已確認：Category Count Vector 只有連到 2. Denoising，**3. FSCE Graph Construction 的 TF-IDF Transformation 沒有任何流入箭頭**，要從 Category Count Vector 拉一條箭頭進去。
-- [ ] **Table 2 刻意漏掉 DAE**（R1-#4、R3-#3）
+- [x] **Table 2 刻意漏掉 DAE**（R1-#4、R3-#3）
   - Table 2 把 Full model 標為最佳，但 Table 3 的純 DAE 在 MAE/MSE/WAPE 都更好。
   - 做法：Table 2 加入 DAE 那列，粗體改標 DAE，並在文中直接說明 reconstruction 上的取捨。
 - [x] **Online 階段拿 test set 當 reference database**（R1-#6）

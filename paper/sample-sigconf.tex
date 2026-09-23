@@ -409,7 +409,7 @@ The dataset is split into an independent test set ($\text{test\_frac}=20\%$) whi
 All four metrics are first computed across the $C=10$ categories for a single patch, and then averaged over the entire batch of patches. Let $x_c$ be the ground truth category count and $\hat\lambda_c=\exp(\log\hat\lambda_c)$ be the Poisson rate parameter output by the decoder. We define $x_c\ln(x_c/\hat\lambda_c) = 0$ when $x_c=0$. We evaluate model performance using standard MAE and MSE, alongside WAPE and Poisson Deviance. WAPE is defined as the sum of absolute errors divided by the sum of true counts. Deviance is defined as $\frac{2}{C}\sum_{c=1}^{C}\left(x_c\ln(x_c/\hat\lambda_c)-(x_c-\hat\lambda_c)\right)$.
 
 \paragraph{Baseline Models}
-We select PCA, standard Autoencoder (AE), and Variational Autoencoder (VAE) as our primary baselines because they represent the core architectures suitable for mapping discrete count data into a continuous lower-dimensional latent space while performing reconstruction. PCA is configured with $n\_components=2$. The AE features a symmetric encoder-decoder architecture with 4 layers mapping to $d=2$. It shares the exact backbone of our proposed model but relies solely on a standard reconstruction objective.
+We select PCA, standard Autoencoder (AE), and Variational Autoencoder (VAE) as our primary baselines because they represent the core architectures suitable for mapping discrete count data into a continuous lower-dimensional latent space while performing reconstruction. PCA is configured with $n\_components=2$. The AE features a symmetric encoder-decoder architecture with 4 layers mapping to $d=2$. It shares the exact backbone of our proposed model but relies solely on a standard reconstruction objective. We additionally report a plain Denoising Autoencoder (DAE), which uses the same backbone and thinning-based input corruption as our model but is trained without TF-IDF graph construction or FSCE regularization; it serves as the reconstruction-only upper reference for our architecture.
 
 \paragraph{Hyperparameters}
 The network is trained using an Adam optimizer for $T=2000$ epochs with a mini-batch size of $B=256$ and a weight decay coefficient of $\gamma=1 \times 10^{-6}$. The learning rate follows cosine annealing, decaying from $\eta_{\max}=1 \times 10^{-2}$ to $\eta_{\min}=1 \times 10^{-3}$. For the denoising module, the thinning probability is set to $p=0.3$. For the graph construction and FSCE alignment, we configure the K-Means clusters to $K=8$ and the K-Nearest Neighbors to $k=10$. The UMAP kernel parameters are set to $a=1.0$ and $b=0.1$. During training, the FSCE edge mini-batch size is $B_e=256$, and the FSCE loss weight is gradually increased during a warm-up phase of $T_{\text{warmup}}=200$ epochs until it reaches $\lambda_{\max}=0.25$. The random seed is fixed at 0 across all experiments.
@@ -420,7 +420,7 @@ The network is trained using an Adam optimizer for $T=2000$ epochs with a mini-b
 \paragraph{Reconstruction Performance}
 
 
-This experiment validates that introducing topological constraints does not degrade the fundamental representation capability of the network. Table \ref{tab:main_results} compares our proposed architecture against standard baselines. The full model maintains reconstruction performance comparable to the best-performing DAE baseline while incorporating TF-IDF-based peer construction and FSCE topological regularization. This confirms that the proposed model successfully captures the underlying functional composition, providing a highly reliable foundation for calculating peer-relative contextual scores.
+This experiment examines how much reconstruction capability is traded off when topological constraints are introduced. Table \ref{tab:main_results} compares our proposed architecture against standard baselines, including the plain DAE. The plain DAE achieves the best reconstruction on all three metrics, and the full model is slightly worse than it (MAE 0.6487 vs.\ 0.6442, MSE 1.3356 vs.\ 1.3302, WAPE 0.3720 vs.\ 0.3651, i.e., relative increases of roughly 0.7\%, 0.4\%, and 1.9\%). This gap is the cost of adding TF-IDF-based peer construction and FSCE regularization, whose purpose is to preserve peer relationships in the latent space rather than to further improve reconstruction; their effect is examined separately in Section~\ref{sec:qualitative}. At the same time, the full model still outperforms PCA, AE, and VAE on all three metrics, indicating that it retains the POI composition well enough to serve as a basis for peer-relative scoring.
 
 
 \begin{table}[h]
@@ -434,15 +434,16 @@ Model & MAE & MSE & WAPE \\
 PCA & 0.7740 & 2.2116 & 0.4555 \\
 AE & 0.6691 & 1.5303 & 0.3799 \\
 VAE & 0.6906 & 1.5043 & 0.3941 \\
+DAE & \textbf{0.6442} & \textbf{1.3302} & \textbf{0.3651} \\
 \midrule
-Ours (DAE+FSCE+TFIDF) & \textbf{0.6487} & \textbf{1.3356} & \textbf{0.3720} \\
+Ours (DAE+FSCE+TFIDF) & 0.6487 & 1.3356 & 0.3720 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Ablation Study}
 
-To evaluate the contribution of each module, we systematically ablate the TF-IDF preprocessing, FSCE graph loss, and the Denoising mechanism. Table \ref{tab:ablation_results} groups the purely AE-based configurations and the DAE-based configurations. As shown in the table, the pure DAE model actually achieves the absolute best numerical scores in pure reconstruction metrics. Although the full model (DAE+FSCE+TFIDF) slightly trails behind the pure DAE in these specific numerical errors, this trade-off is entirely intentional. The addition of TF-IDF and FSCE imposes strict topological constraints that force the embeddings to reflect real-world functional relationships rather than optimizing solely for mathematical reconstruction. We explicitly detail how these added components crucially improve spatial separability and topological preservation in the subsequent qualitative analysis. Furthermore, the DAE-based models consistently outperform their AE counterparts, demonstrating that denoising is critical for stabilizing the latent space when these strong topological constraints are enforced.
+To evaluate the contribution of each module, we systematically ablate the TF-IDF preprocessing, FSCE graph loss, and the Denoising mechanism. Table \ref{tab:ablation_results} groups the purely AE-based configurations and the DAE-based configurations. As also reported in Table \ref{tab:main_results}, the plain DAE achieves the lowest reconstruction errors, and adding FSCE and TF-IDF increases them slightly. We therefore do not claim that these modules improve reconstruction; they are included to shape the peer structure of the latent space, which we examine in the subsequent qualitative analysis. Across all three configurations, the DAE-based models achieve lower MAE, MSE, and WAPE than their AE counterparts, suggesting that denoising helps maintain reconstruction quality when the topological constraints are enforced.
 
 \begin{table}[h]
 \centering
@@ -464,6 +465,7 @@ DAE+FSCE+TFIDF (Full) & 0.6487 & 1.3356 & 0.3720 \\
 \end{table}
 
 \subsection{Qualitative Analysis}
+\label{sec:qualitative}
 
 
 \paragraph{Proving the Impact of TF-IDF Input}
