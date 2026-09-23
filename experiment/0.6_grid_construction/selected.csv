@@ -1,0 +1,2 @@
+cell_x,cell_y,center_x,center_y,center_lat,center_lon,n_poi,x0,y0,n_side,cell_size,half_width,min_poi
+-232,-328,-23150.0,-32750.0,35.704537269766135,139.57750355853793,15,-23300,-32900,3,100,50.0,10

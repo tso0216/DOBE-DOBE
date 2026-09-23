@@ -1,0 +1,105 @@
+Dear Yen-Tso,
+
+Following our recent acceptance notification for your SpatialConnect 2026 submission, we are now sharing the reviewers' comments for your reference.
+
+Please carefully review the comments and address them, as appropriate, when preparing the camera-ready version of your paper. We encourage you to incorporate the reviewers' suggestions to further improve the clarity and quality of the final manuscript.
+
+Thank you again for your contribution to SpatialConnect 2026. We look forward to seeing your final paper and welcoming you to the workshop.
+
+Best regards,
+
+SpatialConnect 2026 Organizing Committee
+Guang, Xinyue, Yu, and Yi
+
+SUBMISSION: 5
+TITLE: A Spatial Decision Support System for Evaluating POI Addition Suitability via Peer-Relative Context
+
+----------------------- REVIEW 1 ---------------------
+
+SUBMISSION: 5
+TITLE: A Spatial Decision Support System for Evaluating POI Addition Suitability via Peer-Relative Context
+
+----------- Overall evaluation -----------
+SCORE: -1 (weak reject)
+----- TEXT:
+Short summary: This paper contains a real dataset, baselines, ablation experiments, figures, and case studies. However, its experiments validate reconstruction and embedding behavior—not the central claim that the system measures real-world POI “suitability” or “structural balance.”
+
+Some strengths includes:
+#1. The problem is interesting and appropriate for a spatial-computing workshop and the peer-relative perspective is more informative than using only absolute POI density.
+
+#2. The method and offline/online workflow are clearly organized. (But the corresponding figure 2 missing any flow-in arrow to stage 2, please check carefully.)
+
+#3. It uses a real Foursquare Tokyo dataset: 61,858 POIs and 1,233 filtered spatial patches. (The data is kind outdated considering a research in 2026.)
+
+#4. The paper provides quantitative comparisons, ablations, an architecture diagram, latent-space visualizations, and case studies.
+
+
+Major weaknesses include:
+#1. Typicality is not the same as suitability, I think it needs a more careful and clear definition. The score (S_A) measures distance from other latent representations. It therefore measures how unusual a POI composition is, not whether it is desirable, viable, adequately supplied, or beneficial. A specialized but valid area—an airport, medical district, university, or entertainment district—may be an outlier. Conversely, a common but poorly planned configuration may appear “balanced.”.
+
+#2. The case studies demonstrate that the optimization procedure can identify additions that increase or decrease the proposed score. However, they do not validate the underlying assumption that proximity to common peer configurations represents structural balance or real-world suitability. For example, specialized areas such as airport zones, university campuses, medical districts, or entertainment districts may legitimately differ from their peers without being structurally imbalanced, and conversely, a common configuration may still reflect oversupply or poor planning. This relationship therefore requires independent evidence, such as historical outcomes, demand indicators, or expert assessment. Consequently, the reported cases should be presented as illustrations of the scoring mechanism rather than validation of planning effectiveness.
+
+#3. The quantitative evaluation measures reconstruction accuracy rather than POI-addition suitability. MAE, MSE, WAPE, and Poisson deviance establish whether the latent representation retains the original category counts, while neighbor preservation measures agreement with the authors’ own TF-IDF graph. Neither evaluation determines whether the recommended additions are correct or beneficial. Please introduce an independently defined task-level target and compare the proposed score against direct alternatives such as TF-IDF kNN distance, Local Outlier Factor, Isolation Forest, PCA/UMAP-based scoring, and relevant site-selection methods. Without such evaluation, the experiments support the representation-learning component but not the paper’s principal decision-support claim.
+
+#4. Table 3 shows that the plain DAE outperforms the complete model on MAE, MSE, and WAPE. The complete model is presented as best in Table 2 because DAE is omitted from that table. The authors argue that FSCE improves topology, but Figure 5 reports neighbor preservation of only approximately 0.16 and provides no baseline, variance, held-out comparison, or statistical test.
+
+#5. The text defines higher (S_A) and positive (Delta S) as movement toward an outlier and therefore greater imbalance. However, Figure 2 states: “If (Delta S>0), then POI addition is advantageous.” These interpretations are opposite and must be corrected.
+
+#6. A random train/test split allows nearby, highly autocorrelated grid cells to appear in both sets. Spatial block cross-validation or testing on a separate part of Tokyo—or another city—would be more credible. The online stage also compares queries against the test set, whereas the test set should not become the system’s reference database.
+
+#7. The data have limitations. Foursquare data from 2012–2013 are old and subject to demographic, platform, and sampling biases. Removing user activity and temporal information means the method observes POI presence but not actual demand, usage, capacity, accessibility, or commercial viability and the author did not justify the rationale not including them.
+
+#8. Figure 3(b) is difficult to interpret because of severe point overlap. Although the text claims that POIs cluster along roads and transit stations and that western areas have lower density, neither roads nor transit stations are displayed, and no quantitative spatial analysis supports these observations. Consequently, the figure mainly shows the overall study-area footprint and does not provide much information about category-specific spatial structure.
+
+#9. Some more Minor Presentation issues. e.g.
+a. two visible `[cite: 1]` placeholders remain in Section 3.1.
+b. Missing flow-in arrow to stage 2 in figure.2.
+
+
+----------------------- REVIEW 2 ---------------------
+
+SUBMISSION: 5
+TITLE: A Spatial Decision Support System for Evaluating POI Addition Suitability via Peer-Relative Context
+
+----------- Overall evaluation -----------
+SCORE: 1 (weak accept)
+----- TEXT:
+Recommendation: Weak Accept (+1)
+
+SUMMARY
+
+The paper presents a spatial decision-support framework for evaluating hypothetical POI additions relative to functionally similar urban regions. It combines TF-IDF-based peer construction with a denoising autoencoder and a graph-preservation objective. Changes in a latent-space nearest-neighbor distance score indicate how an edited region departs from typical configurations. Experiments on Tokyo Foursquare data include reconstruction comparisons, ablations, visualizations, and two simulated intervention cases.
+
+STRENGTHS
+
+- The problem is meaningful and the motivation is appealing: facility additions should be considered in the context of complementary urban functions, beyond absolute POI density.
+- The framework connects regional representation learning to an understandable what-if workflow. Re-encoding edited configurations and exploring additions under a budget provide a promising basis for interactive planning support.
+- The pipeline is clearly organized, and the reconstruction experiments and ablations provide useful initial evidence about its behavior. The authors also acknowledge the trade-off between reconstruction accuracy and preserving peer relationships.
+
+MAIN LIMITATIONS AND SUGGESTIONS
+
+1. The interpretation of the score needs stronger support. Section 3.2 measures how atypical a configuration is relative to its peers, whereas Section 5.4 interprets score changes as improvements or deterioration in planning suitability. The two examples are optimized using the same score, so they demonstrate controllability of the objective rather than independently establish that the resulting additions are appropriate. Reconstruction accuracy does not resolve this gap. The paper would be stronger with independently justified cases or planner judgments. For the present exploratory contribution, the authors should clearly state the assumption connecting typicality to structural balance and moderate claims that the experiments prove suitability.
+
+2. The benefit of learning the representation remains uncertain. With only ten input categories, a natural comparison is to compute the same peer-distance score directly on TF-IDF features or log-transformed counts. This would help establish what the learned space contributes to evaluating additions. The existing reconstruction comparisons and visualizations provide initial evidence, but do not yet establish improved decision quality. The relationship to Parametric UMAP, which also learns neural embeddings using a fuzzy-simplicial-set objective and can incorporate reconstruction, should also be clarified.
+
+3. The practical and community context could be developed further. The examples use real source data but simulated additions, without stakeholder evaluation or a concrete implementation plan. Given the workshop's emphasis on community-oriented research, describing an intended planning scenario, relevant stakeholders, and a feasible path to validation would strengthen the contribution. The limitations of using historical check-in venues as a representation of local facilities should also be acknowledged.
+
+OVERALL ASSESSMENT
+
+I lean toward acceptance as an exploratory workshop contribution. The problem framing and what-if workflow offer useful material for discussion, even though the current evidence does not establish the score as a validated measure of real-world planning suitability. I place greater weight on this promising direction in the workshop setting, while encouraging the authors to align their claims with the available evidence and identify a concrete path toward independent validation.
+
+
+----------------------- REVIEW 3 ---------------------
+
+SUBMISSION: 5
+TITLE: A Spatial Decision Support System for Evaluating POI Addition Suitability via Peer-Relative Context
+
+----------- Overall evaluation -----------
+SCORE: 1 (weak accept)
+----- TEXT:
+This paper formulates POI addition as a peer-relative structural-balance problem and gives a fairly complete pipeline: TF-IDF → kNN graph → DAE + FSCE → latent-space peer comparison. It also has a real Foursquare Tokyo dataset, train/validation/test protocol, PCA/AE/VAE baselines, ablations, and case studies.
+
+However, here are some concerns for this paper:
+1.The evaluation does not directly support the main claim. Most quantitative results focus on reconstruction errors (MAE, MSE, and WAPE), while the main goal is to evaluate the suitability of new POI additions.
+2.The POI suitability score lacks external validation. The case studies are based mainly on changes in the learned latent space, without ground-truth suitability labels, expert evaluation, or real outcomes after POI additions.
+3.The benefit of the full model is not fully demonstrated. The plain DAE achieves slightly better reconstruction results than the full model. The paper argues that FSCE and TF-IDF improve the latent structure, but stronger quantitative evidence is needed to support this claim.
